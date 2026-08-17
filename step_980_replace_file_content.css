@@ -1,0 +1,1 @@
+".hero-inner {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  gap: 64px;\n  align-items: center;\n  position: relative;\n  z-index: 1;\n  padding: 32px 0 52px; /* extra bottom padding for floating cards */\n}\n"

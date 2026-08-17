@@ -1,0 +1,616 @@
+/* ═══════════════════════════════════════════════════════════════
+   WHAT KIND OF JOURNEY ARE YOU LOOKING FOR?
+   PREMIUM EDITORIAL EXPERIENCE DISCOVERY CAROUSEL
+   ═══════════════════════════════════════════════════════════════ */
+
+.experiences-section {
+  position: relative;
+  width: 100%;
+  padding: 100px 0 90px;
+  background-color: #020617;
+  color: #ffffff;
+  overflow-x: hidden;
+}
+
+/* Subtle atmospheric ambient glow */
+.experiences-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 1400px;
+  height: 480px;
+  background: radial-gradient(ellipse at 50% 0%, rgba(30, 58, 138, 0.18) 0%, rgba(249, 115, 22, 0.04) 45%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Centered Main Container ── */
+.experiences-container {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 60px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Section Header ── */
+.experiences-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 50px;
+  gap: 40px;
+}
+
+.experiences-header-text {
+  flex: 1;
+}
+
+.experiences-title {
+  font-size: clamp(2.4rem, 4.8vw, 4.2rem);
+  font-weight: 900;
+  line-height: 1.06;
+  text-transform: uppercase;
+  letter-spacing: -0.5px;
+  margin: 0 0 16px 0;
+  color: #ffffff;
+}
+
+.experiences-title .highlight {
+  color: #f97316;
+  font-style: italic;
+  display: inline-block;
+}
+
+.experiences-subtitle {
+  font-size: 1.15rem;
+  color: #94a3b8;
+  max-width: 580px;
+  line-height: 1.65;
+  margin: 0;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+/* 3D Decorative Floating Marker */
+.marker-3d-container {
+  width: 130px;
+  height: 130px;
+  flex-shrink: 0;
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+/* ── Carousel Track Wrapper ── */
+.experiences-carousel-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* ── Draggable & Swipeable Horizontal Gallery ── */
+.experiences-gallery {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  padding: 15px 4px 25px 4px;
+  cursor: grab;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.experiences-gallery::-webkit-scrollbar {
+  display: none;
+}
+
+.experiences-gallery.is-grabbing {
+  cursor: grabbing;
+  user-select: none;
+}
+
+/* ── Loading Skeleton ── */
+.experiences-skeleton {
+  display: flex;
+  gap: 20px;
+  overflow: hidden;
+  padding: 10px 0;
+}
+
+.skeleton-card {
+  flex: 0 0 300px;
+  height: 480px;
+  border-radius: 24px;
+  background: linear-gradient(90deg, #0d1526 25%, #18243b 50%, #0d1526 75%);
+  background-size: 200% 100%;
+  animation: exp-skeleton-shimmer 1.6s infinite;
+}
+
+@keyframes exp-skeleton-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Card Wrapper with Editorial Hierarchy ── */
+.experience-card-wrapper {
+  flex: 0 0 270px;
+  height: 480px;
+  border-radius: 24px;
+  overflow: hidden;
+  scroll-snap-align: start;
+  position: relative;
+  cursor: pointer;
+  outline: none;
+  transition: flex 0.55s cubic-bezier(0.25, 1, 0.5, 1),
+              transform 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+              box-shadow 0.4s ease;
+}
+
+/* Featured / Expanded card styling */
+.experience-card-wrapper.active,
+.experience-card-wrapper:hover {
+  flex: 0 0 460px;
+  box-shadow: 0 28px 65px rgba(0, 0, 0, 0.7), 0 0 0 1.5px rgba(249, 115, 22, 0.45);
+  transform: translateY(-4px);
+}
+
+.experience-card-wrapper.secondary {
+  opacity: 0.88;
+}
+
+.experience-card-wrapper.secondary:hover {
+  opacity: 1;
+}
+
+/* ── Card Inner Container (for 3D tilt) ── */
+.experience-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 24px;
+  overflow: hidden;
+  background: #0b1120;
+  transition: transform 0.15s ease-out;
+  transform-style: preserve-3d;
+}
+
+/* ── Image Media ── */
+.experience-media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.experience-card-wrapper:hover .experience-media,
+.experience-card-wrapper.active .experience-media {
+  transform: scale(1.05);
+}
+
+/* ── Cinematic Overlay ── */
+.experience-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(2, 6, 23, 0.96) 0%,
+    rgba(2, 6, 23, 0.6) 42%,
+    rgba(2, 6, 23, 0.15) 75%,
+    rgba(2, 6, 23, 0.05) 100%
+  );
+  transition: background 0.4s ease;
+}
+
+.experience-card-wrapper:hover .experience-overlay,
+.experience-card-wrapper.active .experience-overlay {
+  background: linear-gradient(
+    to top,
+    rgba(2, 6, 23, 0.98) 0%,
+    rgba(2, 6, 23, 0.7) 45%,
+    rgba(2, 6, 23, 0.2) 100%
+  );
+}
+
+/* ── Destination Count Badge ── */
+.experience-count {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(2, 6, 23, 0.65);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #f8fafc;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  letter-spacing: 0.04em;
+  z-index: 2;
+}
+
+/* ── Card Content ── */
+.experience-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  z-index: 2;
+}
+
+/* Category Title */
+.experience-name {
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin: 0 0 10px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #ffffff;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  align-self: flex-start;
+  transition: all 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+  white-space: nowrap;
+}
+
+.experience-card-wrapper.active .experience-name,
+.experience-card-wrapper:hover .experience-name {
+  writing-mode: horizontal-tb;
+  transform: none;
+  font-size: 2rem;
+  color: #ffffff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+}
+
+/* ── Expanded Details Area ── */
+.experience-details {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: max-height 0.48s cubic-bezier(0.25, 1, 0.5, 1),
+              opacity 0.38s ease,
+              transform 0.38s ease;
+}
+
+.experience-card-wrapper.active .experience-details,
+.experience-card-wrapper:hover .experience-details {
+  max-height: 320px;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.experience-desc {
+  font-size: 0.94rem;
+  color: #cbd5e1;
+  margin: 0 0 22px 0;
+  line-height: 1.65;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Explore CTA Button */
+.experience-explore-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #f97316;
+  color: #ffffff;
+  padding: 12px 26px;
+  border-radius: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  align-self: flex-start;
+  box-shadow: 0 4px 15px rgba(249, 115, 22, 0.35);
+}
+
+.experience-explore-btn:hover {
+  background: #ea580c;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.5);
+}
+
+.experience-explore-btn .btn-arrow {
+  display: inline-block;
+  transition: transform 0.3s ease;
+  font-size: 1rem;
+}
+
+.experience-explore-btn:hover .btn-arrow {
+  transform: translateX(4px);
+}
+
+/* ── Fully Visible Carousel Controls Area ── */
+.experiences-controls-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 36px;
+  padding-bottom: 10px;
+}
+
+.carousel-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.carousel-nav-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+  font-size: 1.15rem;
+  user-select: none;
+}
+
+.carousel-nav-btn:hover {
+  background: rgba(249, 115, 22, 0.2);
+  border-color: #f97316;
+  color: #f97316;
+  transform: scale(1.08);
+}
+
+.carousel-nav-btn:active {
+  transform: scale(0.95);
+}
+
+/* Carousel Indicator Dots */
+.carousel-dots {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.carousel-dot:hover {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.carousel-dot.active {
+  background: #f97316;
+  width: 26px;
+  border-radius: 4px;
+}
+
+/* ── Error & Fallback States ── */
+.experiences-error {
+  text-align: center;
+  padding: 70px 20px;
+  color: #94a3b8;
+}
+
+.experiences-error h3 {
+  font-size: 1.3rem;
+  font-weight: 500;
+  margin-bottom: 18px;
+  color: #f8fafc;
+}
+
+.experiences-retry-btn {
+  background: rgba(249, 115, 22, 0.15);
+  border: 1px solid #f97316;
+  color: #f97316;
+  padding: 12px 28px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition: all 0.3s ease;
+}
+
+.experiences-retry-btn:hover {
+  background: #f97316;
+  color: #ffffff;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE BREAKPOINTS
+   ═══════════════════════════════════════════════════════════════ */
+
+/* 2K / 4K Displays */
+@media (min-width: 1920px) {
+  .experiences-container {
+    max-width: 1800px;
+    padding: 0 80px;
+  }
+  .experience-card-wrapper {
+    flex: 0 0 310px;
+    height: 520px;
+  }
+  .experience-card-wrapper.active,
+  .experience-card-wrapper:hover {
+    flex: 0 0 520px;
+  }
+}
+
+/* Large Desktop (1440px - 1919px) */
+@media (max-width: 1536px) {
+  .experiences-container {
+    padding: 0 50px;
+  }
+  .experience-card-wrapper {
+    flex: 0 0 260px;
+    height: 460px;
+  }
+  .experience-card-wrapper.active,
+  .experience-card-wrapper:hover {
+    flex: 0 0 440px;
+  }
+}
+
+/* Laptop (1024px - 1439px) */
+@media (max-width: 1280px) {
+  .experiences-container {
+    padding: 0 40px;
+  }
+  .experience-card-wrapper {
+    flex: 0 0 240px;
+    height: 440px;
+  }
+  .experience-card-wrapper.active,
+  .experience-card-wrapper:hover {
+    flex: 0 0 390px;
+  }
+}
+
+/* Tablet (768px - 1023px) */
+@media (max-width: 1024px) {
+  .experiences-section {
+    padding: 80px 0 70px;
+  }
+  .experiences-container {
+    padding: 0 32px;
+  }
+  .experiences-header {
+    margin-bottom: 36px;
+    gap: 24px;
+  }
+  .marker-3d-container {
+    width: 100px;
+    height: 100px;
+  }
+  .experience-card-wrapper {
+    flex: 0 0 250px;
+    height: 420px;
+  }
+  .experience-card-wrapper.active,
+  .experience-card-wrapper:hover {
+    flex: 0 0 360px;
+  }
+}
+
+/* Mobile Screens (≤ 768px) */
+@media (max-width: 768px) {
+  .experiences-section {
+    padding: 60px 0 50px;
+  }
+  .experiences-container {
+    padding: 0 20px;
+  }
+  .experiences-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    margin-bottom: 28px;
+  }
+  .marker-3d-container {
+    display: none;
+  }
+  .experiences-title {
+    font-size: 2.2rem;
+  }
+  .experiences-subtitle {
+    font-size: 1rem;
+    max-width: 100%;
+  }
+
+  /* Single prominent card per view on mobile */
+  .experience-card-wrapper {
+    flex: 0 0 80vw;
+    max-width: 320px;
+    height: 410px;
+  }
+  .experience-card-wrapper.active,
+  .experience-card-wrapper:hover {
+    flex: 0 0 80vw;
+    max-width: 320px;
+    transform: none;
+  }
+  .experience-name,
+  .experience-card-wrapper.active .experience-name,
+  .experience-card-wrapper:hover .experience-name {
+    writing-mode: horizontal-tb;
+    transform: none;
+    font-size: 1.5rem;
+  }
+  .experience-details,
+  .experience-card-wrapper.active .experience-details {
+    max-height: 300px;
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .experiences-controls-area {
+    margin-top: 24px;
+  }
+}
+
+/* Small Mobile Screens (≤ 480px) */
+@media (max-width: 480px) {
+  .experiences-container {
+    padding: 0 16px;
+  }
+  .experiences-title {
+    font-size: 1.95rem;
+  }
+  .experience-card-wrapper {
+    flex: 0 0 86vw;
+    max-width: 300px;
+    height: 390px;
+  }
+  .experience-card-wrapper.active,
+  .experience-card-wrapper:hover {
+    flex: 0 0 86vw;
+    max-width: 300px;
+  }
+}
+
+/* Accessibility: Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .experience-card-wrapper,
+  .experience-media,
+  .experience-overlay,
+  .experience-details,
+  .experience-name,
+  .experience-explore-btn,
+  .carousel-nav-btn,
+  .carousel-dot {
+    transition: none !important;
+  }
+  .experience-card-inner {
+    transform: none !important;
+  }
+}

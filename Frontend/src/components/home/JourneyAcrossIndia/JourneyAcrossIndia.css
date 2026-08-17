@@ -1,0 +1,344 @@
+/* ==========================================================================
+   JOURNEY ACROSS INDIA SECTION (Phase 11)
+   ========================================================================== */
+.journey-section {
+  position: relative;
+  background-color: #020617; /* Deep cinematic black */
+  padding: 6rem 0;
+  overflow: hidden;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.journey-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 50%, rgba(255,107,53,0.03) 0%, transparent 60%);
+  z-index: 0;
+}
+
+.journey-container {
+  position: relative;
+  z-index: 1;
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 4rem;
+}
+
+/* Headers & Filtering */
+.journey-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 3rem;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  padding-bottom: 2rem;
+}
+
+.journey-mobile-header {
+  display: none;
+}
+
+.journey-title {
+  font-size: 3rem;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -1px;
+  margin: 0 0 0.5rem 0;
+  background: linear-gradient(to right, #fff, #94a3b8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.journey-subtitle {
+  color: #94a3b8;
+  font-size: 1.1rem;
+  margin: 0;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.journey-region-filter {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.region-btn {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #94a3b8;
+  padding: 0.5rem 1.2rem;
+  border-radius: 30px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 1px;
+}
+
+.region-btn:hover {
+  border-color: rgba(255,107,53,0.5);
+  color: #fff;
+}
+
+.region-btn.active {
+  background: rgba(255,107,53,0.1);
+  border-color: #FF6B35;
+  color: #FF6B35;
+}
+
+/* Split Layout */
+.journey-content-split {
+  display: flex;
+  gap: 4rem;
+  align-items: stretch;
+  height: 600px;
+}
+
+.journey-map-container {
+  flex: 1.5;
+  position: relative;
+  background: radial-gradient(circle at center, rgba(15,23,42,0.5) 0%, rgba(2,6,23,0.8) 100%);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 24px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.journey-map-footer {
+  position: absolute;
+  bottom: 2rem;
+  left: 2rem;
+  right: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.story-text {
+  color: #64748b;
+  font-family: serif;
+  font-style: italic;
+  font-size: 1.2rem;
+}
+
+.start-journey-btn {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  padding: 0.8rem 1.5rem;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s;
+}
+
+.start-journey-btn:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+.start-journey-btn.active {
+  background: rgba(239,68,68,0.2);
+  border-color: rgba(239,68,68,0.5);
+  color: #ef4444;
+}
+
+/* Destination Panel */
+.journey-panel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.destination-card {
+  width: 100%;
+  background: rgba(15,23,42,0.6);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 24px;
+  overflow: hidden;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+
+.card-image-wrap {
+  position: relative;
+  height: 250px;
+  overflow: hidden;
+}
+
+.card-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-image-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 0%, rgba(15,23,42,1) 100%);
+}
+
+.card-top-tags {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+}
+
+.region-tag {
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.card-content {
+  padding: 2rem;
+  position: relative;
+  z-index: 2;
+  margin-top: -30px;
+}
+
+.card-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #94a3b8;
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+}
+
+.card-meta .dot {
+  color: #334155;
+}
+
+.card-title {
+  color: #fff;
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin: 0 0 1rem 0;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+}
+
+.card-description {
+  color: #cbd5e1;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.explore-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #FF6B35;
+  color: #fff;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  width: 100%;
+  justify-content: center;
+  letter-spacing: 1px;
+}
+
+.explore-btn:hover {
+  background: #e85a28;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(255,107,53,0.3);
+}
+
+/* 3D Label */
+.map-3d-label {
+  pointer-events: none;
+}
+.map-3d-label-inner {
+  background: rgba(15,23,42,0.8);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #fff;
+  padding: 0.3rem 0.6rem;
+  border-radius: 8px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  white-space: nowrap;
+  backdrop-filter: blur(4px);
+  transition: all 0.3s;
+}
+.map-3d-label-inner.active {
+  border-color: #FF6B35;
+  color: #FF6B35;
+  transform: scale(1.1);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 1024px) {
+  .journey-container {
+    padding: 0 2rem;
+  }
+  .journey-content-split {
+    flex-direction: column;
+    height: auto;
+  }
+  .journey-map-container {
+    height: 400px;
+    flex: none;
+  }
+  .journey-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .journey-container {
+    padding: 0 1rem;
+  }
+  .journey-header {
+    display: none;
+  }
+  .journey-mobile-header {
+    display: block;
+    margin-bottom: 2rem;
+  }
+  .journey-title {
+    font-size: 2rem;
+  }
+  .journey-map-container {
+    height: 350px;
+    border-radius: 16px;
+    margin-bottom: 1rem;
+  }
+  .region-btn {
+    padding: 0.4rem 1rem;
+    font-size: 0.7rem;
+  }
+  .story-text {
+    display: none;
+  }
+  .start-journey-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

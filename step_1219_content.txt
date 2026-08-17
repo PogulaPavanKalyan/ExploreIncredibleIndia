@@ -1,0 +1,112 @@
+Created At: 2026-06-08T12:28:06Z
+Completed At: 2026-06-08T12:28:06Z
+File Path: `file:///d:/one/one/endeavor/src/Home/Homepage.css`
+Total Lines: 2379
+Total Bytes: 45670
+Showing lines 1867 to 2379
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+1867: .research-areas-redesign {
+1868:   background: #FFFFFF;
+1869: }
+1870: 
+1871: .research-areas-grid {
+1872:   display: grid;
+1873:   grid-template-columns: repeat(4, 1fr);
+1874:   gap: 20px;
+1875: }
+1876: 
+1877: .area-card {
+1878:   background: #F8FAFC;
+1879:   border-radius: 20px;
+1880:   padding: 32px 24px;
+1881:   border: 1px solid rgba(15, 23, 42, 0.04);
+1882:   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+1883: }
+1884: 
+1885: .area-card:hover {
+1886:   background: #FFFFFF;
+1887:   border-color: rgba(233, 30, 99, 0.18);
+1888:   box-shadow: 0 10px 30px rgba(233, 30, 99, 0.05);
+1889:   transform: translateY(-4px);
+1890: }
+1891: 
+1892: .area-card span {
+1893:   font-size: 28px;
+1894:   display: inline-block;
+1895:   margin-bottom: 16px;
+1896: }
+1897: 
+1898: .area-card h3 {
+1899:   font-size: 16px;
+1900:   color: #0F172A;
+1901:   font-weight: 700;
+1902:   margin-bottom: 8px;
+1903: }
+1904: 
+1905: .area-card p {
+1906:   font-size: 13px;
+1907:   color: #64748B;
+1908:   line-height: 1.5;
+1909: }
+1910: 
+1911: /* ── 16. Why Choose Us ── */
+1912: .why-choose-redesign {
+1913:   background: #F8FAFC;
+1914: }
+1915: 
+1916: .why-choose-grid {
+1917:   display: grid;
+1918:   grid-template-columns: repeat(4, 1fr);
+1919:   gap: 20px;
+1920: }
+1921: 
+1922: .why-choose-card {
+1923:   background: #FFFFFF;
+1924:   border-radius: 20px;
+1925:   padding: 32px 24px;
+1926:   border: 1px solid rgba(15, 23, 42, 0.04);
+1927:   transition: all 0.3s ease;
+1928: }
+1929: 
+1930: .why-choose-card:hover {
+1931:   transform: translateY(-4px);
+1932:   box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+1933: }
+193
+<truncated 10088 bytes>
+-areas-grid { grid-template-columns: repeat(2, 1fr); }
+2346:   .why-choose-grid { grid-template-columns: repeat(2, 1fr); }
+2347:   .testimonials-grid { grid-template-columns: 1fr; }
+2348:   .news-grid-redesign { grid-template-columns: repeat(2, 1fr); }
+2349:   .contact-box-grid { grid-template-columns: 1fr; gap: 32px; }
+2350: }
+2351: 
+2352: @media (max-width: 768px) {
+2353:   .about-org-pillars { grid-template-columns: 1fr; }
+2354:   .categories-grid-redesign { grid-template-columns: 1fr; }
+2355:   .upcoming-conf-card { flex: 0 0 290px; }
+2356:   .past-conferences-grid { grid-template-columns: 1fr; }
+2357:   .timeline-node { grid-template-columns: 1fr; text-align: left; }
+2358:   .node-time { text-align: left; padding-left: 30px; }
+2359:   .node-marker { position: absolute; left: 0; top: 0; bottom: 0; }
+2360:   .node-card { margin-left: 30px; }
+2361:   .cfp-card-wrap { grid-template-columns: 1fr; padding: 32px; gap: 32px; }
+2362:   .speakers-grid-redesign { grid-template-columns: 1fr; }
+2363:   .committee-grid-redesign { grid-template-columns: 1fr; }
+2364:   .webinars-grid-redesign { grid-template-columns: 1fr; }
+2365:   .research-areas-grid { grid-template-columns: 1fr; }
+2366:   .why-choose-grid { grid-template-columns: 1fr; }
+2367:   .stats-strip-inner { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+2368:   .gallery-grid-redesign { grid-template-columns: repeat(2, 1fr); }
+2369:   .news-grid-redesign { grid-template-columns: 1fr; }
+2370:   .newsletter-form-box { flex-direction: column; }
+2371:   .newsletter-form-box button { padding: 14px; }
+2372:   .form-row { grid-template-columns: 1fr; gap: 0; }
+2373:   .form-row input { margin-bottom: 16px; }
+2374: }
+2375: 
+2376: @media (max-width: 480px) {
+2377:   .stats-strip-inner { grid-template-columns: 1fr; }
+2378:   .gallery-grid-redesign { grid-template-columns: 1fr; }
+2379: }
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.

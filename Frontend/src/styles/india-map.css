@@ -1,0 +1,192 @@
+/* Interactive India Map & State Selection System */
+
+.india-map-wrapper {
+  position: relative;
+  width: 100%;
+  background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+  border-radius: var(--radius-lg, 24px);
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 1.5rem;
+}
+
+.map-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+  z-index: 10;
+  position: relative;
+}
+
+.map-search-box {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-full, 9999px);
+  width: 320px;
+  max-width: 100%;
+}
+
+.map-search-box input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #ffffff;
+  font-size: 0.88rem;
+  width: 100%;
+}
+
+.map-search-box input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.map-controls-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-map-control {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-map-control:hover {
+  background: var(--primary, #ff6b35);
+  transform: scale(1.08);
+}
+
+.map-viewport {
+  position: relative;
+  width: 100%;
+  height: 520px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  user-select: none;
+}
+
+.india-svg-map {
+  width: 100%;
+  height: 100%;
+  max-height: 500px;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* SVG State Vector Styling */
+.state-path {
+  fill: #334155;
+  stroke: #0f172a;
+  stroke-width: 1.2;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.state-path:hover {
+  fill: var(--primary, #ff6b35) !important;
+  stroke: #ffffff;
+  stroke-width: 2;
+  filter: drop-shadow(0 0 12px rgba(255, 107, 53, 0.8));
+}
+
+.state-path.selected {
+  fill: #0284c7 !important;
+  stroke: #ffffff;
+  stroke-width: 2.5;
+}
+
+.state-path.highlighted {
+  fill: #e05320;
+  animation: pulseState 1.5s infinite alternate;
+}
+
+@keyframes pulseState {
+  from { fill: #ff6b35; filter: drop-shadow(0 0 8px rgba(255, 107, 53, 0.6)); }
+  to { fill: #e05320; filter: drop-shadow(0 0 18px rgba(255, 107, 53, 1)); }
+}
+
+/* Hover Card Overlay */
+.state-hover-card {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  width: 280px;
+  background: rgba(15, 23, 42, 0.9);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-lg, 16px);
+  padding: 1rem;
+  color: #ffffff;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.5);
+  z-index: 20;
+  pointer-events: none;
+  animation: fadeIn 0.25s ease-out;
+}
+
+.state-hover-card img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 0.75rem;
+}
+
+.state-card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--primary, #ff6b35);
+}
+
+.state-card-capital {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  margin-bottom: 0.5rem;
+}
+
+.state-card-stats {
+  display: flex;
+  gap: 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
+.stat-chip {
+  padding: 0.25rem 0.6rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: #38bdf8;
+}
+
+@media (max-width: 767px) {
+  .map-viewport {
+    height: 380px;
+  }
+  .state-hover-card {
+    position: relative;
+    top: auto;
+    right: auto;
+    width: 100%;
+    margin-top: 1rem;
+    pointer-events: auto;
+  }
+}

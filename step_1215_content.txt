@@ -1,0 +1,165 @@
+Created At: 2026-06-08T12:28:00Z
+Completed At: 2026-06-08T12:28:00Z
+File Path: `file:///d:/one/one/endeavor/src/Home/Homepage.css`
+Total Lines: 2379
+Total Bytes: 45670
+Showing lines 1101 to 1400
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+1101: 
+1102: .btn-view-conf {
+1103:   display: inline-block;
+1104:   margin-top: 14px;
+1105:   color: #E91E63;
+1106:   text-decoration: none;
+1107:   font-weight: 700;
+1108:   font-size: 14px;
+1109: }
+1110: 
+1111: /* ── 6. Past Conferences ── */
+1112: .past-conferences-redesign {
+1113:   background: #F8FAFC;
+1114: }
+1115: 
+1116: .past-conferences-grid {
+1117:   display: grid;
+1118:   grid-template-columns: repeat(3, 1fr);
+1119:   gap: 24px;
+1120: }
+1121: 
+1122: .past-conf-card {
+1123:   background: #FFFFFF;
+1124:   border-radius: 20px;
+1125:   overflow: hidden;
+1126:   border: 1px solid rgba(15, 23, 42, 0.05);
+1127:   transition: all 0.3s ease;
+1128: }
+1129: 
+1130: .past-conf-card:hover {
+1131:   transform: translateY(-4px);
+1132:   box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+1133: }
+1134: 
+1135: .past-card-media {
+1136:   position: relative;
+1137:   height: 160px;
+1138:   overflow: hidden;
+1139:   filter: grayscale(40%);
+1140: }
+1141: 
+1142: .past-card-media img {
+1143:   width: 100%;
+1144:   height: 100%;
+1145:   object-fit: cover;
+1146: }
+1147: 
+1148: .past-year-badge {
+1149:   position: absolute;
+1150:   top: 14px;
+1151:   left: 14px;
+1152:   background: rgba(15, 23, 42, 0.85);
+1153:   color: #FFFFFF;
+1154:   font-size: 11px;
+1155:   font-weight: 700;
+1156:   padding: 4px 10px;
+1157:   border-radius: 12px;
+1158: }
+1159: 
+1160: .past-card-body {
+1161:   padding: 20px;
+1162: }
+1163: 
+1164: .past-conf-card h3 {
+1165:   font-size: 15px;
+1166:   color: #0F172A;
+1167:   font-weight: 700;
+1168:   margin-bottom: 12px;
+1169:   line-height: 1.4;
+1170: }
+1171: 
+1172: .past-metadata {
+1
+<truncated 3327 bytes>
+lay: flex;
+1319:   flex-direction: column;
+1320:   gap: 4px;
+1321: }
+1322: 
+1323: .milestone strong {
+1324:   font-size: 12px;
+1325:   color: #E91E63;
+1326:   text-transform: uppercase;
+1327:   letter-spacing: 0.5px;
+1328: }
+1329: 
+1330: .milestone span {
+1331:   font-size: 13.5px;
+1332:   color: #FFFFFF;
+1333:   font-weight: 600;
+1334: }
+1335: 
+1336: .btn-cfp-action {
+1337:   display: inline-block;
+1338:   background: #E91E63;
+1339:   color: #FFFFFF;
+1340:   text-decoration: none;
+1341:   font-size: 14px;
+1342:   font-weight: 700;
+1343:   padding: 14px 30px;
+1344:   border-radius: 10px;
+1345:   transition: all 0.25s ease;
+1346:   box-shadow: 0 4px 14px rgba(233,30,99,0.3);
+1347: }
+1348: 
+1349: .btn-cfp-action:hover {
+1350:   background: #C2185B;
+1351:   transform: translateY(-2px);
+1352: }
+1353: 
+1354: .cfp-badges-side {
+1355:   display: flex;
+1356:   flex-direction: column;
+1357:   gap: 20px;
+1358: }
+1359: 
+1360: .indexing-card {
+1361:   background: rgba(255, 255, 255, 0.03);
+1362:   border: 1px solid rgba(255, 255, 255, 0.08);
+1363:   border-radius: 16px;
+1364:   padding: 24px;
+1365: }
+1366: 
+1367: .indexing-card span {
+1368:   font-size: 28px;
+1369:   display: inline-block;
+1370:   margin-bottom: 12px;
+1371: }
+1372: 
+1373: .indexing-card h4 {
+1374:   font-size: 15px;
+1375:   font-weight: 700;
+1376:   color: #FFFFFF;
+1377:   margin-bottom: 6px;
+1378: }
+1379: 
+1380: .indexing-card p {
+1381:   font-size: 12.5px;
+1382:   color: #94A3B8;
+1383:   line-height: 1.5;
+1384: }
+1385: 
+1386: /* ── 9. Speakers ── */
+1387: .speakers-redesign {
+1388:   background: #FFFFFF;
+1389: }
+1390: 
+1391: .speakers-grid-redesign {
+1392:   display: grid;
+1393:   grid-template-columns: repeat(4, 1fr);
+1394:   gap: 24px;
+1395: }
+1396: 
+1397: .speaker-card-redesign {
+1398:   background: #F8FAFC;
+1399:   border-radius: 20px;
+1400:   overflow: hidden;
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.

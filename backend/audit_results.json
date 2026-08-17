@@ -1,0 +1,48 @@
+{
+    "broken_urls": [
+        {
+            "destination": "Araku Valley",
+            "url": "/media/https%3A/images.unsplash.com/photo-1506461883276-594a12b11cf3%3Fw%3D1000"
+        },
+        {
+            "destination": "Charminar",
+            "url": "/media/https%3A/images.unsplash.com/photo-1605649487212-47bdab064df7%3Fw%3D1000"
+        },
+        {
+            "destination": "Rishikonda Beach",
+            "url": "/media/https%3A/images.unsplash.com/photo-1507525428034-b723cf961d3e%3Fw%3D1000"
+        },
+        {
+            "destination": "Tea Gardens of Munnar",
+            "url": "/media/https%3A/images.unsplash.com/photo-1602216056096-3b40cc0c9944%3Fw%3D1000"
+        },
+        {
+            "destination": "Borra Caves",
+            "url": "/media/https%3A/images.unsplash.com/photo-1518709268805-4e9042af9f23%3Fw%3D1000"
+        },
+        {
+            "destination": "Hawa Mahal",
+            "url": "/media/https%3A/images.unsplash.com/photo-1599661046289-e31897846e41%3Fw%3D1000"
+        }
+    ],
+    "duplicate_images": {},
+    "state_mismatches": [],
+    "missing_fields": [
+        "Destination 20 (Amber Fort) missing vital fields.",
+        "Destination 21 (City Palace Udaipur) missing vital fields.",
+        "Destination 22 (Lake Pichola) missing vital fields.",
+        "Destination 16 (Lalbagh Botanical Garden) missing vital fields.",
+        "Destination 12 (Mattupetty Dam) missing vital fields.",
+        "Destination 18 (Mysuru Palace) missing vital fields.",
+        "Destination 13 (Anamudi Peak) missing vital fields.",
+        "Destination 9 (Golconda Fort) missing vital fields.",
+        "Destination 14 (Fort Kochi Beach) missing vital fields.",
+        "Destination 7 (RK Beach) missing vital fields.",
+        "Destination 19 (Chamundi Hill Temple) missing vital fields.",
+        "Destination 17 (Cubbon Park) missing vital fields.",
+        "Destination 10 (Hussain Sagar Lake) missing vital fields.",
+        "Destination 8 (Kailasagiri) missing vital fields.",
+        "Destination 11 (Thousand Pillar Temple) missing vital fields.",
+        "Destination 15 (Willingdon Island) missing vital fields."
+    ]
+}

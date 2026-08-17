@@ -1,0 +1,34 @@
+{
+  "name": "india-travel-hub",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@react-three/drei": "^9.105.0",
+    "@react-three/fiber": "^8.17.10",
+    "axios": "^1.19.0",
+    "canvas-confetti": "^1.9.2",
+    "framer-motion": "^11.18.0",
+    "lucide-react": "^0.344.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-player": "^3.4.0",
+    "react-reconciler": "0.29.0",
+    "react-router-dom": "^7.18.2",
+    "three": "^0.160.0"
+  },
+  "overrides": {
+    "react-reconciler": "0.29.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.66",
+    "@types/react-dom": "^18.2.22",
+    "@vitejs/plugin-react": "^4.2.1",
+    "vite": "^5.1.6"
+  }
+}

@@ -1,0 +1,116 @@
+/* Responsive Breakpoints System & Global Anti-Overflow Rules */
+
+html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+#root {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  box-sizing: border-box;
+}
+
+.layout-with-ads {
+  display: block;
+  width: 100%;
+}
+
+/* 1. Small Mobile (320px) */
+@media (max-width: 374px) {
+  .container {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  h1 { font-size: 1.6rem !important; }
+  h2 { font-size: 1.3rem !important; }
+  .btn, button {
+    min-height: var(--touch-target-min, 44px);
+    font-size: 0.85rem;
+  }
+}
+
+/* 2. Standard Mobile (375px – 424px) */
+@media (min-width: 375px) and (max-width: 424px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  h1 { font-size: 1.8rem !important; }
+}
+
+/* 3. Large Mobile (425px – 479px) */
+@media (min-width: 425px) and (max-width: 479px) {
+  .container {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+}
+
+/* 4. Phablets / Small Tablets (480px – 767px) */
+@media (min-width: 480px) and (max-width: 767px) {
+  .grid-destinations {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)) !important;
+  }
+}
+
+/* 5. Tablets (768px – 1023px) */
+@media (min-width: 768px) {
+  .container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+  .desktop-only { display: block !important; }
+  .mobile-only { display: none !important; }
+}
+
+/* 6. Laptops (1024px – 1279px) */
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1100px;
+  }
+}
+
+/* 7. Standard Desktop (1280px – 1439px) */
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1240px;
+  }
+}
+
+/* 8. Large Desktop (1440px – 1919px) */
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1380px;
+  }
+  
+  /* 3-Column Layout with Side Ads */
+  .layout-with-ads {
+    display: grid;
+    grid-template-columns: 220px 1fr 220px;
+    gap: 2rem;
+    align-items: start;
+  }
+}
+
+/* 9. Ultra-Wide Desktop (1920px+) */
+@media (min-width: 1920px) {
+  .container {
+    max-width: 1600px;
+  }
+  .layout-with-ads {
+    grid-template-columns: 260px 1fr 260px;
+    gap: 2.5rem;
+  }
+}
+

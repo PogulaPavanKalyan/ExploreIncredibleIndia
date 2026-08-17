@@ -1,0 +1,87 @@
+/* 3D Canvas Viewport & Depth Layer Styles */
+
+.three-canvas-container {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+  pointer-events: auto;
+  z-index: 1;
+}
+
+.hero-3d-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 580px;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 20%, #1e293b 0%, #0f172a 100%);
+}
+
+.floating-3d-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.85rem;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: var(--radius-full, 9999px);
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 600;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  transition: transform 0.3s ease;
+}
+
+.floating-3d-icon:hover {
+  transform: translateY(-4px) scale(1.05);
+  border-color: var(--primary, #ff6b35);
+}
+
+.map-3d-container {
+  position: relative;
+  width: 100%;
+  height: 480px;
+  background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+  border-radius: var(--radius-lg, 20px);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.map-3d-pin {
+  position: absolute;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.map-3d-pin:hover {
+  transform: translate(-50%, -60%) scale(1.15);
+  z-index: 10;
+}
+
+.pin-bubble {
+  padding: 0.4rem 0.8rem;
+  background: rgba(255, 107, 53, 0.9);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.8rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 14px rgba(255, 107, 53, 0.4);
+  white-space: nowrap;
+  backdrop-filter: blur(4px);
+}
+
+/* Perspective 3D Tilt Wrapper */
+.perspective-container {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+/* Hide 3D Canvas on small screens under 768px for mobile performance */
+@media (max-width: 767px) {
+  .three-canvas-container {
+    display: none !important;
+  }
+}
