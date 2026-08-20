@@ -1,27 +1,29 @@
 /* ==========================================================================
-   PREMIUM CINEMATIC HOMEPAGE STYLES
+   PREMIUM CINEMATIC HOMEPAGE STYLES — LIGHT & DARK TRAVEL EDITORIAL
    ========================================================================== */
 
 .home-page {
-  background-color: #020617; /* Deep cinematic black/blue */
+  background-color: var(--db-bg-dark-primary, #071426);
   color: #f8fafc;
   overflow-x: hidden;
 }
 
 /* ==========================================================================
-   QUICK EXPLORE (Phase 10)
+   QUICK EXPLORE (Light Cream Editorial Transition)
    ========================================================================== */
 .quick-explore-section {
-  padding: 4rem 0;
-  background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
-  border-bottom: 1px solid rgba(255,255,255,0.05);
+  padding: 4.5rem 0;
+  background: var(--db-bg-light-cream, #F4F1EA);
+  border-top: 1px solid rgba(7, 20, 38, 0.06);
+  border-bottom: 1px solid rgba(7, 20, 38, 0.06);
 }
 
 .quick-explore-title {
-  font-size: 0.9rem;
-  letter-spacing: 0.3em;
+  font-size: 0.95rem;
+  letter-spacing: 0.25em;
   text-transform: uppercase;
-  color: #94a3b8;
+  color: var(--db-text-dark, #071426);
+  font-weight: 800;
   margin-bottom: 2rem;
   text-align: center;
 }
@@ -30,7 +32,7 @@
   display: flex;
   gap: 1.5rem;
   overflow-x: auto;
-  padding: 1rem 2rem;
+  padding: 1rem 2rem 2rem 2rem;
   scroll-snap-type: x mandatory;
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -42,48 +44,52 @@
 
 .explore-item {
   flex: 0 0 auto;
-  width: 140px;
-  height: 180px;
-  border-radius: 16px;
+  width: 150px;
+  height: 200px;
+  border-radius: 20px;
   position: relative;
   overflow: hidden;
   cursor: pointer;
   scroll-snap-align: start;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  background: #071426;
+  border: 1px solid rgba(7, 20, 38, 0.08);
+  box-shadow: 0 10px 25px rgba(7, 20, 38, 0.12);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
 }
 
 .explore-item:hover {
-  transform: translateY(-10px);
+  transform: translateY(-8px);
+  box-shadow: 0 18px 40px rgba(255, 107, 26, 0.25);
+  border-color: #FF6B1A;
 }
 
 .explore-item img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.8s ease;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .explore-item:hover img {
-  transform: scale(1.1);
+  transform: scale(1.08);
 }
 
 .explore-item-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 50%, transparent 100%);
+  background: linear-gradient(0deg, rgba(7, 20, 38, 0.9) 0%, rgba(7, 20, 38, 0.3) 50%, transparent 100%);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 1.2rem;
+  padding: 1.25rem;
 }
 
 .explore-item h3 {
-  color: #fff;
-  font-size: 1.1rem;
-  font-weight: 700;
+  color: #FFFFFF;
+  font-size: 1.05rem;
+  font-weight: 800;
   margin: 0;
-  margin-top: 0.5rem;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
 }
 
 /* ==========================================================================
@@ -91,7 +97,7 @@
    ========================================================================== */
 .trending-section {
   padding: 6rem 0;
-  background: #0f172a;
+  background: #FFFFFF;
 }
 
 .cinematic-header {
@@ -102,9 +108,7 @@
 .cinematic-header h2 {
   font-size: 3rem;
   font-weight: 800;
-  background: linear-gradient(to right, #fff, #94a3b8);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #071426;
   margin-bottom: 1rem;
 }
 
@@ -121,8 +125,8 @@
   overflow: hidden;
   height: 450px;
   cursor: pointer;
-  group: true;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+  box-shadow: 0 15px 35px rgba(7, 20, 38, 0.1);
+  border: 1px solid rgba(7, 20, 38, 0.08);
 }
 
 .cinematic-card img {
@@ -139,7 +143,7 @@
 .cinematic-card-content {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(2,6,23,0.95) 0%, rgba(2,6,23,0.4) 40%, transparent 100%);
+  background: linear-gradient(to top, rgba(7, 20, 38, 0.95) 0%, rgba(7, 20, 38, 0.4) 40%, transparent 100%);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -148,11 +152,11 @@
 }
 
 .cinematic-card:hover .cinematic-card-content {
-  background: linear-gradient(to top, rgba(2,6,23,0.98) 0%, rgba(2,6,23,0.6) 50%, rgba(0,0,0,0.2) 100%);
+  background: linear-gradient(to top, rgba(7, 20, 38, 0.98) 0%, rgba(7, 20, 38, 0.6) 50%, rgba(0,0,0,0.2) 100%);
 }
 
 /* ==========================================================================
-   REGION EXPLORATION (Phase 13)
+   REGION EXPLORATION
    ========================================================================== */
 .region-section {
   position: relative;
@@ -178,7 +182,7 @@
 .region-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, #020617 0%, rgba(2,6,23,0.8) 40%, transparent 100%);
+  background: linear-gradient(90deg, #071426 0%, rgba(7, 20, 38, 0.8) 40%, transparent 100%);
   z-index: 1;
 }
 
@@ -199,32 +203,11 @@
 }
 
 /* ==========================================================================
-   STORYTELLING & PARALLAX (Phase 13)
-   ========================================================================== */
-.storytelling-section {
-  padding: 10rem 0;
-  text-align: center;
-  background: #020617;
-  position: relative;
-  overflow: hidden;
-}
-
-.story-title {
-  font-size: 6rem;
-  font-weight: 900;
-  line-height: 1.1;
-  background: linear-gradient(180deg, #fff 0%, #475569 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-bottom: 4rem;
-}
-
-/* ==========================================================================
    MEDIA QUERIES
    ========================================================================== */
 @media (max-width: 768px) {
   .region-overlay {
-    background: linear-gradient(0deg, #020617 0%, rgba(2,6,23,0.6) 100%);
+    background: linear-gradient(0deg, #071426 0%, rgba(7, 20, 38, 0.6) 100%);
   }
   .region-content {
     padding: 0 2rem;
@@ -233,9 +216,6 @@
   }
   .region-content h2 {
     font-size: 3.5rem;
-  }
-  .story-title {
-    font-size: 3rem;
   }
   .trending-grid {
     grid-template-columns: 1fr;

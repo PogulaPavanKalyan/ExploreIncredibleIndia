@@ -1,0 +1,245 @@
+/* ==========================================================================
+   INTELLIGENT NATURAL-LANGUAGE TRAVEL SEARCH & DISCOVERY UI
+   ========================================================================== */
+
+.nlp-search-page {
+  background-color: #020617;
+  color: #f8fafc;
+  min-height: 100vh;
+  padding-bottom: 5rem;
+}
+
+/* ── Top Search Hero ─────────────────────────────────────────────────────── */
+.nlp-search-hero {
+  background: radial-gradient(circle at 50% 10%, rgba(255, 107, 26, 0.12) 0%, #020617 85%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 4rem 1.5rem 2.5rem 1.5rem;
+  position: relative;
+}
+
+.nlp-search-title {
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  margin: 0.2rem 0 0.6rem 0;
+  line-height: 1.15;
+}
+
+.nlp-search-subtitle {
+  font-size: 1rem;
+  color: #94A3B8;
+  max-width: 650px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Central Search Bar */
+.nlp-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.nlp-input-bar {
+  display: flex;
+  align-items: center;
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(255, 107, 26, 0.35);
+  border-radius: 28px;
+  padding: 0.4rem 0.5rem 0.4rem 1.25rem;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 107, 26, 0.08);
+  transition: all 0.25s ease;
+}
+
+.nlp-input-bar:focus-within {
+  border-color: #FF6B1A;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6), 0 0 0 3px rgba(255, 107, 26, 0.25);
+}
+
+.nlp-search-field {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 1.05rem;
+  font-weight: 500;
+  padding: 0.6rem 0.75rem;
+  outline: none;
+}
+
+.nlp-search-field::placeholder {
+  color: #64748B;
+}
+
+.nlp-clear-btn {
+  background: none;
+  border: none;
+  color: #64748B;
+  cursor: pointer;
+  padding: 0.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+.nlp-clear-btn:hover {
+  color: #ffffff;
+}
+
+.nlp-submit-btn {
+  background: #FF6B1A;
+  color: #ffffff;
+  border: none;
+  border-radius: 20px;
+  padding: 0.65rem 1.35rem;
+  font-weight: 800;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.nlp-submit-btn:hover {
+  background: #ea580c;
+  transform: translateY(-1px);
+}
+
+/* Autocomplete Dropdown */
+.nlp-autocomplete-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: #0F172A;
+  border: 1px solid rgba(255, 107, 26, 0.3);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+  z-index: 1000;
+  text-align: left;
+}
+
+.nlp-autocomplete-item {
+  padding: 0.85rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #CBD5E1;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: background 0.15s;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.nlp-autocomplete-item:last-child {
+  border-bottom: none;
+}
+
+.nlp-autocomplete-item:hover {
+  background: rgba(255, 107, 26, 0.12);
+  color: #ffffff;
+}
+
+/* Intent Summary Card */
+.nlp-intent-summary-card {
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(255, 107, 26, 0.2);
+  border-radius: 18px;
+  padding: 0.85rem 1.25rem;
+  backdrop-filter: blur(10px);
+}
+
+.nlp-intent-badge-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.nlp-intent-pill {
+  padding: 0.3rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+}
+
+.nlp-intent-pill.location {
+  background: rgba(56, 189, 248, 0.15);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  color: #38bdf8;
+}
+
+.nlp-intent-pill.category {
+  background: rgba(255, 107, 26, 0.15);
+  border: 1px solid rgba(255, 107, 26, 0.3);
+  color: #FF6B1A;
+}
+
+.nlp-intent-pill.difficulty {
+  background: rgba(34, 197, 94, 0.15);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #22c55e;
+}
+
+.nlp-intent-pill.radius {
+  background: rgba(168, 85, 247, 0.15);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  color: #c084fc;
+}
+
+/* Search Item Hover Effects */
+.search-item-hover {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.search-item-hover:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 107, 26, 0.4) !important;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 107, 26, 0.1) !important;
+}
+
+/* Shimmer Animation */
+.shimmer {
+  animation: shimmerAnim 1.5s infinite linear;
+  background: linear-gradient(to right, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.03) 100%);
+  background-size: 1000px 100%;
+}
+
+@keyframes shimmerAnim {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+/* Responsive Rules */
+@media (max-width: 1024px) {
+  .search-layout-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .search-filter-sidebar {
+    display: none !important;
+  }
+  .mobile-filter-trigger-btn {
+    display: inline-flex !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .nlp-search-hero {
+    padding: 2.5rem 1rem 1.5rem 1rem;
+  }
+  .nlp-search-field {
+    font-size: 0.92rem;
+    padding: 0.4rem 0.2rem;
+  }
+  .nlp-submit-btn span {
+    display: none;
+  }
+  .nlp-submit-btn {
+    padding: 0.55rem 0.75rem;
+  }
+}

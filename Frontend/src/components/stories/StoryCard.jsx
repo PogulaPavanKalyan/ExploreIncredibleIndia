@@ -3,13 +3,13 @@ import { Link } from 'react-router-dom';
 import { Clock, User, ArrowRight, MapPin } from 'lucide-react';
 
 export default function StoryCard({ story }) {
-  const image = story.featured_image || story.image || 'https://images.unsplash.com/photo-1506461883276-594a12b11cf3?w=600';
+  const image = story.cover_image || story.featured_image || story.image || 'https://images.unsplash.com/photo-1506461883276-594a12b11cf3?w=600';
   const title = story.title || 'Riding the Vistadome Express through Araku Coffee Valleys';
   const slug = story.slug || 'vistadome-express-araku-valley';
   const author = story.author || 'Priya Sharma';
   const readTime = story.read_time || '5 min read';
-  const stateName = story.state_name || story.state?.name || 'Andhra Pradesh';
-  const snippet = story.content ? story.content.slice(0, 110) + '...' : 'A captivating journey through misty Western and Eastern Ghats tunnels, tribal coffee plantations, and cascading waterfalls.';
+  const stateName = story.location || story.state_name || story.state?.name || 'Andhra Pradesh';
+  const snippet = story.short_description || (story.content ? story.content.slice(0, 110) + '...' : 'A captivating journey through Incredible India.');
 
   return (
     <Link

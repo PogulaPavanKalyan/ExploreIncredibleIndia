@@ -10,7 +10,19 @@ export const getStateBySlug = async (slug) => {
   return response.data;
 };
 
+export const getDistrictsByState = async (stateSlug) => {
+  const response = await apiClient.get(`/states/${stateSlug}/districts/`);
+  return response.data;
+};
+
 export const getCitiesByState = async (stateSlug) => {
   const response = await apiClient.get(`/states/${stateSlug}/cities/`);
   return response.data;
+};
+
+export default {
+  getStates,
+  getStateBySlug,
+  getDistrictsByState,
+  getCitiesByState,
 };

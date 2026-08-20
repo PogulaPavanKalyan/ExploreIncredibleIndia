@@ -64,12 +64,12 @@ export default function QuickExplore() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: Math.min(index * 0.05, 0.4), duration: 0.5 }}
-              onClick={() => navigate(`/places?category=${exp.slug}`)}
+              onClick={() => navigate(`/explore?category=${exp.slug}`)}
               tabIndex={0}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault();
-                  navigate(`/places?category=${exp.slug}`);
+                  navigate(`/explore?category=${exp.slug}`);
                 }
               }}
               aria-label={`Explore ${exp.name} destinations`}

@@ -1,0 +1,45 @@
+{% extends "admin/change_list.html" %}
+{% load i18n admin_urls %}
+
+{% block object-tools-items %}
+  <li>
+    <a href="{% url 'admin:destinations_import_csv' %}" class="addlink" style="background:#ea580c;color:#ffffff;font-weight:700;padding:6px 12px;border-radius:6px;">
+      📥 Bulk Import CSV
+    </a>
+  </li>
+  <li>
+    <a href="{% url 'admin:destinations_quality_dashboard' %}" class="historylink" style="background:#0f766e;color:#ffffff;font-weight:700;padding:6px 12px;border-radius:6px;">
+      📊 Quality Dashboard
+    </a>
+  </li>
+  {{ block.super }}
+{% endblock %}
+
+{% block content %}
+  {% if metrics %}
+  <div style="background:#0f172a;color:#f8fafc;padding:15px 20px;border-radius:10px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:15px;border:1px solid #1e293b;">
+    <div style="font-weight:800;font-size:1.1rem;color:#f97316;">
+      🇮🇳 All-India Destination Data Quality
+    </div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;">
+      <a href="?images__isnull=True" style="background:#1e293b;color:{% if metrics.no_images > 0 %}#f87171{% else %}#34d399{% endif %};padding:6px 12px;border-radius:8px;text-decoration:none;font-size:0.82rem;font-weight:700;">
+        🖼️ Missing Image: <b>{{ metrics.no_images }}</b>
+      </a>
+      <a href="?videos__isnull=True" style="background:#1e293b;color:{% if metrics.no_videos > 0 %}#f87171{% else %}#34d399{% endif %};padding:6px 12px;border-radius:8px;text-decoration:none;font-size:0.82rem;font-weight:700;">
+        🎥 Missing Video: <b>{{ metrics.no_videos }}</b>
+      </a>
+      <a href="?history__isnull=True" style="background:#1e293b;color:{% if metrics.no_history > 0 %}#f87171{% else %}#34d399{% endif %};padding:6px 12px;border-radius:8px;text-decoration:none;font-size:0.82rem;font-weight:700;">
+        📜 Missing History: <b>{{ metrics.no_history }}</b>
+      </a>
+      <a href="?published__exact=0" style="background:#1e293b;color:#fbbf24;padding:6px 12px;border-radius:8px;text-decoration:none;font-size:0.82rem;font-weight:700;">
+        🔒 Unpublished: <b>{{ metrics.unpublished }}</b>
+      </a>
+      <a href="?verification_status__exact=unverified" style="background:#1e293b;color:#94a3b8;padding:6px 12px;border-radius:8px;text-decoration:none;font-size:0.82rem;font-weight:700;">
+        ⚠️ Unverified: <b>{{ metrics.unverified }}</b>
+      </a>
+    </div>
+  </div>
+  {% endif %}
+
+  {{ block.super }}
+{% endblock %}

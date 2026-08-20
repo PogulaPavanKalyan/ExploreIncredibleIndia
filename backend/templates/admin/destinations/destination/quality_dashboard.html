@@ -1,0 +1,73 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls %}
+
+{% block content %}
+<div style="max-width:1200px;margin:20px auto;background:#ffffff;padding:30px;border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,0.08);border:1px solid #e2e8f0;">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+    <div>
+      <h2 style="margin:0;color:#0f172a;font-weight:800;">
+        📊 Destination Data Quality & Completeness Dashboard
+      </h2>
+      <p style="color:#64748b;font-size:0.9rem;margin:5px 0 0 0;">
+        Monitor the data completeness, missing media, coordinates, and historical context across all {{ total }} destinations.
+      </p>
+    </div>
+    <a href=".." style="background:#e2e8f0;color:#334155;padding:8px 16px;border-radius:6px;text-decoration:none;font-weight:700;">
+      ← Back to List
+    </a>
+  </div>
+
+  <div style="overflow-x:auto;border:1px solid #e2e8f0;border-radius:8px;">
+    <table style="width:100%;border-collapse:collapse;font-size:0.88rem;text-align:left;">
+      <thead style="background:#f8fafc;border-bottom:2px solid #cbd5e1;">
+        <tr>
+          <th style="padding:12px 14px;">Destination</th>
+          <th style="padding:12px 14px;">State</th>
+          <th style="padding:12px 14px;text-align:center;">Completeness</th>
+          <th style="padding:12px 14px;text-align:center;">Image</th>
+          <th style="padding:12px 14px;text-align:center;">Video</th>
+          <th style="padding:12px 14px;text-align:center;">History</th>
+          <th style="padding:12px 14px;text-align:center;">Coordinates</th>
+          <th style="padding:12px 14px;text-align:right;">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in destinations %}
+        <tr style="border-bottom:1px solid #f1f5f9;">
+          <td style="padding:10px 14px;font-weight:700;">
+            <a href="{% url 'admin:destinations_destination_change' item.destination.id %}" style="color:#0f172a;text-decoration:none;">
+              {{ item.destination.name }}
+            </a>
+          </td>
+          <td style="padding:10px 14px;color:#64748b;">
+            {{ item.destination.state.name }}
+          </td>
+          <td style="padding:10px 14px;text-align:center;">
+            <span style="font-weight:800;color:{% if item.score >= 85 %}#16a34a{% elif item.score >= 60 %}#d97706{% else %}#dc2626{% endif %};">
+              {{ item.score }}%
+            </span>
+          </td>
+          <td style="padding:10px 14px;text-align:center;">
+            {% if item.has_image %}<span style="color:#16a34a;font-weight:700;">✓</span>{% else %}<span style="color:#dc2626;font-weight:700;">✗</span>{% endif %}
+          </td>
+          <td style="padding:10px 14px;text-align:center;">
+            {% if item.has_video %}<span style="color:#16a34a;font-weight:700;">✓</span>{% else %}<span style="color:#dc2626;font-weight:700;">✗</span>{% endif %}
+          </td>
+          <td style="padding:10px 14px;text-align:center;">
+            {% if item.has_history %}<span style="color:#16a34a;font-weight:700;">✓</span>{% else %}<span style="color:#dc2626;font-weight:700;">✗</span>{% endif %}
+          </td>
+          <td style="padding:10px 14px;text-align:center;">
+            {% if item.has_coords %}<span style="color:#16a34a;font-weight:700;">✓</span>{% else %}<span style="color:#dc2626;font-weight:700;">✗</span>{% endif %}
+          </td>
+          <td style="padding:10px 14px;text-align:right;">
+            <a href="{% url 'admin:destinations_destination_change' item.destination.id %}" style="color:#f97316;font-weight:700;text-decoration:none;">
+              Edit →
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

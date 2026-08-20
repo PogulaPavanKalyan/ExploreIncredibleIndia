@@ -76,12 +76,12 @@ export default function StoryDetailPage() {
 
         {/* Cover Image Header */}
         <div style={{ position: 'relative', borderRadius: '20px', overflow: 'hidden', height: '380px', marginBottom: '2rem', boxShadow: 'var(--shadow-md)' }}>
-          <img src={story.featured_image || 'https://images.unsplash.com/photo-1506461883276-594a12b11cf3?w=1200'} alt={story.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <img src={story.cover_image || story.featured_image || 'https://images.unsplash.com/photo-1506461883276-594a12b11cf3?w=1200'} alt={story.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.3) 60%, transparent 100%)' }} />
           
           <div style={{ position: 'absolute', bottom: '1.5rem', left: '1.5rem', right: '1.5rem', color: '#ffffff' }}>
             <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#FF6B35', background: 'rgba(255,107,53,0.15)', backdropFilter: 'blur(6px)', border: '1px solid #FF6B35', padding: '0.25rem 0.65rem', borderRadius: '20px', textTransform: 'uppercase' }}>
-              📍 {story.state_name || 'India'}
+              📍 {story.location || story.state_name || 'Incredible India'}
             </span>
             <h1 style={{ fontSize: '2rem', fontWeight: 900, margin: '0.6rem 0', lineHeight: 1.3 }}>
               {story.title}

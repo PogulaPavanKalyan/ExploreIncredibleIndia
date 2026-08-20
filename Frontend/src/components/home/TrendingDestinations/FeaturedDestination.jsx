@@ -1,165 +1,129 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import DestinationImage from '../../common/DestinationImage';
+import { getDestinationPrimaryImage } from '../../../utils/imageUtils';
 
 export default function FeaturedDestination({ destinations }) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const containerRef = useRef(null);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
 
-  // Rotate featured destinations every 8 seconds
+  // Auto-rotate featured destinations every 7 seconds when not hovered
   useEffect(() => {
-    if (!destinations || destinations.length <= 1) return;
+    if (!destinations || destinations.length <= 1 || isHovered) return;
     
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % destinations.length);
-    }, 8000);
+    }, 7000);
     
     return () => clearInterval(interval);
-  }, [destinations]);
-
-  // Track mouse for 3D parallax
-  const handleMouseMove = (e) => {
-    if (!containerRef.current || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    setMousePos({ x, y });
-  };
-
-  const handleMouseLeave = () => {
-    setMousePos({ x: 0, y: 0 });
-  };
+  }, [destinations, isHovered]);
 
   if (!destinations || destinations.length === 0) return null;
 
   const current = destinations[currentIndex];
+  const imageUrl = getDestinationPrimaryImage(current);
+  const categoryNames = current.categories && current.categories.length > 0
+    ? current.categories.slice(0, 2).map(c => c.name.toUpperCase()).join(' • ')
+    : (current.category_name ? current.category_name.toUpperCase() : 'FEATURED EXPERIENCE');
   
-  // Has video logic (simple check for mp4, or using a specific field if present)
-  // Our seed script usually sets main_image, but let's assume if there's a video we'd render it.
-  // Since we only have images seeded, we will just use the main_image.
-  const hasVideo = current.video_url && current.video_url.endsWith('.mp4');
-
-  // Parallax calculations
-  const layer1Style = { transform: `translate(${mousePos.x * -10}px, ${mousePos.y * -10}px)` };
-  const layer2Style = { transform: `translateZ(50px) translate(${mousePos.x * 20}px, ${mousePos.y * 20}px)` };
-  const layer3Style = { transform: `translateZ(100px) translate(${mousePos.x * 40}px, ${mousePos.y * 40}px)` };
-
-  const resolveUrl = (url) => {
-    if (!url) return null;
-    if (url.startsWith('http://') || url.startsWith('https://')) return url;
-    if (url.startsWith('/media/')) return `http://127.0.0.1:8000${url}`;
-    if (url.startsWith('media/')) return `http://127.0.0.1:8000/${url}`;
-    return url;
-  };
-
-  const mediaUrl = resolveUrl(current.main_image) || '/images/placeholders/destination.jpg';
-  const posterUrl = resolveUrl(current.poster_image || current.main_image) || '/images/placeholders/destination.jpg';
+  const altText = `${current.name}, ${current.state?.name || current.state_name || 'India'} - ${categoryNames}`;
 
   return (
     <div 
-      className="featured-destination-container"
-      ref={containerRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{ perspective: '1000px' }}
+      className="featured-destination-card"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      id="featured-destination-showcase"
     >
       <AnimatePresence mode="wait">
         <motion.div
-          key={current.id}
+          key={current.id || current.slug}
+          className="featured-card-inner"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 1 }}
-          style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }}
+          transition={{ duration: 0.6, ease: "easeInOut" }}
         >
-          {/* Layer 1: Background Media */}
-          <div className="featured-interactive-layer layer-1" style={layer1Style}>
-            {hasVideo ? (
-              <video 
-                className="featured-media"
-                src={current.video_url}
-                autoPlay
-                loop
-                muted
-                playsInline
-                poster={posterUrl}
-              />
-            ) : (
-              <img 
-                className="featured-media"
-                src={mediaUrl}
-                alt={current.name}
-                onError={(e) => {
-                  e.currentTarget.onerror = null;
-                  e.currentTarget.src = '/images/placeholders/destination.jpg';
-                }}
-              />
-            )}
-            <div className="featured-overlay" />
+          {/* Destination Background Image */}
+          <div className="featured-media-wrap">
+            <DestinationImage 
+              destination={current}
+              className="featured-media-img"
+              src={imageUrl}
+              alt={altText}
+              loading="eager"
+            />
+            {/* Subtle natural dark gradient for crisp readability */}
+            <div className="featured-natural-gradient" />
           </div>
 
-          {/* Layer 2: Text Content */}
-          <div className="featured-interactive-layer layer-2" style={layer2Style}>
-            <div className="featured-content">
-              <span className="featured-label">Featured Destination</span>
-              
-              <motion.h2 
-                className="featured-name"
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.2 }}
-              >
+          {/* Featured Content Overlay */}
+          <div className="featured-content-layer">
+            <div className="featured-top-badge-row">
+              <span className="featured-badge">★ FEATURED DESTINATION</span>
+              {destinations.length > 1 && (
+                <div className="featured-dots" aria-label="Featured destination selector">
+                  {destinations.map((d, idx) => (
+                    <button
+                      key={d.id || idx}
+                      className={`featured-dot ${idx === currentIndex ? 'active' : ''}`}
+                      onClick={() => setCurrentIndex(idx)}
+                      aria-label={`Show featured destination ${idx + 1}: ${d.name}`}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+            
+            <div className="featured-main-info">
+              <span className="featured-state-label">
+                {current.state?.name || current.state_name || 'Incredible India'}
+              </span>
+
+              <h3 className="featured-destination-title">
                 {current.name}
-              </motion.h2>
+              </h3>
               
-              <motion.h3 
-                className="featured-state"
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.3 }}
-              >
-                {current.state?.name || 'India'}
-              </motion.h3>
+              <p className="featured-description">
+                {current.short_description || current.description?.substring(0, 160) + '...'}
+              </p>
               
-              <motion.p 
-                className="featured-desc"
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.4 }}
-              >
-                {current.short_description || current.description?.substring(0, 150) + '...'}
-              </motion.p>
-              
-              <motion.div 
-                className="featured-meta"
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.5 }}
-              >
-                {current.avg_rating && (
-                  <div className="meta-item">
-                    <span className="meta-icon">★</span> {current.avg_rating}
+              <div className="featured-meta-row">
+                <div className="featured-meta-pill rating-pill">
+                  <span className="star-icon">★</span>
+                  <span>{parseFloat(current.avg_rating || 4.8).toFixed(1)}</span>
+                  {current.total_reviews && (
+                    <span className="review-count">({current.total_reviews})</span>
+                  )}
+                </div>
+
+                <div className="featured-meta-pill category-pill">
+                  <span className="cat-icon">✦</span>
+                  <span>{categoryNames}</span>
+                </div>
+
+                {current.best_time_to_visit && (
+                  <div className="featured-meta-pill season-pill">
+                    <span className="season-icon">🗓</span>
+                    <span>{current.best_time_to_visit}</span>
                   </div>
                 )}
-                {current.categories && current.categories.length > 0 && (
-                  <div className="meta-item">
-                    {current.categories.slice(0, 2).map(c => c.name.toUpperCase()).join(' • ')}
-                  </div>
-                )}
-              </motion.div>
+              </div>
               
-              {/* Layer 3: Buttons */}
-              <motion.div 
-                style={layer3Style}
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.6 }}
-              >
-                <Link to={`/places/${current.slug}`} className="featured-btn">
-                  Explore {current.name}
+              <div className="featured-action-row">
+                <Link 
+                  to={`/places/${current.slug}`} 
+                  className="featured-explore-btn"
+                  id={`explore-featured-${current.slug}`}
+                >
+                  <span>Explore {current.name}</span>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
                 </Link>
-              </motion.div>
+              </div>
             </div>
           </div>
         </motion.div>

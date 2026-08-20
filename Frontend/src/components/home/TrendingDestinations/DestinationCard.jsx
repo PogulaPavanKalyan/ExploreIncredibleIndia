@@ -1,21 +1,24 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import DestinationImage from '../../common/DestinationImage';
+import { getDestinationPrimaryImage } from '../../../utils/imageUtils';
 
-export default function DestinationCard({ destination, sizeClass }) {
+export default function DestinationCard({ destination, sizeClass = '' }) {
   const [isSaved, setIsSaved] = useState(false);
-  const cardRef = useRef(null);
 
   useEffect(() => {
-    // Check local storage for bookmark
+    if (!destination?.id) return;
     try {
       const saved = JSON.parse(localStorage.getItem('savedDestinations') || '[]');
-      if (saved.some(d => d.id === destination.id)) {
+      if (saved.some(d => d.id === destination.id || d.slug === destination.slug)) {
         setIsSaved(true);
       }
     } catch (e) {
-      console.error('Error parsing local storage:', e);
+      console.error('Error reading saved destinations:', e);
     }
-  }, [destination.id]);
+  }, [destination?.id, destination?.slug]);
+
+  if (!destination) return null;
 
   const toggleBookmark = (e) => {
     e.preventDefault();
@@ -24,102 +27,94 @@ export default function DestinationCard({ destination, sizeClass }) {
     try {
       let saved = JSON.parse(localStorage.getItem('savedDestinations') || '[]');
       if (isSaved) {
-        saved = saved.filter(d => d.id !== destination.id);
+        saved = saved.filter(d => d.id !== destination.id && d.slug !== destination.slug);
         setIsSaved(false);
       } else {
         saved.push({
           id: destination.id,
           name: destination.name,
           slug: destination.slug,
+          state: destination.state?.name || destination.state_name || '',
           image: destination.main_image
         });
         setIsSaved(true);
       }
       localStorage.setItem('savedDestinations', JSON.stringify(saved));
     } catch (e) {
-      console.error('Error updating local storage:', e);
+      console.error('Error saving destination:', e);
     }
   };
 
-  // Subtle 3D tilt effect on hover
-  const handleMouseMove = (e) => {
-    if (!cardRef.current || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    
-    const rect = cardRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    
-    const rotateX = ((y - centerY) / centerY) * -4; // Max 4 degrees
-    const rotateY = ((x - centerX) / centerX) * 4;
-    
-    cardRef.current.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-  };
-
-  const handleMouseLeave = () => {
-    if (!cardRef.current) return;
-    cardRef.current.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
-  };
-
-  const resolveUrl = (url) => {
-    if (!url) return null;
-    if (url.startsWith('http://') || url.startsWith('https://')) return url;
-    if (url.startsWith('/media/')) return `http://127.0.0.1:8000${url}`;
-    if (url.startsWith('media/')) return `http://127.0.0.1:8000/${url}`;
-    return url;
-  };
-  const imageUrl = resolveUrl(destination.main_image) || 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800';
+  const imageUrl = getDestinationPrimaryImage(destination);
+  const stateName = destination.state?.name || destination.state_name || 'India';
   
-  // Format categories like "NATURE • MOUNTAINS"
-  const categoryString = destination.categories?.slice(0, 2).map(c => c.name.toUpperCase()).join(' • ') || 'DESTINATION';
+  const categoryString = destination.categories && destination.categories.length > 0
+    ? destination.categories.slice(0, 2).map(c => c.name.toUpperCase()).join(' • ')
+    : (destination.category_name ? destination.category_name.toUpperCase() : 'DESTINATION');
+
+  const rating = destination.avg_rating 
+    ? parseFloat(destination.avg_rating).toFixed(1) 
+    : '4.8';
+
+  const altText = `${destination.name}, ${stateName} - ${categoryString}`;
 
   return (
-    <Link 
-      to={`/places/${destination.slug}`} 
-      className={`destination-card ${sizeClass}`}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-    >
-      <div className="card-inner" ref={cardRef}>
-        <img 
-          src={imageUrl} 
-          alt={`Discover ${destination.name}`} 
-          className="card-media"
-          loading="lazy"
-          onError={(e) => {
-            e.currentTarget.onerror = null;
-            e.currentTarget.src = 'https://images.unsplash.com/photo-1564507592333-c60657eea523?w=800';
-          }}
-        />
-        
-        <div className="card-overlay" />
-        
-        <button 
-          className={`bookmark-btn ${isSaved ? 'saved' : ''}`}
-          onClick={toggleBookmark}
-          aria-label={isSaved ? `Remove ${destination.name} from saved` : `Save ${destination.name}`}
-        >
-          {isSaved ? '♥' : '♡'}
-        </button>
+    <div className={`destination-card-wrapper ${sizeClass}`}>
+      <Link 
+        to={`/places/${destination.slug}`} 
+        className="destination-card"
+        id={`dest-card-${destination.slug}`}
+        aria-label={`Explore ${destination.name} in ${stateName}`}
+      >
+        <div className="card-media-box">
+          <DestinationImage 
+            destination={destination}
+            src={imageUrl} 
+            alt={altText} 
+            className="card-media-image"
+            loading="lazy"
+          />
+          <div className="card-gradient-overlay" />
+          
+          <button 
+            type="button"
+            className={`card-bookmark-btn ${isSaved ? 'saved' : ''}`}
+            onClick={toggleBookmark}
+            aria-label={isSaved ? `Remove ${destination.name} from saved favorites` : `Save ${destination.name} to favorites`}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill={isSaved ? "#ef4444" : "none"} stroke={isSaved ? "#ef4444" : "currentColor"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+            </svg>
+          </button>
 
-        <div className="card-content">
-          <span className="card-region">{destination.state?.name || 'India'}</span>
-          <h3 className="card-title">{destination.name}</h3>
-          
-          <p className="card-desc">
-            {destination.short_description || `Discover the beauty of ${destination.name}, ${destination.state?.name || 'India'}.`}
-          </p>
-          
-          <div className="card-meta">
-            <span className="card-category">{categoryString}</span>
-            {destination.avg_rating && (
-              <span className="card-rating">★ {destination.avg_rating}</span>
-            )}
+          <div className="card-rating-badge">
+            <span className="star">★</span>
+            <span className="rating-num">{rating}</span>
           </div>
         </div>
-      </div>
-    </Link>
+
+        <div className="card-body">
+          <div className="card-header-tags">
+            <span className="card-region-tag">{stateName}</span>
+            <span className="card-category-tag">{categoryString}</span>
+          </div>
+
+          <h4 className="card-destination-name">{destination.name}</h4>
+          
+          <p className="card-destination-desc">
+            {destination.short_description || destination.description?.substring(0, 110) || `Discover the beauty of ${destination.name}, ${stateName}.`}
+          </p>
+          
+          <div className="card-footer-row">
+            <span className="card-explore-link">
+              <span>Explore Destination</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </Link>
+    </div>
   );
 }

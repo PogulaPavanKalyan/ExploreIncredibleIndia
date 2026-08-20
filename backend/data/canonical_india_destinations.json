@@ -1,0 +1,266 @@
+[
+  {
+    "name": "Tirumala Venkateswara Temple",
+    "slug": "tirumala-venkateswara-temple-tirupati",
+    "state": "Andhra Pradesh",
+    "district": "Tirupati",
+    "city": "Tirupati",
+    "region": "south-india",
+    "pilgrimage_collection": "divya_desam",
+    "categories": ["temples", "pilgrimage", "spiritual", "heritage", "hill-stations"],
+    "activities": ["heritage-walk", "photography"],
+    "tags": ["ancient", "sacred", "family-friendly"],
+    "latitude": 13.6833,
+    "longitude": 79.3472,
+    "best_time_to_visit": "September to February",
+    "recommended_duration": "1-2 Days",
+    "estimated_budget": "medium",
+    "famous_for": "World's most visited Hindu temple atop the sacred Seven Hills of Seshachalam",
+    "short_description": "Perched on the sacred Venkatadri hill of the Seshachalam range, Tirumala is dedicated to Lord Venkateswara (Balaji).",
+    "full_description": "Known as Kaliyuga Vaikuntam, Tirumala Venkateswara Temple has been patronized across millennia by the Pallavas, Cholas, and Vijayanagara emperor Sri Krishnadevaraya.",
+    "history": {
+      "short_history": "Puranic manifestation of Lord Vishnu as Venkateswara residing on the sacred Venkatadri peak.",
+      "detailed_history": "Mentioned in early Tamil Sangam literature as Vengadam and enriched by the Vijayanagara empire.",
+      "cultural_significance": "Celebrates the annual 9-day Brahmotsavam festival drawing millions of devotees.",
+      "religious_significance": "One of the 108 sacred Divya Desams where Lord Srinivasa manifested in self-formed Svayambhu deity."
+    },
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1621847468516-1ed5d0df56fe?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Sacred Ananda Nilayam Golden Gopuram of Tirumala"
+      }
+    ],
+    "video": {
+      "title": "Tirumala Darshan & Seshachalam Sacred Hills Experience",
+      "url": "https://www.youtube.com/embed/1T_Tirupati01",
+      "type": "temple_tour",
+      "duration": "12:45"
+    },
+    "nearest_airport": "Tirupati Airport (TIR) - 15 km",
+    "nearest_railway_station": "Tirupati Main (TPTY) - 2 km",
+    "nearest_bus_station": "Tirupati Central Bus Station (CBS)",
+    "featured": true,
+    "verified": true,
+    "status": "published"
+  },
+  {
+    "name": "Ananthagiri Hills",
+    "slug": "ananthagiri-hills-telangana",
+    "state": "Telangana",
+    "district": "Vikarabad",
+    "city": "Vikarabad",
+    "region": "south-india",
+    "pilgrimage_collection": "none",
+    "categories": ["mountains", "nature", "trekking", "adventure", "forests"],
+    "activities": ["trekking", "camping", "hiking", "photography"],
+    "tags": ["weekend-trip", "monsoon", "family-friendly"],
+    "latitude": 17.3060,
+    "longitude": 77.8687,
+    "best_time_to_visit": "July to February",
+    "recommended_duration": "1-2 Days",
+    "estimated_budget": "budget",
+    "famous_for": "Dense Eastern Ghats forest trails, birthplace of River Musi, and Sri Anantha Padmanabha Swamy Temple",
+    "short_description": "Ananthagiri Hills is Telangana's prime dense forest getaway, located just 75 km from Hyderabad.",
+    "full_description": "Featuring scenic sunrise viewpoints, medicinal herb flora, tranquil coffee and teak plantations, and historic temple caves.",
+    "history": {
+      "short_history": "Ancient forest hermitage where Sage Markandeya performed penance.",
+      "detailed_history": "Built in the early 17th century by the Nizams of Hyderabad as a serene summer convalescence sanatorium.",
+      "cultural_significance": "Epicenter of Telangana eco-tourism and nature conservation.",
+      "religious_significance": "Sacred cave shrine of Sri Anantha Padmanabha Swamy."
+    },
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1511497584788-87676104235f?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Misty canopy trails of Ananthagiri forest reserve"
+      }
+    ],
+    "video": {
+      "title": "Ananthagiri Hills Trekking & Vikarabad Forest Guide",
+      "url": "https://www.youtube.com/embed/3A_Ananthagiri02",
+      "type": "overview",
+      "duration": "07:30"
+    },
+    "nearest_airport": "Hyderabad Rajiv Gandhi International (HYD) - 75 km",
+    "nearest_railway_station": "Vikarabad Junction (VKB) - 6 km",
+    "nearest_bus_station": "Vikarabad Bus Depot",
+    "featured": true,
+    "verified": true,
+    "status": "published"
+  },
+  {
+    "name": "Meenakshi Amman Temple",
+    "slug": "meenakshi-amman-temple-madurai",
+    "state": "Tamil Nadu",
+    "district": "Madurai",
+    "city": "Madurai",
+    "region": "south-india",
+    "pilgrimage_collection": "none",
+    "categories": ["temples", "heritage", "monuments", "culture"],
+    "activities": ["heritage-walk", "photography"],
+    "tags": ["unesco", "ancient", "dravidian"],
+    "latitude": 9.9195,
+    "longitude": 78.1193,
+    "best_time_to_visit": "October to March",
+    "recommended_duration": "1-2 Days",
+    "estimated_budget": "medium",
+    "famous_for": "14 monumental multi-tiered gopurams, Hall of Thousand Pillars, and Golden Lotus tank",
+    "short_description": "Historic Hindu temple situated on the southern bank of the Vaigai River in the ancient temple city of Madurai.",
+    "full_description": "Dedicated to Goddess Meenakshi (Parvati) and Sundareswarar (Shiva), the complex boasts 14 magnificent gopurams reaching up to 52 meters high.",
+    "history": {
+      "short_history": "Founded in early Pandyan antiquity and reconstructed under Nayaka rulers.",
+      "detailed_history": "Rebuilt by King Viswanatha Nayak in the 16th-17th centuries following Shilpa Shastra guidelines.",
+      "cultural_significance": "Hosts the spectacular 10-day Chithirai Festival celebrating divine wedding.",
+      "religious_significance": "One of the supreme Shakti and Shaivite sacred power centers of South India."
+    },
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Intricately sculpted colorful gopuram of Meenakshi Amman Temple"
+      }
+    ],
+    "video": {
+      "title": "Madurai Meenakshi Temple Architecture & Sanctum Walk",
+      "url": "https://www.youtube.com/embed/4M_Madurai03",
+      "type": "temple_tour",
+      "duration": "14:10"
+    },
+    "nearest_airport": "Madurai International Airport (IXM) - 12 km",
+    "nearest_railway_station": "Madurai Junction (MDU) - 2 km",
+    "nearest_bus_station": "Mattuthavani Integrated Bus Terminus",
+    "featured": true,
+    "verified": true,
+    "status": "published"
+  },
+  {
+    "name": "Hampi",
+    "slug": "hampi-karnataka",
+    "state": "Karnataka",
+    "district": "Vijayanagara",
+    "city": "Hampi",
+    "region": "south-india",
+    "pilgrimage_collection": "none",
+    "categories": ["heritage", "monuments", "culture", "ancient", "bouldering"],
+    "activities": ["heritage-walk", "boating", "photography", "hiking"],
+    "tags": ["unesco", "ancient", "royal"],
+    "latitude": 15.3350,
+    "longitude": 76.4600,
+    "best_time_to_visit": "October to March",
+    "recommended_duration": "3 Days",
+    "estimated_budget": "medium",
+    "famous_for": "UNESCO World Heritage ruins of the Vijayanagara Empire, Stone Chariot, and Virupaksha Temple",
+    "short_description": "Hampi is a surreal landscape of giant granite boulders, 14th-century royal palaces, musical pillared halls, and the Tungabhadra River.",
+    "full_description": "The capital of the glorious Vijayanagara Empire in the 14th to 16th centuries, Hampi was one of the wealthiest cities in the medieval world.",
+    "history": {
+      "short_history": "Puranic Kishkindha kingdom from the Ramayana, later imperial capital of Vijayanagara from 1336 CE.",
+      "detailed_history": "Flourished under emperor Krishnadevaraya before the Battle of Talikota in 1565 CE.",
+      "cultural_significance": "Celebrates the annual Hampi Utsav showcasing Karnataka classical arts.",
+      "religious_significance": "Continuous worship at the 7th-century Virupaksha Temple honoring Lord Shiva."
+    },
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1600100397608-f010f443b718?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Iconic monolithic Stone Chariot at Vijaya Vittala Temple, Hampi"
+      }
+    ],
+    "video": {
+      "title": "Hampi Vijayanagara Empire 4K Cinematic Documentary",
+      "url": "https://www.youtube.com/embed/6H_Hampi04",
+      "type": "history",
+      "duration": "15:30"
+    },
+    "nearest_airport": "Jindal Vijayanagar Airport Bellary (VDY) - 35 km",
+    "nearest_railway_station": "Hosapete Junction (HPT) - 13 km",
+    "nearest_bus_station": "Hosapete KSRTC Bus Stand",
+    "featured": true,
+    "verified": true,
+    "status": "published"
+  },
+  {
+    "name": "Rishikesh",
+    "slug": "rishikesh-uttarakhand",
+    "state": "Uttarakhand",
+    "district": "Dehradun",
+    "city": "Rishikesh",
+    "region": "north-india",
+    "pilgrimage_collection": "none",
+    "categories": ["spiritual", "adventure", "mountains", "nature"],
+    "activities": ["rafting", "camping", "yoga", "photography"],
+    "tags": ["yoga", "holy-river", "adventure"],
+    "latitude": 30.0869,
+    "longitude": 78.2676,
+    "best_time_to_visit": "September to May",
+    "recommended_duration": "3-4 Days",
+    "estimated_budget": "medium",
+    "famous_for": "Yoga Capital of the World, White water Ganga rafting, Lakshman Jhula, and Triveni Ghat Aarti",
+    "short_description": "Nestled in the Himalayan foothills where the sacred Ganges emerges onto the Northern Plains.",
+    "full_description": "Rishikesh attracts spiritual seekers, yogis, and adventure enthusiasts worldwide with ashrams, suspension bridges, and cliff jumping.",
+    "history": {
+      "short_history": "Named after Hrishikesha (Lord Vishnu) who appeared to Sage Raibhya after severe austerities.",
+      "detailed_history": "Global yoga center popularized internationally when The Beatles visited Maharishi Mahesh Yogi's ashram in 1968.",
+      "cultural_significance": "Hosts the International Yoga Festival annually along the holy Ganga.",
+      "religious_significance": "Gateway to the sacred Char Dham Himalayan pilgrimage circuit."
+    },
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Evening Ganga Aarti glow at Triveni Ghat, Rishikesh"
+      }
+    ],
+    "video": {
+      "title": "Rishikesh Yoga & White Water Rafting Travel Guide",
+      "url": "https://www.youtube.com/embed/8R_Rishikesh05",
+      "type": "overview",
+      "duration": "10:20"
+    },
+    "nearest_airport": "Jolly Grant Airport Dehradun (DED) - 20 km",
+    "nearest_railway_station": "Yog Nagari Rishikesh (YNRK) - 3 km",
+    "nearest_bus_station": "Rishikesh Bus Terminal",
+    "featured": true,
+    "verified": true,
+    "status": "published"
+  },
+  {
+    "name": "Puri Jagannath Temple & Golden Beach",
+    "slug": "puri-jagannath-temple-odisha",
+    "state": "Odisha",
+    "district": "Puri",
+    "city": "Puri",
+    "region": "east-india",
+    "pilgrimage_collection": "char_dham",
+    "categories": ["temples", "beaches", "pilgrimage", "culture", "spiritual"],
+    "activities": ["boating", "heritage-walk", "photography"],
+    "tags": ["char-dham", "ancient", "blue-flag-beach"],
+    "latitude": 19.8049,
+    "longitude": 85.8179,
+    "best_time_to_visit": "October to March",
+    "recommended_duration": "2-3 Days",
+    "estimated_budget": "medium",
+    "famous_for": "One of the Four Maha Char Dham pilgrimage sites, annual Ratha Yatra chariot festival, and Blue Flag Golden Beach",
+    "short_description": "Puri is the eternal abode of Lord Jagannath on the Bay of Bengal coast in Odisha.",
+    "full_description": "The 12th-century Jagannath Temple is famous for its monumental 65-meter deula, massive Mahaprasad Ananda Bazar, and sacred wooden neem deities.",
+    "history": {
+      "short_history": "Constructed by King Anantavarman Chodaganga Deva of the Eastern Ganga dynasty in the 12th century.",
+      "detailed_history": "Puranic origins connected with King Indradyumna and the mystical Daru Brahma.",
+      "cultural_significance": "Home to the world's largest religious procession — the sacred Ratha Yatra.",
+      "religious_significance": "One of the four prime Maha Char Dhams established across the four cardinal corners of India."
+    },
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1590766940554-634a7ed41450?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Monumental Spire of Sri Jagannath Temple at Puri"
+      }
+    ],
+    "video": {
+      "title": "Puri Jagannath Temple & Blue Flag Beach Guide",
+      "url": "https://www.youtube.com/embed/9P_Puri06",
+      "type": "temple_tour",
+      "duration": "11:40"
+    },
+    "nearest_airport": "Biju Patnaik Airport Bhubaneswar (BBI) - 60 km",
+    "nearest_railway_station": "Puri Railway Station (PURI) - 2 km",
+    "nearest_bus_station": "Puri Central Bus Stand",
+    "featured": true,
+    "verified": true,
+    "status": "published"
+  }
+]

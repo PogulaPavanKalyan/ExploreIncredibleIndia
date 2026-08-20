@@ -70,11 +70,14 @@ export function getDestinationPrimaryImage(destination) {
 }
 
 /**
- * Image error handler preventing broken image icons or silent cross-destination substitution.
+ * Image error handler preventing broken image icons and logging failed URLs during development.
  */
-export function handleImageError(event, destinationName = 'Destination') {
+export function handleImageError(event, destinationName = 'Destination', originalUrl = '') {
   if (event && event.target) {
+    const failedSrc = originalUrl || event.target.src;
+    console.warn(`FAILED DESTINATION IMAGE:\n${failedSrc}`);
     event.target.onerror = null; // Prevent infinite error loops
     event.target.src = getDestinationPlaceholder(destinationName);
   }
 }
+

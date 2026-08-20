@@ -1,12 +1,13 @@
 from django.db import models
 from django.utils.text import slugify
-from apps.states.models import State
+from apps.states.models import State, District
 from apps.utils import validate_latitude, validate_longitude
 
 class City(models.Model):
     name = models.CharField(max_length=100, db_index=True)
     slug = models.SlugField(max_length=120, unique=True, db_index=True, blank=True)
-    state = models.ForeignKey(State, on_delete=models.CASCADE, related_name='cities')
+    state = models.ForeignKey(State, on_delete=models.CASCADE, related_name='cities', db_index=True)
+    district = models.ForeignKey(District, on_delete=models.SET_NULL, null=True, blank=True, related_name='cities', db_index=True)
     description = models.TextField(blank=True, null=True)
     image = models.ImageField(upload_to='cities/', blank=True, null=True)
     banner_image = models.CharField(max_length=500, blank=True, null=True)

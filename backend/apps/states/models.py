@@ -6,6 +6,7 @@ class State(models.Model):
     name = models.CharField(max_length=100, unique=True, db_index=True)
     slug = models.SlugField(max_length=120, unique=True, db_index=True, blank=True)
     code = models.CharField(max_length=10, blank=True, null=True)
+    region = models.ForeignKey('regions.Region', on_delete=models.SET_NULL, null=True, blank=True, related_name='states', db_index=True)
     is_union_territory = models.BooleanField(default=False)
     capital = models.CharField(max_length=100, blank=True, null=True)
     short_description = models.CharField(max_length=300, blank=True, null=True)
@@ -39,4 +40,36 @@ class State(models.Model):
 
     def __str__(self):
         return f"{self.name} ({'UT' if self.is_union_territory else 'State'})"
+
+
+class District(models.Model):
+    name = models.CharField(max_length=150, db_index=True)
+    slug = models.SlugField(max_length=180, blank=True, db_index=True)
+    state = models.ForeignKey(State, on_delete=models.CASCADE, related_name='districts', db_index=True)
+    headquarters = models.CharField(max_length=150, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    latitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True, validators=[validate_latitude])
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True, validators=[validate_longitude])
+    published = models.BooleanField(default=True, db_index=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['name']
+        unique_together = ('name', 'state')
+        indexes = [
+            models.Index(fields=['name']),
+            models.Index(fields=['slug']),
+            models.Index(fields=['state']),
+        ]
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            state_name = self.state.name if self.state_id else ""
+            self.slug = slugify(f"{self.name}-{state_name}") if state_name else slugify(self.name)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.name}, {self.state.name if self.state_id else ''}"
+
 

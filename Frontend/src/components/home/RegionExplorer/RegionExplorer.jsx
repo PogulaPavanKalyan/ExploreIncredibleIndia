@@ -21,7 +21,6 @@ export default function RegionExplorer() {
     const fetchRegions = async () => {
       try {
         const data = await getRegions();
-        // data usually comes wrapped or direct
         const regionsData = data.data || data || [];
         setRegions(regionsData);
         if (regionsData.length > 0) {
@@ -50,9 +49,12 @@ export default function RegionExplorer() {
     return <div className="region-explorer-section" style={{minHeight: '20vh'}} />
   }
 
+  const regionSlug = activeRegion.slug || 'south-india';
+  const themeClass = `theme-${regionSlug}`;
+
   return (
     <section 
-      className="region-explorer-section"
+      className={`region-explorer-section ${themeClass}`}
       ref={sectionRef}
     >
       <div className="container">

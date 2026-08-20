@@ -1,15 +1,85 @@
-/* RegionExplorer.css */
+/* ==========================================================================
+   REGION EXPLORER — DYNAMIC LIGHT & DARK ALTERNATING THEME
+   South: Light Cream (#F4F1EA) | North: Dark Navy (#071426) | West: Soft Gray (#F7F8FA)
+   East: Dark Navy (#0D1B2A) | Central: Light Cream (#F4F1EA) | Northeast: Dark (#10243A)
+   ========================================================================== */
 
 .region-explorer-section {
   position: relative;
-  background-color: #020617; /* Slate 950 */
-  color: #f8fafc; /* Slate 50 */
   min-height: 100vh;
   overflow: hidden;
-  padding: 4rem 0 6rem;
+  padding: 5rem 0 6rem;
   font-family: 'Inter', sans-serif;
   display: flex;
   flex-direction: column;
+  transition: background-color 0.6s ease, color 0.4s ease;
+}
+
+/* ── Region Dynamic Theme Backgrounds ── */
+.region-explorer-section.theme-south-india {
+  background-color: #F4F1EA;
+  color: #071426;
+}
+.region-explorer-section.theme-south-india .region-explorer-title {
+  color: #071426;
+}
+.region-explorer-section.theme-south-india .region-explorer-subtitle {
+  color: #475569;
+}
+.region-explorer-section.theme-south-india .region-nav-btn {
+  color: #64748b;
+}
+.region-explorer-section.theme-south-india .region-nav-btn.active {
+  color: #071426;
+}
+
+.region-explorer-section.theme-north-india {
+  background-color: #071426;
+  color: #f8fafc;
+}
+
+.region-explorer-section.theme-west-india {
+  background-color: #F7F8FA;
+  color: #071426;
+}
+.region-explorer-section.theme-west-india .region-explorer-title {
+  color: #071426;
+}
+.region-explorer-section.theme-west-india .region-explorer-subtitle {
+  color: #475569;
+}
+.region-explorer-section.theme-west-india .region-nav-btn {
+  color: #64748b;
+}
+.region-explorer-section.theme-west-india .region-nav-btn.active {
+  color: #071426;
+}
+
+.region-explorer-section.theme-east-india {
+  background-color: #0D1B2A;
+  color: #f8fafc;
+}
+
+.region-explorer-section.theme-central-india {
+  background-color: #F4F1EA;
+  color: #071426;
+}
+.region-explorer-section.theme-central-india .region-explorer-title {
+  color: #071426;
+}
+.region-explorer-section.theme-central-india .region-explorer-subtitle {
+  color: #475569;
+}
+.region-explorer-section.theme-central-india .region-nav-btn {
+  color: #64748b;
+}
+.region-explorer-section.theme-central-india .region-nav-btn.active {
+  color: #071426;
+}
+
+.region-explorer-section.theme-northeast-india {
+  background-color: #10243A;
+  color: #f8fafc;
 }
 
 /* Header & Title */
@@ -21,8 +91,8 @@
 }
 
 .region-explorer-title {
-  font-size: 2.5rem;
-  font-weight: 700;
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  font-weight: 900;
   letter-spacing: -0.02em;
   margin-bottom: 0.5rem;
   color: #ffffff;
@@ -30,7 +100,8 @@
 
 .region-explorer-subtitle {
   font-size: 1.125rem;
-  color: #94a3b8; /* Slate 400 */
+  color: #94a3b8;
+  font-weight: 500;
 }
 
 /* Region Navigation */
@@ -38,43 +109,46 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 2rem;
+  gap: 1.5rem;
   margin-bottom: 3rem;
   position: relative;
   z-index: 10;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(120, 120, 120, 0.2);
   padding-bottom: 1rem;
+  overflow-x: auto;
 }
 
 .region-nav-btn {
   background: none;
   border: none;
   color: #94a3b8;
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 0.95rem;
+  font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   cursor: pointer;
   padding: 0.5rem 1rem;
   position: relative;
+  white-space: nowrap;
   transition: color 0.3s ease;
 }
 
 .region-nav-btn:hover {
-  color: #cbd5e1;
+  color: #FF6B1A;
 }
 
 .region-nav-btn.active {
-  color: #ffffff;
+  color: #FF6B1A;
 }
 
 .region-nav-indicator {
   position: absolute;
-  bottom: -1rem; /* Aligns with the border bottom */
+  bottom: -1rem;
   left: 0;
   width: 100%;
-  height: 2px;
-  background-color: #cda87c; /* Gold accent */
+  height: 3px;
+  background-color: #FF6B1A;
+  border-radius: 2px;
 }
 
 /* Main Content Area */
@@ -86,9 +160,10 @@
   flex: 1;
   display: flex;
   min-height: 600px;
-  border-radius: 20px;
+  border-radius: 28px;
   overflow: hidden;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 /* Cinematic Media Layer */
@@ -99,220 +174,31 @@
   width: 100%;
   height: 100%;
   z-index: 1;
+  overflow: hidden;
 }
 
-.region-media-layer video,
-.region-media-layer img {
+.region-media-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  position: absolute;
-  top: 0;
-  left: 0;
+  transform-origin: center;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.region-media-overlay {
+.region-gradient-overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background: linear-gradient(
-    to right,
-    rgba(2, 6, 23, 0.95) 0%,
-    rgba(2, 6, 23, 0.8) 30%,
-    rgba(2, 6, 23, 0.4) 60%,
-    rgba(2, 6, 23, 0.1) 100%
+    90deg, 
+    rgba(7, 20, 38, 0.95) 0%, 
+    rgba(7, 20, 38, 0.7) 45%, 
+    rgba(7, 20, 38, 0.2) 80%,
+    rgba(7, 20, 38, 0.4) 100%
   );
   z-index: 2;
-}
-
-/* Inner Content Layer (Text and Stats) */
-.region-info-layer {
-  position: relative;
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 4rem;
-  width: 45%;
-  height: 100%;
-}
-
-.region-info-name {
-  font-size: 4rem;
-  font-weight: 800;
-  line-height: 1.1;
-  margin-bottom: 1rem;
-  color: #ffffff;
-  text-transform: uppercase;
-  letter-spacing: -0.03em;
-}
-
-.region-info-tagline {
-  font-size: 1.5rem;
-  font-style: italic;
-  color: #cda87c;
-  margin-bottom: 1.5rem;
-  font-family: 'Playfair Display', serif;
-}
-
-.region-info-desc {
-  font-size: 1.125rem;
-  line-height: 1.7;
-  color: #cbd5e1;
-  margin-bottom: 2.5rem;
-  max-width: 450px;
-}
-
-/* Stats Row */
-.region-stats-row {
-  display: flex;
-  gap: 3rem;
-  margin-bottom: 2.5rem;
-}
-
-.region-stat-item {
-  display: flex;
-  flex-direction: column;
-}
-
-.region-stat-number {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #ffffff;
-}
-
-.region-stat-label {
-  font-size: 0.875rem;
-  color: #94a3b8;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-/* States List */
-.region-states-container {
-  margin-bottom: 3rem;
-}
-
-.region-states-title {
-  font-size: 0.875rem;
-  color: #94a3b8;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 1rem;
-}
-
-.region-states-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-}
-
-.region-state-chip {
-  background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.2);
-  color: #cbd5e1;
-  padding: 0.4rem 1rem;
-  border-radius: 20px;
-  font-size: 0.875rem;
-  backdrop-filter: blur(4px);
-  text-decoration: none;
-  transition: all 0.3s ease;
-}
-
-.region-state-chip:hover {
-  background: rgba(255,255,255,0.2);
-  color: #ffffff;
-  border-color: #cda87c;
-}
-
-/* Explore Button */
-.region-explore-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  background-color: #cda87c;
-  color: #020617;
-  padding: 1rem 2rem;
-  border-radius: 30px;
-  font-weight: 600;
-  font-size: 1.125rem;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  width: fit-content;
-}
-
-.region-explore-btn:hover {
-  background-color: #d1b490;
-  transform: translateY(-2px);
-}
-
-/* Destination Previews */
-.region-destinations-layer {
-  position: absolute;
-  right: 2rem;
-  bottom: 2rem;
-  z-index: 10;
-  display: flex;
-  gap: 1rem;
-  width: 50%;
-  overflow-x: auto;
-  padding-bottom: 1rem;
-  /* Hide scrollbar */
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.region-destinations-layer::-webkit-scrollbar {
-  display: none;
-}
-
-.region-dest-card {
-  min-width: 160px;
-  height: 220px;
-  border-radius: 12px;
-  overflow: hidden;
-  position: relative;
-  text-decoration: none;
-  flex-shrink: 0;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
-  transition: transform 0.3s ease;
-}
-
-.region-dest-card:hover {
-  transform: translateY(-10px);
-}
-
-.region-dest-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.region-dest-overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 60%;
-  background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 1rem;
-}
-
-.region-dest-name {
-  color: #ffffff;
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: 0.25rem;
-}
-
-.region-dest-state {
-  color: #94a3b8;
-  font-size: 0.75rem;
 }
 
 /* 3D Marker Layer */
@@ -322,67 +208,202 @@
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 5;
-  pointer-events: none; /* Let clicks pass through */
+  z-index: 3;
+  pointer-events: none;
 }
 
-/* Mobile Responsiveness */
+/* Info & Stats */
+.region-stats-layer {
+  position: relative;
+  z-index: 4;
+  width: 48%;
+  padding: 4rem 3.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.region-hero-title {
+  font-size: clamp(2.8rem, 4.5vw, 4.2rem);
+  font-weight: 900;
+  line-height: 1.05;
+  color: #ffffff;
+  margin-bottom: 1.25rem;
+  text-transform: uppercase;
+  letter-spacing: -0.5px;
+}
+
+.region-tagline {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #fdba74;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.region-desc {
+  font-size: 0.98rem;
+  color: #cbd5e1;
+  line-height: 1.65;
+  margin-bottom: 2rem;
+  max-width: 520px;
+}
+
+.region-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.region-stat-box {
+  background: rgba(7, 20, 38, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1rem;
+  border-radius: 16px;
+  text-align: center;
+}
+
+.region-stat-number {
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: #FF6B1A;
+  margin-bottom: 0.2rem;
+}
+
+.region-stat-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.region-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: #FF6B1A;
+  color: #ffffff;
+  padding: 0.85rem 2rem;
+  border-radius: 30px;
+  font-size: 0.88rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-decoration: none;
+  box-shadow: 0 6px 20px rgba(255, 107, 26, 0.4);
+  transition: all 0.25s ease;
+  align-self: flex-start;
+}
+
+.region-cta-btn:hover {
+  background: #E65A0D;
+  transform: translateY(-2px);
+}
+
+/* Destination Previews Layer */
+.region-destinations-layer {
+  position: relative;
+  z-index: 4;
+  width: 52%;
+  padding: 3rem 2.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.region-dest-cards-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.region-dest-card {
+  position: relative;
+  height: 230px;
+  border-radius: 20px;
+  overflow: hidden;
+  text-decoration: none;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.region-dest-card:hover {
+  transform: translateY(-4px);
+  border-color: #FF6B1A;
+}
+
+.region-dest-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.region-dest-card:hover img {
+  transform: scale(1.08);
+}
+
+.region-dest-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(7, 20, 38, 0.95) 0%, rgba(7, 20, 38, 0.3) 50%, transparent 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.25rem;
+}
+
+.region-dest-card-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 0.2rem 0;
+}
+
+.region-dest-card-state {
+  font-size: 0.78rem;
+  color: #fdba74;
+  font-weight: 600;
+}
+
+/* ── Responsive Breakpoints ── */
 @media (max-width: 1024px) {
   .region-content-wrapper {
     flex-direction: column;
-    border-radius: 0;
+    min-height: auto;
   }
-  
-  .region-info-layer {
-    width: 100%;
-    padding: 3rem 2rem;
-  }
-  
-  .region-media-overlay {
-    background: linear-gradient(
-      to bottom,
-      rgba(2, 6, 23, 0.6) 0%,
-      rgba(2, 6, 23, 0.9) 50%,
-      rgba(2, 6, 23, 1) 100%
-    );
-  }
-  
+  .region-stats-layer,
   .region-destinations-layer {
-    position: relative;
-    right: 0;
-    bottom: 0;
     width: 100%;
-    padding: 0 2rem 2rem;
+    padding: 2.5rem 2rem;
+  }
+  .region-gradient-overlay {
+    background: linear-gradient(
+      180deg, 
+      rgba(7, 20, 38, 0.95) 0%, 
+      rgba(7, 20, 38, 0.8) 50%, 
+      rgba(7, 20, 38, 0.95) 100%
+    );
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
+  .region-explorer-section {
+    padding: 3.5rem 0 4.5rem;
+  }
   .region-nav-container {
+    gap: 1rem;
     justify-content: flex-start;
-    overflow-x: auto;
-    padding: 0 1rem 1rem;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
   }
-  
-  .region-info-layer {
-    padding: 2rem 1rem;
+  .region-stat-grid {
+    grid-template-columns: 1fr;
   }
-  
-  .region-info-name {
-    font-size: 2.5rem;
-  }
-  
-  .region-stats-row {
-    gap: 1.5rem;
-  }
-  
-  .region-dest-card {
-    min-width: 140px;
-    height: 180px;
-  }
-  
-  .region-destinations-layer {
-    padding: 0 1rem 2rem;
+  .region-dest-cards-container {
+    grid-template-columns: 1fr;
   }
 }

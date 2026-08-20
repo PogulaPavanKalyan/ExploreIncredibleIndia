@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Compass, MapPin, Sparkles, User, LogOut, Menu, X, Heart, Home, Grid, BookOpen, Trophy } from 'lucide-react';
+import { Compass, MapPin, Sparkles, User, LogOut, Menu, X, Heart, Home, Grid, BookOpen, Trophy, Flame } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import LanguageSelector from './LanguageSelector';
 import '../styles/navbar.css';
@@ -36,7 +36,7 @@ export default function Navbar() {
           </div>
           <div className="logo-text-group">
             <span className="logo-title">Dekho Bharat</span>
-            <span className="logo-tagline">Explore Incredible India</span>
+            <span className="logo-tagline">The Digital Atlas of India</span>
           </div>
         </Link>
 
@@ -45,8 +45,11 @@ export default function Navbar() {
           <Link to="/" className={`nav-link ${isActive('/') ? 'active' : ''}`}>
             <Home className="nav-icon" /> Home
           </Link>
-          <Link to="/explore" className={`nav-link ${isActive('/explore') ? 'active' : ''}`}>
-            <MapPin className="nav-icon" /> Explore India
+          <Link to="/explore-india" className={`nav-link ${isActive('/explore-india') || isActive('/explore') ? 'active' : ''}`}>
+            <MapPin className="nav-icon" /> Explore Atlas
+          </Link>
+          <Link to="/collections/jyotirlingas" className={`nav-link ${isActive('/collections/jyotirlingas') ? 'active' : ''}`}>
+            <Flame className="nav-icon" style={{ color: '#F59E0B' }} /> 12 Jyotirlingas
           </Link>
           <Link to="/festivals" className={`nav-link ${isActive('/festivals') ? 'active' : ''}`}>
             <Sparkles className="nav-icon" color="#FF6B35" /> Festivals
@@ -54,14 +57,8 @@ export default function Navbar() {
           <Link to="/stories" className={`nav-link ${isActive('/stories') ? 'active' : ''}`}>
             <BookOpen className="nav-icon" color="#0284C7" /> Stories
           </Link>
-          <Link to="/leaderboard" className={`nav-link ${isActive('/leaderboard') ? 'active' : ''}`}>
-            <Trophy className="nav-icon" color="#D97706" /> Ranks
-          </Link>
           <Link to="/favorites" className={`nav-link ${isActive('/favorites') ? 'active' : ''}`}>
             <Heart className="nav-icon" style={{ color: '#EF4444' }} /> Favorites
-          </Link>
-          <Link to="/budget-planner" className={`nav-link ${isActive('/budget-planner') ? 'active' : ''}`}>
-            Budget Calculator
           </Link>
           <Link to="/travel-planner" className={`nav-link planner-highlight ${isActive('/travel-planner') ? 'active' : ''}`}>
             <Sparkles className="nav-icon" /> AI Planner
@@ -108,17 +105,17 @@ export default function Navbar() {
                 <Link to="/" className={`mobile-nav-link ${isActive('/') ? 'active' : ''}`} onClick={() => setMobileMenuOpen(false)}>
                   <Home size={20} /> Home
                 </Link>
-                <Link to="/explore" className={`mobile-nav-link ${isActive('/explore') ? 'active' : ''}`} onClick={() => setMobileMenuOpen(false)}>
-                  <MapPin size={20} /> Explore India
+                <Link to="/explore-india" className={`mobile-nav-link ${isActive('/explore-india') || isActive('/explore') ? 'active' : ''}`} onClick={() => setMobileMenuOpen(false)}>
+                  <MapPin size={20} /> Explore India Atlas
+                </Link>
+                <Link to="/collections/jyotirlingas" className={`mobile-nav-link ${isActive('/collections/jyotirlingas') ? 'active' : ''}`} onClick={() => setMobileMenuOpen(false)}>
+                  <Flame size={20} color="#F59E0B" /> 12 Jyotirlingas
                 </Link>
                 <Link to="/festivals" className={`mobile-nav-link ${isActive('/festivals') ? 'active' : ''}`} onClick={() => setMobileMenuOpen(false)}>
                   <Sparkles size={20} color="#FF6B35" /> Festivals
                 </Link>
                 <Link to="/stories" className={`mobile-nav-link ${isActive('/stories') ? 'active' : ''}`} onClick={() => setMobileMenuOpen(false)}>
                   <BookOpen size={20} color="#0284C7" /> Stories
-                </Link>
-                <Link to="/leaderboard" className={`mobile-nav-link ${isActive('/leaderboard') ? 'active' : ''}`} onClick={() => setMobileMenuOpen(false)}>
-                  <Trophy size={20} color="#D97706" /> Ranks
                 </Link>
                 <Link to="/favorites" className={`mobile-nav-link ${isActive('/favorites') ? 'active' : ''}`} onClick={() => setMobileMenuOpen(false)}>
                   <Heart size={20} color="#EF4444" /> Favorites
@@ -134,4 +131,3 @@ export default function Navbar() {
     </header>
   );
 }
-

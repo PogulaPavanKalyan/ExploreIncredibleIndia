@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { getDestinations } from '../../../services/destinationService';
 
@@ -17,31 +17,35 @@ export default function TrendingDestinations() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   
   const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
+  const [retryTrigger, setRetryTrigger] = useState(0);
 
-  // Fetch Featured Destinations (Top section)
-  // We fetch a few featured items independently of the filters for the top rotation
+  // Fetch Featured Destinations (Top Section)
   useEffect(() => {
+    let isMounted = true;
     const fetchFeatured = async () => {
       try {
-        const res = await getDestinations({ featured: 'true', page_size: 5 });
-        if (res.data) setFeaturedDests(res.data);
+        const res = await getDestinations({ featured: 'true', page_size: 6 });
+        if (isMounted && res.data) {
+          setFeaturedDests(res.data);
+        }
       } catch (err) {
         console.error("Error fetching featured destinations:", err);
       }
     };
     fetchFeatured();
-  }, []);
+    return () => { isMounted = false; };
+  }, [retryTrigger]);
 
-  // Fetch Grid Destinations based on filters
+  // Fetch Grid Destinations based on active Region + Category filters
   useEffect(() => {
+    let isMounted = true;
     const fetchGrid = async () => {
       setIsLoading(true);
+      setHasError(false);
       try {
         const params = {
-          page_size: 8,
-          // We can use trending=true or just fetch generic if filtered
-          // For a true "Trending" section, we could append trending: 'true' 
-          // But when filtering, it might be better to just show top destinations for that filter
+          page_size: 12,
         };
         
         if (selectedRegion !== 'all') {
@@ -51,78 +55,145 @@ export default function TrendingDestinations() {
         if (selectedCategory !== 'all') {
           params.category = selectedCategory;
         }
-        
-        // If no specific filters, explicitly fetch trending or popular
-        if (selectedRegion === 'all' && selectedCategory === 'all') {
-          params.trending = 'true';
-        }
 
         const res = await getDestinations(params);
-        if (res.data) {
+        if (isMounted && res.data) {
           setGridDests(res.data);
-          // If the backend is paginated, it usually returns res.count
-          // If our service strips it or returns direct array, we fallback to length or a separate count
-          // Let's assume standard DRF pagination or custom response wrapper:
-          setTotalCount(res.count || res.data.length || 1000); 
+          const count = res.pagination?.total !== undefined 
+            ? res.pagination.total 
+            : (res.count !== undefined ? res.count : res.data.length);
+          setTotalCount(count);
         }
       } catch (err) {
-        console.error("Error fetching trending destinations:", err);
+        console.error("Error fetching filtered destinations:", err);
+        if (isMounted) {
+          setGridDests([]);
+          setTotalCount(0);
+          setHasError(true);
+        }
       } finally {
-        setIsLoading(false);
+        if (isMounted) setIsLoading(false);
       }
     };
     
     fetchGrid();
-  }, [selectedRegion, selectedCategory]);
+    return () => { isMounted = false; };
+  }, [selectedRegion, selectedCategory, retryTrigger]);
+
+  const handleResetFilters = useCallback(() => {
+    setSelectedRegion('all');
+    setSelectedCategory('all');
+  }, []);
+
+  const handleRetry = () => {
+    setRetryTrigger(prev => prev + 1);
+  };
 
   return (
-    <section className="trending-editorial-section">
-      <div className="container">
+    <section className="trending-editorial-section" id="discover-destinations">
+      <div className="trending-container">
+        {/* Section Header */}
         <motion.div 
           className="trending-header"
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 25 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.6 }}
         >
-          <div>
+          <div className="trending-header-text">
+            <span className="destination-count">
+              EXPLORE {totalCount} {totalCount === 1 ? 'DESTINATION' : 'DESTINATIONS'}
+            </span>
             <h2 className="trending-title">Discover Your Next Destination</h2>
-            <p className="trending-subtitle">Places worth experiencing, remembering and returning to.</p>
-          </div>
-          <div className="trending-meta">
-            <span className="destination-count">Explore {totalCount > 100 ? `${Math.floor(totalCount / 100) * 100}+` : totalCount} Destinations</span>
+            <p className="trending-subtitle">
+              Authentic Indian landscapes, timeless monuments, serene backwaters and sacred sanctuaries.
+            </p>
           </div>
         </motion.div>
 
-        {/* Filters */}
+        {/* Region & Experience Filters */}
         <DestinationFilters 
           selectedRegion={selectedRegion}
           setSelectedRegion={setSelectedRegion}
           selectedCategory={selectedCategory}
           setSelectedCategory={setSelectedCategory}
+          onResetAll={handleResetFilters}
         />
 
-        {/* Featured Rotation (Top) */}
+        {/* Dynamic Featured Destination (Top) */}
         <FeaturedDestination destinations={featuredDests} />
 
-        {/* Editorial Grid (Bottom) */}
-        {isLoading ? (
-          <div style={{ height: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <span style={{ color: '#94a3b8' }}>Loading destinations...</span>
-          </div>
-        ) : (
-          <DestinationEditorialGrid destinations={gridDests} />
-        )}
+        {/* Filtered Grid Section */}
+        <AnimatePresence mode="wait">
+          {isLoading ? (
+            <motion.div 
+              key="loading"
+              className="editorial-grid skeleton-grid"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              {[1, 2, 3, 4, 5, 6].map(i => (
+                <div key={i} className={`skeleton-card grid-span-${i === 1 ? 'large' : (i === 2 ? 'medium-tall' : 'small')}`}>
+                  <div className="skeleton-media shimmer" />
+                  <div className="skeleton-content">
+                    <div className="skeleton-line short shimmer" />
+                    <div className="skeleton-line title shimmer" />
+                    <div className="skeleton-line desc shimmer" />
+                  </div>
+                </div>
+              ))}
+            </motion.div>
+          ) : hasError ? (
+            <motion.div
+              key="error-state"
+              className="destination-empty-state"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <h3 className="empty-state-title" style={{ color: '#ef4444' }}>Unable to load destinations</h3>
+              <p className="empty-state-subtitle">
+                Please check your network connection or try reloading.
+              </p>
+              <button 
+                className="empty-state-reset-btn"
+                onClick={handleRetry}
+                style={{ background: '#FF6B1A', color: '#fff', border: 'none', cursor: 'pointer' }}
+              >
+                Try Again
+              </button>
+            </motion.div>
+          ) : (
+            <motion.div
+              key={`${selectedRegion}-${selectedCategory}`}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.35 }}
+            >
+              <DestinationEditorialGrid 
+                destinations={gridDests} 
+                onResetFilters={handleResetFilters}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Explore All CTA */}
         <motion.div 
           className="explore-all-container"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
         >
-          <Link to="/destinations" className="explore-all-btn">
-            Explore All Destinations →
+          <Link to="/explore" className="explore-all-btn" id="explore-all-destinations-btn">
+            <span>Explore All Destinations</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
           </Link>
         </motion.div>
       </div>

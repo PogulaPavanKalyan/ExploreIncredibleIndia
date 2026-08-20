@@ -1,18 +1,20 @@
 /* ═══════════════════════════════════════════════════════════════
-   WHAT KIND OF JOURNEY ARE YOU LOOKING FOR?
-   PREMIUM EDITORIAL EXPERIENCE DISCOVERY CAROUSEL
+   EXPLORE BY EXPERIENCE — LIGHT TRAVEL EDITORIAL THEME
+   Palette: #F4F1EA Light Cream, #071426 Dark Text, #FF6B1A Accent
    ═══════════════════════════════════════════════════════════════ */
 
 .experiences-section {
   position: relative;
   width: 100%;
   padding: 100px 0 90px;
-  background-color: #020617;
-  color: #ffffff;
+  background-color: #F4F1EA;
+  color: #071426;
   overflow-x: hidden;
+  border-top: 1px solid rgba(7, 20, 38, 0.06);
+  border-bottom: 1px solid rgba(7, 20, 38, 0.06);
 }
 
-/* Subtle atmospheric ambient glow */
+/* Subtle warm ambient lighting */
 .experiences-section::before {
   content: '';
   position: absolute;
@@ -22,7 +24,7 @@
   width: 90%;
   max-width: 1400px;
   height: 480px;
-  background: radial-gradient(ellipse at 50% 0%, rgba(30, 58, 138, 0.18) 0%, rgba(249, 115, 22, 0.04) 45%, transparent 70%);
+  background: radial-gradient(ellipse at 50% 0%, rgba(255, 107, 26, 0.06) 0%, rgba(244, 241, 234, 0) 70%);
   pointer-events: none;
   z-index: 0;
 }
@@ -56,22 +58,22 @@
   text-transform: uppercase;
   letter-spacing: -0.5px;
   margin: 0 0 16px 0;
-  color: #ffffff;
+  color: #071426;
 }
 
 .experiences-title .highlight {
-  color: #f97316;
+  color: #FF6B1A;
   font-style: italic;
   display: inline-block;
 }
 
 .experiences-subtitle {
   font-size: 1.15rem;
-  color: #94a3b8;
+  color: #475569;
   max-width: 580px;
   line-height: 1.65;
   margin: 0;
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: 0.01em;
 }
 
@@ -80,7 +82,7 @@
   width: 130px;
   height: 130px;
   flex-shrink: 0;
-  opacity: 0.85;
+  opacity: 0.9;
   pointer-events: none;
 }
 
@@ -93,11 +95,11 @@
 /* ── Draggable & Swipeable Horizontal Gallery ── */
 .experiences-gallery {
   display: flex;
-  gap: 20px;
+  gap: 24px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
-  padding: 15px 4px 25px 4px;
+  padding: 15px 4px 30px 4px;
   cursor: grab;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
@@ -116,7 +118,7 @@
 /* ── Loading Skeleton ── */
 .experiences-skeleton {
   display: flex;
-  gap: 20px;
+  gap: 24px;
   overflow: hidden;
   padding: 10px 0;
 }
@@ -125,7 +127,7 @@
   flex: 0 0 300px;
   height: 480px;
   border-radius: 24px;
-  background: linear-gradient(90deg, #0d1526 25%, #18243b 50%, #0d1526 75%);
+  background: linear-gradient(90deg, #e8e4db 25%, #f4f1ea 50%, #e8e4db 75%);
   background-size: 200% 100%;
   animation: exp-skeleton-shimmer 1.6s infinite;
 }
@@ -145,21 +147,26 @@
   position: relative;
   cursor: pointer;
   outline: none;
-  transition: flex 0.55s cubic-bezier(0.25, 1, 0.5, 1),
-              transform 0.4s cubic-bezier(0.25, 1, 0.5, 1),
-              box-shadow 0.4s ease;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(7, 20, 38, 0.08);
+  border: 1px solid rgba(7, 20, 38, 0.08);
+  transition: flex 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.4s ease,
+              border-color 0.3s ease;
 }
 
 /* Featured / Expanded card styling */
 .experience-card-wrapper.active,
 .experience-card-wrapper:hover {
   flex: 0 0 460px;
-  box-shadow: 0 28px 65px rgba(0, 0, 0, 0.7), 0 0 0 1.5px rgba(249, 115, 22, 0.45);
-  transform: translateY(-4px);
+  box-shadow: 0 25px 60px rgba(7, 20, 38, 0.16), 0 0 0 2px #FF6B1A;
+  border-color: #FF6B1A;
+  transform: translateY(-6px);
 }
 
 .experience-card-wrapper.secondary {
-  opacity: 0.88;
+  opacity: 0.92;
 }
 
 .experience-card-wrapper.secondary:hover {
@@ -173,7 +180,7 @@
   height: 100%;
   border-radius: 24px;
   overflow: hidden;
-  background: #0b1120;
+  background: #071426;
   transition: transform 0.15s ease-out;
   transform-style: preserve-3d;
 }
@@ -186,14 +193,14 @@
   height: 100%;
   object-fit: cover;
   object-position: center;
-  transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
   user-select: none;
   -webkit-user-drag: none;
 }
 
 .experience-card-wrapper:hover .experience-media,
 .experience-card-wrapper.active .experience-media {
-  transform: scale(1.05);
+  transform: scale(1.06);
 }
 
 /* ── Cinematic Overlay ── */
@@ -202,10 +209,10 @@
   inset: 0;
   background: linear-gradient(
     to top,
-    rgba(2, 6, 23, 0.96) 0%,
-    rgba(2, 6, 23, 0.6) 42%,
-    rgba(2, 6, 23, 0.15) 75%,
-    rgba(2, 6, 23, 0.05) 100%
+    rgba(7, 20, 38, 0.95) 0%,
+    rgba(7, 20, 38, 0.55) 45%,
+    rgba(7, 20, 38, 0.1) 75%,
+    rgba(7, 20, 38, 0.02) 100%
   );
   transition: background 0.4s ease;
 }
@@ -214,9 +221,9 @@
 .experience-card-wrapper.active .experience-overlay {
   background: linear-gradient(
     to top,
-    rgba(2, 6, 23, 0.98) 0%,
-    rgba(2, 6, 23, 0.7) 45%,
-    rgba(2, 6, 23, 0.2) 100%
+    rgba(7, 20, 38, 0.98) 0%,
+    rgba(7, 20, 38, 0.65) 45%,
+    rgba(7, 20, 38, 0.15) 100%
   );
 }
 
@@ -225,15 +232,15 @@
   position: absolute;
   top: 20px;
   right: 20px;
-  background: rgba(2, 6, 23, 0.65);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(7, 20, 38, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   padding: 6px 14px;
   border-radius: 30px;
   font-size: 0.78rem;
-  font-weight: 600;
-  color: #f8fafc;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-weight: 700;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   letter-spacing: 0.04em;
   z-index: 2;
 }
@@ -254,16 +261,16 @@
 /* Category Title */
 .experience-name {
   font-size: 1.6rem;
-  font-weight: 800;
+  font-weight: 900;
   margin: 0 0 10px 0;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   color: #ffffff;
   writing-mode: vertical-rl;
   text-orientation: mixed;
   transform: rotate(180deg);
   align-self: flex-start;
-  transition: all 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
   white-space: nowrap;
 }
 
@@ -273,7 +280,7 @@
   transform: none;
   font-size: 2rem;
   color: #ffffff;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
 }
 
 /* ── Expanded Details Area ── */
@@ -282,7 +289,7 @@
   max-height: 0;
   opacity: 0;
   transform: translateY(14px);
-  transition: max-height 0.48s cubic-bezier(0.25, 1, 0.5, 1),
+  transition: max-height 0.48s cubic-bezier(0.16, 1, 0.3, 1),
               opacity 0.38s ease,
               transform 0.38s ease;
 }
@@ -296,7 +303,7 @@
 
 .experience-desc {
   font-size: 0.94rem;
-  color: #cbd5e1;
+  color: #B8C4D6;
   margin: 0 0 22px 0;
   line-height: 1.65;
   display: -webkit-box;
@@ -310,26 +317,26 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  background: #f97316;
+  background: #FF6B1A;
   color: #ffffff;
   padding: 12px 26px;
-  border-radius: 10px;
-  font-weight: 700;
+  border-radius: 12px;
+  font-weight: 800;
   text-transform: uppercase;
   font-size: 0.82rem;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   border: none;
   cursor: pointer;
   text-decoration: none;
-  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   align-self: flex-start;
-  box-shadow: 0 4px 15px rgba(249, 115, 22, 0.35);
+  box-shadow: 0 4px 15px rgba(255, 107, 26, 0.35);
 }
 
 .experience-explore-btn:hover {
-  background: #ea580c;
+  background: #E65A0D;
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.5);
+  box-shadow: 0 8px 24px rgba(255, 107, 26, 0.5);
 }
 
 .experience-explore-btn .btn-arrow {
@@ -363,9 +370,9 @@
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  color: #ffffff;
+  background: #ffffff;
+  border: 1px solid rgba(7, 20, 38, 0.12);
+  color: #071426;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -373,13 +380,15 @@
   transition: all 0.25s ease;
   font-size: 1.15rem;
   user-select: none;
+  box-shadow: 0 4px 12px rgba(7, 20, 38, 0.06);
 }
 
 .carousel-nav-btn:hover {
-  background: rgba(249, 115, 22, 0.2);
-  border-color: #f97316;
-  color: #f97316;
+  background: #FF6B1A;
+  border-color: #FF6B1A;
+  color: #ffffff;
   transform: scale(1.08);
+  box-shadow: 0 6px 18px rgba(255, 107, 26, 0.35);
 }
 
 .carousel-nav-btn:active {
@@ -397,19 +406,19 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(7, 20, 38, 0.2);
   border: none;
   cursor: pointer;
   padding: 0;
-  transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .carousel-dot:hover {
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(7, 20, 38, 0.5);
 }
 
 .carousel-dot.active {
-  background: #f97316;
+  background: #FF6B1A;
   width: 26px;
   border-radius: 4px;
 }
@@ -418,40 +427,39 @@
 .experiences-error {
   text-align: center;
   padding: 70px 20px;
-  color: #94a3b8;
+  color: #475569;
 }
 
 .experiences-error h3 {
   font-size: 1.3rem;
-  font-weight: 500;
+  font-weight: 700;
   margin-bottom: 18px;
-  color: #f8fafc;
+  color: #071426;
 }
 
 .experiences-retry-btn {
-  background: rgba(249, 115, 22, 0.15);
-  border: 1px solid #f97316;
-  color: #f97316;
+  background: #FF6B1A;
+  border: none;
+  color: #ffffff;
   padding: 12px 28px;
-  border-radius: 10px;
+  border-radius: 12px;
   cursor: pointer;
   font-size: 0.92rem;
-  font-weight: 700;
+  font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 107, 26, 0.35);
 }
 
 .experiences-retry-btn:hover {
-  background: #f97316;
-  color: #ffffff;
+  background: #E65A0D;
 }
 
 /* ═══════════════════════════════════════════════════════════════
    RESPONSIVE BREAKPOINTS
    ═══════════════════════════════════════════════════════════════ */
 
-/* 2K / 4K Displays */
 @media (min-width: 1920px) {
   .experiences-container {
     max-width: 1800px;
@@ -467,7 +475,6 @@
   }
 }
 
-/* Large Desktop (1440px - 1919px) */
 @media (max-width: 1536px) {
   .experiences-container {
     padding: 0 50px;
@@ -482,7 +489,6 @@
   }
 }
 
-/* Laptop (1024px - 1439px) */
 @media (max-width: 1280px) {
   .experiences-container {
     padding: 0 40px;
@@ -497,7 +503,6 @@
   }
 }
 
-/* Tablet (768px - 1023px) */
 @media (max-width: 1024px) {
   .experiences-section {
     padding: 80px 0 70px;
@@ -523,7 +528,6 @@
   }
 }
 
-/* Mobile Screens (≤ 768px) */
 @media (max-width: 768px) {
   .experiences-section {
     padding: 60px 0 50px;
@@ -548,7 +552,6 @@
     max-width: 100%;
   }
 
-  /* Single prominent card per view on mobile */
   .experience-card-wrapper {
     flex: 0 0 80vw;
     max-width: 320px;
@@ -578,27 +581,6 @@
   }
 }
 
-/* Small Mobile Screens (≤ 480px) */
-@media (max-width: 480px) {
-  .experiences-container {
-    padding: 0 16px;
-  }
-  .experiences-title {
-    font-size: 1.95rem;
-  }
-  .experience-card-wrapper {
-    flex: 0 0 86vw;
-    max-width: 300px;
-    height: 390px;
-  }
-  .experience-card-wrapper.active,
-  .experience-card-wrapper:hover {
-    flex: 0 0 86vw;
-    max-width: 300px;
-  }
-}
-
-/* Accessibility: Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
   .experience-card-wrapper,
   .experience-media,

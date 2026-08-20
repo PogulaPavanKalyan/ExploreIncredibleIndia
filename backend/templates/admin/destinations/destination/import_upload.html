@@ -1,0 +1,36 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls %}
+
+{% block content %}
+<div style="max-width:800px;margin:20px auto;background:#ffffff;padding:30px;border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,0.08);border:1px solid #e2e8f0;">
+  <h2 style="margin-top:0;color:#0f172a;font-weight:800;display:flex;align-items:center;gap:10px;">
+    📥 Bulk Destination CSV Import
+  </h2>
+  <p style="color:#64748b;font-size:0.95rem;line-height:1.6;">
+    Upload a CSV file containing destinations across India. The system will perform strict validation, duplicate detection, and present a <b>Dry-Run Preview</b> before modifying the database.
+  </p>
+
+  <div style="background:#f8fafc;padding:15px;border-radius:8px;margin:20px 0;border-left:4px solid #f97316;">
+    <h4 style="margin:0 0 8px 0;color:#0f172a;">Supported CSV Columns:</h4>
+    <code style="font-size:0.8rem;color:#334155;word-break:break-all;">
+      name, slug, region, state, district, city, short_description, full_description, history, historical_significance, cultural_significance, religious_significance, latitude, longitude, best_time_to_visit, recommended_duration, estimated_budget, categories, activities, tags, nearest_airport, nearest_railway_station, nearest_bus_station, how_to_reach, featured, verified, published
+    </code>
+  </div>
+
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div style="margin-bottom:20px;">
+      <label style="display:block;font-weight:700;margin-bottom:8px;color:#1e293b;">Select CSV File:</label>
+      <input type="file" name="csv_file" accept=".csv" required style="padding:10px;border:1px solid #cbd5e1;border-radius:6px;width:100%;background:#ffffff;" />
+    </div>
+    <div style="display:flex;gap:12px;">
+      <button type="submit" style="background:#f97316;color:#ffffff;border:none;padding:10px 24px;border-radius:6px;font-weight:700;font-size:0.95rem;cursor:pointer;">
+        Upload & Preview Validation
+      </button>
+      <a href=".." style="background:#e2e8f0;color:#334155;padding:10px 20px;border-radius:6px;text-decoration:none;font-weight:600;">
+        Cancel
+      </a>
+    </div>
+  </form>
+</div>
+{% endblock %}

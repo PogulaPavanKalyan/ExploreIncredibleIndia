@@ -71,64 +71,67 @@ export default function PWAInstallPrompt() {
       {showInstallBanner && !isOffline && (
         <div style={{
           position: 'fixed',
-          bottom: '20px',
-          right: '20px',
+          bottom: '24px',
+          right: '24px',
           background: 'linear-gradient(135deg, #0F172A, #1E293B)',
           color: '#ffffff',
-          padding: '1rem 1.25rem',
-          borderRadius: '20px',
-          boxShadow: '0 15px 40px rgba(0, 0, 0, 0.35)',
+          padding: '0.85rem 1.1rem',
+          borderRadius: '16px',
+          boxShadow: '0 15px 35px rgba(0, 0, 0, 0.5)',
           border: '1px solid rgba(255, 107, 53, 0.4)',
-          maxWidth: '360px',
-          width: 'calc(100% - 40px)',
-          zIndex: 9999,
+          maxWidth: '340px',
+          width: 'calc(100% - 48px)',
+          zIndex: 800, /* below modals, above background */
           display: 'flex',
           alignItems: 'center',
-          gap: '0.85rem'
+          gap: '0.75rem',
+          pointerEvents: 'auto'
         }}>
           <div style={{
             background: 'linear-gradient(135deg, #FF6B35, #FFB703)',
-            width: '44px',
-            height: '44px',
-            borderRadius: '12px',
+            width: '38px',
+            height: '38px',
+            borderRadius: '10px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             flexShrink: 0
           }}>
-            <Compass size={24} color="#ffffff" />
+            <Compass size={20} color="#ffffff" />
           </div>
 
-          <div style={{ flex: 1 }}>
-            <h4 style={{ fontSize: '0.92rem', fontWeight: 800, margin: 0, color: '#ffffff' }}>
-              Install Dekho Bharat App
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <h4 style={{ fontSize: '0.86rem', fontWeight: 800, margin: 0, color: '#ffffff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              Dekho Bharat App
             </h4>
-            <p style={{ fontSize: '0.78rem', color: '#94A3B8', margin: '0.15rem 0 0.5rem 0', lineHeight: 1.3 }}>
-              Fast offline access & instant travel planning on your device.
+            <p style={{ fontSize: '0.72rem', color: '#94A3B8', margin: '0.1rem 0 0.4rem 0', lineHeight: 1.2 }}>
+              Fast offline access & travel guides.
             </p>
             <button
               onClick={handleInstallClick}
               style={{
-                padding: '0.35rem 0.8rem',
-                borderRadius: '8px',
+                padding: '0.3rem 0.7rem',
+                minHeight: '32px',
+                borderRadius: '6px',
                 background: '#FF6B35',
                 color: '#ffffff',
                 border: 'none',
                 fontWeight: 700,
-                fontSize: '0.78rem',
+                fontSize: '0.74rem',
                 cursor: 'pointer',
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.3rem'
               }}
             >
-              <Download size={13} /> Add to Home Screen
+              <Download size={12} /> Install
             </button>
           </div>
 
           <button
             onClick={() => setShowInstallBanner(false)}
-            style={{ background: 'none', border: 'none', color: '#94A3B8', cursor: 'pointer', alignSelf: 'flex-start' }}
+            aria-label="Close install prompt"
+            style={{ background: 'none', border: 'none', color: '#94A3B8', cursor: 'pointer', alignSelf: 'flex-start', padding: '4px' }}
           >
             <X size={16} />
           </button>

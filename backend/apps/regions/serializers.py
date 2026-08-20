@@ -35,9 +35,15 @@ class RegionDestinationSerializer(serializers.ModelSerializer):
         return obj.categories.first().name if obj.categories.exists() else 'General'
         
     def get_image(self, obj):
-        if obj.main_image:
+        if not obj.main_image:
+            return ''
+        val = str(obj.main_image)
+        if val.startswith('http'):
+            return val
+        try:
             return obj.main_image.url
-        return ''
+        except Exception:
+            return val
 
 class RegionSerializer(serializers.ModelSerializer):
     destination_count = serializers.SerializerMethodField()
@@ -54,29 +60,33 @@ class RegionSerializer(serializers.ModelSerializer):
         ]
 
     def get_states(self, obj):
-        state_names = STATE_TO_REGION_MAP.get(obj.slug, [])
-        states = State.objects.filter(name__in=state_names)
+        states = obj.states.filter(published=True).order_by('name')
+        if not states.exists():
+            state_names = STATE_TO_REGION_MAP.get(obj.slug, [])
+            states = State.objects.filter(name__in=state_names)
         return RegionStateSerializer(states, many=True).data
 
     def get_state_count(self, obj):
-        return len(STATE_TO_REGION_MAP.get(obj.slug, []))
+        count = obj.states.count()
+        return count if count > 0 else len(STATE_TO_REGION_MAP.get(obj.slug, []))
 
     def get_destination_count(self, obj):
-        state_names = STATE_TO_REGION_MAP.get(obj.slug, [])
-        return Destination.objects.filter(state__name__in=state_names, published=True).count()
+        count = Destination.objects.filter(region_obj=obj, published=True).count()
+        if count == 0:
+            state_names = STATE_TO_REGION_MAP.get(obj.slug, [])
+            count = Destination.objects.filter(state__name__in=state_names, published=True).count()
+        return count
 
     def get_featured_destinations(self, obj):
-        state_names = STATE_TO_REGION_MAP.get(obj.slug, [])
-        # Get up to 6 featured or trending destinations for this region
-        dests = Destination.objects.filter(
-            state__name__in=state_names, 
-            published=True,
-        )
+        dests = Destination.objects.filter(region_obj=obj, published=True)
+        if not dests.exists():
+            state_names = STATE_TO_REGION_MAP.get(obj.slug, [])
+            dests = Destination.objects.filter(state__name__in=state_names, published=True)
         featured = dests.filter(featured=True) | dests.filter(trending=True)
-        # If we don't have enough featured, just get random/top ones
         if featured.count() < 4:
-            featured = dests.order_by('?')[:6]
+            featured = dests.order_by('-popularity_score')[:6]
         else:
             featured = featured[:6]
             
         return RegionDestinationSerializer(featured, many=True).data
+

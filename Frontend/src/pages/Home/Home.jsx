@@ -12,6 +12,7 @@ const ExperienceSection = lazy(() => import('../../components/experiences/Experi
 const QuickExplore = lazy(() => import('../../components/home/QuickExplore'));
 const RegionExplorer = lazy(() => import('../../components/home/RegionExplorer/RegionExplorer'));
 const TrendingDestinations = lazy(() => import('../../components/home/TrendingDestinations/TrendingDestinations'));
+const IndiaStories = lazy(() => import('../../components/home/IndiaStories/IndiaStories'));
 const HiddenIndia = lazy(() => import('../../components/home/HiddenIndia'));
 const JourneyBuilder = lazy(() => import('../../components/home/JourneyBuilder'));
 const FinalCTA = lazy(() => import('../../components/home/FinalCTA'));
@@ -94,12 +95,8 @@ export default function HomePage() {
             <TrendingDestinations />
           )}
 
-          {/* 4. Storytelling Break */}
-          <section className="storytelling-section">
-            <div className="container">
-              <h2 className="story-title">ONE COUNTRY.<br/>THOUSANDS OF STORIES.</h2>
-            </div>
-          </section>
+          {/* 4. India Stories (One Country. Thousands of Stories.) */}
+          <IndiaStories />
 
           {/* 5. Region Explorer (Phase 11 / Enhanced Cinematic) */}
           <RegionExplorer />

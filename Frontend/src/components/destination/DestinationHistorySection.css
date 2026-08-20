@@ -1,0 +1,188 @@
+/* ==========================================================================
+   DESTINATION HISTORY & HERITAGE SECTION
+   ========================================================================== */
+
+.dest-history-section {
+  background: #FFFFFF;
+  border-radius: 24px;
+  padding: 2.5rem;
+  margin-bottom: 2.5rem;
+  border: 1px solid rgba(7, 20, 38, 0.08);
+  box-shadow: 0 10px 30px rgba(7, 20, 38, 0.05);
+}
+
+.dest-history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(7, 20, 38, 0.08);
+  padding-bottom: 1.25rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.dest-history-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.dest-history-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(255, 107, 26, 0.1);
+  color: #FF6B1A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dest-history-title {
+  font-size: 1.55rem;
+  font-weight: 900;
+  color: #071426;
+  margin: 0;
+}
+
+.dest-history-source-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #059669;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  padding: 0.35rem 0.85rem;
+  border-radius: 20px;
+}
+
+/* History Narrative Text */
+.dest-history-short-lead {
+  font-size: 1.12rem;
+  font-weight: 600;
+  color: #071426;
+  line-height: 1.7;
+  margin-bottom: 1.25rem;
+  border-left: 3px solid #FF6B1A;
+  padding-left: 1.25rem;
+}
+
+.dest-history-detailed-text {
+  font-size: 0.98rem;
+  color: #475569;
+  line-height: 1.75;
+  margin-bottom: 2rem;
+}
+
+/* Structured Facets Grid (Architecture, Culture, Religion) */
+.dest-history-facets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 2.5rem;
+}
+
+.dest-history-facet-card {
+  background: #F7F8FA;
+  border: 1px solid rgba(7, 20, 38, 0.06);
+  border-radius: 18px;
+  padding: 1.5rem;
+  transition: transform 0.2s ease;
+}
+
+.dest-history-facet-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 107, 26, 0.3);
+}
+
+.dest-facet-label {
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #FF6B1A;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.dest-facet-body {
+  font-size: 0.92rem;
+  color: #334155;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ── Interactive Chronological Era Timeline ── */
+
+.dest-timeline-block {
+  background: #071426;
+  border-radius: 20px;
+  padding: 2rem;
+  color: #ffffff;
+}
+
+.dest-timeline-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+}
+
+.dest-timeline-track {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.25rem;
+  position: relative;
+}
+
+.dest-timeline-item {
+  background: rgba(13, 27, 42, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  padding: 1.25rem;
+  position: relative;
+  transition: all 0.25s ease;
+}
+
+.dest-timeline-item:hover {
+  border-color: #FF6B1A;
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(255, 107, 26, 0.2);
+}
+
+.dest-timeline-era-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #FF6B1A;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+
+.dest-timeline-item-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 0.35rem 0;
+}
+
+.dest-timeline-item-desc {
+  font-size: 0.82rem;
+  color: #B8C4D6;
+  line-height: 1.5;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .dest-history-section {
+    padding: 1.5rem;
+  }
+  .dest-timeline-track {
+    grid-template-columns: 1fr;
+  }
+}
