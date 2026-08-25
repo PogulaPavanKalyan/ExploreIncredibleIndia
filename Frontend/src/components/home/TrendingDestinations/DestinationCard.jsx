@@ -66,6 +66,7 @@ export default function DestinationCard({ destination, sizeClass = '' }) {
         id={`dest-card-${destination.slug}`}
         aria-label={`Explore ${destination.name} in ${stateName}`}
       >
+        {/* Full Media Image & Overlay */}
         <div className="card-media-box">
           <DestinationImage 
             destination={destination}
@@ -76,6 +77,13 @@ export default function DestinationCard({ destination, sizeClass = '' }) {
           />
           <div className="card-gradient-overlay" />
           
+          {/* Top Left Floating Rating Badge */}
+          <div className="card-rating-badge">
+            <span className="star">★</span>
+            <span className="rating-num">{rating}</span>
+          </div>
+
+          {/* Top Right Floating Bookmark Button */}
           <button 
             type="button"
             className={`card-bookmark-btn ${isSaved ? 'saved' : ''}`}
@@ -86,13 +94,9 @@ export default function DestinationCard({ destination, sizeClass = '' }) {
               <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
             </svg>
           </button>
-
-          <div className="card-rating-badge">
-            <span className="star">★</span>
-            <span className="rating-num">{rating}</span>
-          </div>
         </div>
 
+        {/* Bottom Card Body Content */}
         <div className="card-body">
           <div className="card-header-tags">
             <span className="card-region-tag">{stateName}</span>
@@ -107,7 +111,7 @@ export default function DestinationCard({ destination, sizeClass = '' }) {
           
           <div className="card-footer-row">
             <span className="card-explore-link">
-              <span>Explore Destination</span>
+              <span>EXPLORE DESTINATION</span>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="9 18 15 12 9 6"></polyline>
               </svg>

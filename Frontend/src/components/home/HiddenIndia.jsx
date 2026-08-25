@@ -34,7 +34,7 @@ export default function HiddenIndia({ destinations: initialDestinations = [] }) 
 
   return (
     <section className="trending-section" style={{ background: '#F4F1EA', padding: '6rem 0 7rem', borderTop: '1px solid rgba(7,20,38,0.06)' }}>
-      <div className="container" style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 1.5rem' }}>
+      <div className="container" style={{ maxWidth: '1380px', margin: '0 auto', padding: '0 1.5rem' }}>
         <div className="cinematic-header" style={{ marginBottom: '3.5rem', textAlign: 'center' }}>
           <motion.span 
             initial={{ opacity: 0 }}

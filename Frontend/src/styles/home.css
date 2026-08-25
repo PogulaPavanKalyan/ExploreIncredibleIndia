@@ -18,24 +18,109 @@
   border-bottom: 1px solid rgba(7, 20, 38, 0.06);
 }
 
+.quick-explore-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 2rem;
+  padding: 0;
+  width: 100%;
+}
+
 .quick-explore-title {
   font-size: 0.95rem;
   letter-spacing: 0.25em;
   text-transform: uppercase;
   color: var(--db-text-dark, #071426);
   font-weight: 800;
-  margin-bottom: 2rem;
+  margin-bottom: 0;
   text-align: center;
+}
+
+.quick-explore-controls {
+  position: absolute;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.carousel-arrow-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #071426;
+  border: 1px solid rgba(7, 20, 38, 0.15);
+  box-shadow: 0 4px 12px rgba(7, 20, 38, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.carousel-arrow-btn:hover {
+  background: #FF6B1A;
+  color: #ffffff;
+  border-color: #FF6B1A;
+  transform: scale(1.08);
+  box-shadow: 0 6px 18px rgba(255, 107, 26, 0.35);
+}
+
+.quick-explore-slider-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.floating-arrow-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  color: #071426;
+  border: 1px solid rgba(7, 20, 38, 0.15);
+  box-shadow: 0 8px 24px rgba(7, 20, 38, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.floating-arrow-btn.side-left {
+  left: -1rem;
+}
+
+.floating-arrow-btn.side-right {
+  right: -1rem;
+}
+
+.floating-arrow-btn:hover {
+  background: #FF6B1A;
+  color: #ffffff;
+  border-color: #FF6B1A;
+  transform: translateY(-50%) scale(1.12);
+  box-shadow: 0 10px 28px rgba(255, 107, 26, 0.4);
 }
 
 .quick-explore-grid {
   display: flex;
   gap: 1.5rem;
   overflow-x: auto;
-  padding: 1rem 2rem 2rem 2rem;
+  padding: 1rem 0 2rem 0;
   scroll-snap-type: x mandatory;
   -ms-overflow-style: none;
   scrollbar-width: none;
+  width: 100%;
 }
 
 .quick-explore-grid::-webkit-scrollbar {

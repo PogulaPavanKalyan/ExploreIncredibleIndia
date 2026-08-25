@@ -22,6 +22,7 @@ import RegionPage from './pages/RegionPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import UserDashboardPage from './pages/UserDashboardPage';
+import { State3DExplorer } from './components/JourneyAcrossIndia/State3DExplorer';
 import PWAInstallPrompt from './components/pwa/PWAInstallPrompt';
 import { trackPageView } from './services/analyticsService';
 
@@ -63,6 +64,7 @@ export default function App() {
               <Route path="favorites" element={<FavoritesPage />} />
               <Route path="regions/:slug" element={<RegionPage />} />
               <Route path="states/:slug" element={<StatePage />} />
+              <Route path="state-3d/:stateSlug" element={<State3DExplorer />} />
               <Route path="india/:slug" element={<StatePage />} />
               <Route path="cities/:slug" element={<CityPage />} />
               <Route path="places/:slug" element={<DestinationDetailsPage />} />

@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { getExperiences } from '../../services/experienceService';
 
 // Verified 10 categories with exact India-specific imagery & fallbacks
@@ -20,6 +21,7 @@ const DEFAULT_EXPERIENCES = [
 export default function QuickExplore() {
   const navigate = useNavigate();
   const [experiences, setExperiences] = useState(DEFAULT_EXPERIENCES);
+  const scrollContainerRef = useRef(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -49,47 +51,98 @@ export default function QuickExplore() {
     return () => { isMounted = false; };
   }, []);
 
+  const handleScroll = (direction) => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = direction === 'left' ? -360 : 360;
+      scrollContainerRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
+
   return (
     <section className="quick-explore-section" aria-label="Quick Explore by Experience">
-      <div className="container" style={{ maxWidth: '100%' }}>
-        <h3 className="quick-explore-title">EXPLORE BY EXPERIENCE</h3>
-        
-        <div className="quick-explore-grid" role="list">
-          {experiences.map((exp, index) => (
-            <motion.div
-              key={exp.slug || exp.id || index}
-              className="explore-item"
-              role="listitem"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: Math.min(index * 0.05, 0.4), duration: 0.5 }}
-              onClick={() => navigate(`/explore?category=${exp.slug}`)}
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  navigate(`/explore?category=${exp.slug}`);
-                }
-              }}
-              aria-label={`Explore ${exp.name} destinations`}
+      <div className="container">
+        <div className="quick-explore-header-row">
+          <h3 className="quick-explore-title">EXPLORE BY EXPERIENCE</h3>
+          <div className="quick-explore-controls">
+            <button
+              type="button"
+              onClick={() => handleScroll('left')}
+              className="carousel-arrow-btn left"
+              aria-label="Scroll left"
+              title="Scroll Left"
             >
-              <img
-                src={exp.image}
-                alt={exp.alt || exp.name}
-                loading="lazy"
-                onError={(e) => {
-                  const fallbackItem = DEFAULT_EXPERIENCES.find(d => d.slug === exp.slug);
-                  if (fallbackItem && e.currentTarget.src !== fallbackItem.image) {
-                    e.currentTarget.src = fallbackItem.image;
+              <ChevronLeft size={22} />
+            </button>
+            <button
+              type="button"
+              onClick={() => handleScroll('right')}
+              className="carousel-arrow-btn right"
+              aria-label="Scroll right"
+              title="Scroll Right"
+            >
+              <ChevronRight size={22} />
+            </button>
+          </div>
+        </div>
+
+        <div className="quick-explore-slider-wrapper">
+          <button
+            type="button"
+            onClick={() => handleScroll('left')}
+            className="floating-arrow-btn side-left"
+            aria-label="Scroll left"
+            title="Scroll Left"
+          >
+            <ChevronLeft size={24} />
+          </button>
+
+          <div className="quick-explore-grid" ref={scrollContainerRef} role="list">
+            {experiences.map((exp, index) => (
+              <motion.div
+                key={exp.slug || exp.id || index}
+                className="explore-item"
+                role="listitem"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: Math.min(index * 0.05, 0.4), duration: 0.5 }}
+                onClick={() => navigate(`/explore?category=${exp.slug}`)}
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    navigate(`/explore?category=${exp.slug}`);
                   }
                 }}
-              />
-              <div className="explore-item-overlay">
-                <h3>{exp.name}</h3>
-              </div>
-            </motion.div>
-          ))}
+                aria-label={`Explore ${exp.name} destinations`}
+              >
+                <img
+                  src={exp.image}
+                  alt={exp.alt || exp.name}
+                  loading="lazy"
+                  onError={(e) => {
+                    const fallbackItem = DEFAULT_EXPERIENCES.find(d => d.slug === exp.slug);
+                    if (fallbackItem && e.currentTarget.src !== fallbackItem.image) {
+                      e.currentTarget.src = fallbackItem.image;
+                    }
+                  }}
+                />
+                <div className="explore-item-overlay">
+                  <h3>{exp.name}</h3>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            onClick={() => handleScroll('right')}
+            className="floating-arrow-btn side-right"
+            aria-label="Scroll right"
+            title="Scroll Right"
+          >
+            <ChevronRight size={24} />
+          </button>
         </div>
       </div>
     </section>

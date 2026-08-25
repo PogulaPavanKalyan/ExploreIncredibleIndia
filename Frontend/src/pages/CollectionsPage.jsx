@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Compass, Sparkles, Layers, ChevronRight, MapPin, ArrowRight } from 'lucide-react';
+import { Compass, Sparkles, Layers, ChevronRight, ChevronLeft, MapPin, ArrowRight } from 'lucide-react';
 import { getCollections, getCollectionBySlug } from '../services/collectionService';
 import { getDestinations } from '../services/destinationService';
 import DestinationCard from '../components/home/TrendingDestinations/DestinationCard';
+import '../components/home/TrendingDestinations/TrendingDestinations.css';
 import PageTransition from '../components/PageTransition';
 import './CollectionsPage.css';
 
 const FALLBACK_CONFIG = {
   'jyotirlingas': {
     title: '12 Sacred Jyotirlingas of India',
+    tabLabel: '12 Sacred Jyotirlingas',
     subtitle: 'The supreme radiant manifestations of the eternal cosmic light of Lord Shiva across India.',
     badge: '★ SACRED JYOTIRLINGA YATRA',
     filterParam: { pilgrimage_collection: 'jyotirlinga' },
@@ -18,6 +20,7 @@ const FALLBACK_CONFIG = {
   },
   'char-dham': {
     title: 'Maha Char Dham & Chota Char Dham',
+    tabLabel: 'Maha Char Dham',
     subtitle: 'The four cardinal spiritual gateways established by Adi Shankaracharya in the four corners of India.',
     badge: '★ CARDINAL DHAM PILGRIMAGE',
     filterParam: { pilgrimage_collection: 'char_dham' },
@@ -25,6 +28,7 @@ const FALLBACK_CONFIG = {
   },
   'south-indian-temples': {
     title: 'Grand South Indian Temples',
+    tabLabel: 'Grand South Temples',
     subtitle: 'Architectural Marvels of Dravidian, Chola & Vijayanagara Dynasties.',
     badge: '★ DRAVIDIAN TEMPLE HERITAGE',
     filterParam: { region: 'south-india', category: 'temples' },
@@ -32,6 +36,7 @@ const FALLBACK_CONFIG = {
   },
   'best-beaches': {
     title: 'Best Indian Beaches & Coastal Havens',
+    tabLabel: 'Best Indian Beaches',
     subtitle: 'Over 7,500 km of sun-kissed coastlines from Goa to Kerala and the Bay of Bengal.',
     badge: '★ COASTAL EXPEDITIONS',
     filterParam: { category: 'beaches' },
@@ -39,6 +44,7 @@ const FALLBACK_CONFIG = {
   },
   'himalayan-escapes': {
     title: 'Himalayan Peaks & High Altitude Treks',
+    tabLabel: 'Himalayan Peaks',
     subtitle: 'Snow-capped peaks, cold mountain deserts, and serene pine valleys.',
     badge: '★ HIMALAYAN FRONTIER',
     filterParam: { category: 'mountains' },
@@ -46,6 +52,7 @@ const FALLBACK_CONFIG = {
   },
   'unesco-heritage': {
     title: 'UNESCO World Heritage of India',
+    tabLabel: 'UNESCO World Heritage',
     subtitle: 'Centuries-Old Monolithic Monuments, Cave Frescoes & Ancient Empires.',
     badge: '★ UNESCO WORLD HERITAGE',
     filterParam: { tag: 'unesco' },
@@ -62,6 +69,15 @@ export default function CollectionsPage() {
   const [collectionData, setCollectionData] = useState(null);
   const [destinations, setDestinations] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  // Smooth Horizontal Tab Scroll Handler
+  const scrollTabs = (direction) => {
+    const track = document.getElementById('collections-tabs-track');
+    if (track) {
+      const scrollAmount = direction === 'left' ? -280 : 280;
+      track.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
 
   // 1. Fetch available collections from Django API
   useEffect(() => {
@@ -115,20 +131,20 @@ export default function CollectionsPage() {
 
   const navTabs = collectionsList.length > 0 
     ? collectionsList.map(c => ({ id: c.slug, label: c.name, count: c.destination_count }))
-    : Object.keys(FALLBACK_CONFIG).map(k => ({ id: k, label: FALLBACK_CONFIG[k].title.split(' ')[0] + ' ' + (FALLBACK_CONFIG[k].title.split(' ')[1] || ''), count: null }));
+    : Object.keys(FALLBACK_CONFIG).map(k => ({ id: k, label: FALLBACK_CONFIG[k].tabLabel || FALLBACK_CONFIG[k].title, count: null }));
 
   return (
     <PageTransition>
       <div className="collections-page">
         
-        {/* Dynamic Breadcrumbs */}
-        <div className="collections-breadcrumbs">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center gap-2 text-xs sm:text-sm text-slate-400">
-            <Link to="/" className="hover:text-orange-400 transition-colors">Home</Link>
-            <ChevronRight className="w-3.5 h-3.5 flex-shrink-0" />
-            <Link to="/explore-india" className="hover:text-orange-400 transition-colors">Explore India</Link>
-            <ChevronRight className="w-3.5 h-3.5 flex-shrink-0" />
-            <span className="text-orange-400 font-bold">{collectionData?.name || activeSlug}</span>
+        {/* Dynamic Breadcrumbs Bar */}
+        <div className="collections-breadcrumbs-bar">
+          <div className="collections-breadcrumbs-container">
+            <Link to="/" className="breadcrumb-item-link">Home</Link>
+            <ChevronRight className="breadcrumb-separator" size={14} />
+            <Link to="/explore-india" className="breadcrumb-item-link">Explore India</Link>
+            <ChevronRight className="breadcrumb-separator" size={14} />
+            <span className="breadcrumb-pill active-pill">{collectionData?.name || activeSlug}</span>
           </div>
         </div>
 
@@ -146,30 +162,73 @@ export default function CollectionsPage() {
             <h1 className="collections-title">{collectionData?.name || 'India Travel Collection'}</h1>
             <p className="collections-subtitle">{collectionData?.subtitle || collectionData?.description}</p>
 
-            {/* Collection Navigation Tabs */}
-            <div className="collections-tabs-bar">
-              {navTabs.map((tab) => {
-                const isActive = activeSlug === tab.id;
-                return (
-                  <button
-                    key={tab.id}
-                    onClick={() => navigate(`/collections/${tab.id}`)}
-                    className={`collection-tab-pill ${isActive ? 'active' : ''}`}
-                  >
-                    <span>{tab.label}</span>
-                    {tab.count !== null && (
-                      <span className="tab-count-tag">{tab.count}</span>
-                    )}
-                  </button>
-                );
-              })}
+            {/* Collection Navigation Container with Left/Right Arrows & Mobile Dropdown */}
+            <div className="collections-nav-container">
+              
+              {/* Mobile Select Dropdown */}
+              <div className="collections-mobile-dropdown">
+                <Layers className="dropdown-icon" size={16} />
+                <select
+                  value={activeSlug}
+                  onChange={(e) => navigate(`/collections/${e.target.value}`)}
+                  className="collections-select-input"
+                >
+                  {navTabs.map((tab) => (
+                    <option key={tab.id} value={tab.id}>
+                      {tab.label} {tab.count !== null ? `(${tab.count})` : ''}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Desktop Scrollable Bar with Arrow Controls */}
+              <div className="collections-tabs-wrapper">
+                <button
+                  type="button"
+                  onClick={() => scrollTabs('left')}
+                  className="tabs-scroll-arrow left"
+                  aria-label="Scroll left"
+                  title="Scroll Left"
+                >
+                  <ChevronLeft size={18} />
+                </button>
+
+                <div id="collections-tabs-track" className="collections-tabs-bar">
+                  {navTabs.map((tab) => {
+                    const isActive = activeSlug === tab.id;
+                    return (
+                      <button
+                        key={tab.id}
+                        onClick={() => navigate(`/collections/${tab.id}`)}
+                        className={`collection-tab-pill ${isActive ? 'active' : ''}`}
+                      >
+                        <span>{tab.label}</span>
+                        {tab.count !== null && (
+                          <span className="tab-count-tag">{tab.count}</span>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => scrollTabs('right')}
+                  className="tabs-scroll-arrow right"
+                  aria-label="Scroll right"
+                  title="Scroll Right"
+                >
+                  <ChevronRight size={18} />
+                </button>
+              </div>
+
             </div>
           </div>
         </section>
 
         {/* Collection Narrative Card */}
         {collectionData?.description && (
-          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 relative z-10">
+          <section className="collections-container -mt-6 relative z-10">
             <div className="collection-intro-card">
               <div className="flex items-center gap-2 text-orange-400 font-bold text-xs uppercase tracking-wider mb-2">
                 <Compass className="w-4 h-4" /> ABOUT THIS COLLECTION
@@ -190,24 +249,25 @@ export default function CollectionsPage() {
         )}
 
         {/* Destination Cards Section */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-          <div className="flex justify-between items-center mb-6">
-            <h3 className="text-xl sm:text-2xl font-black text-white">
+        <section className="collections-container py-10">
+          <div className="collections-results-header">
+            <h3 className="collections-results-heading">
               Places in this Collection ({destinations.length})
             </h3>
-            <Link to="/explore-india" className="text-sm font-bold text-orange-400 hover:text-orange-300 flex items-center gap-1">
-              Explore All India <ArrowRight className="w-4 h-4" />
+            <Link to="/explore-india" className="collections-explore-all-link">
+              <span>Explore All India</span>
+              <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
 
           {isLoading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="collections-destinations-grid">
               {[...Array(8)].map((_, i) => (
-                <div key={i} className="h-80 bg-slate-800/40 rounded-2xl animate-pulse" />
+                <div key={i} className="skeleton-card" />
               ))}
             </div>
           ) : destinations.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="collections-destinations-grid">
               {destinations.map((dest) => (
                 <DestinationCard
                   key={dest.id || dest.slug}

@@ -156,13 +156,14 @@
 
 .region-poly {
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  transition: all 0.25s ease;
 }
 
 .region-poly:hover,
 .region-poly.hovered {
-  stroke-width: 2.5;
-  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.4));
 }
 
 .map-marker-pin {

@@ -84,25 +84,28 @@ def get_image_url(dest, request=None):
         return None
 
     if dest.main_image:
-        external = resolve(dest.main_image.name)
+        img_str = getattr(dest.main_image, 'name', None) or str(dest.main_image)
+        external = resolve(img_str)
         if external:
             return external
-        # Real local file — return absolute URL
         try:
-            return dest.main_image.url  # /media/destinations/photo.jpg
+            return dest.main_image.url
         except Exception:
-            pass
+            if isinstance(img_str, str) and img_str:
+                return img_str
 
     # Fallback: first DestinationImage
     first_img = dest.images.filter().first()
     if first_img and first_img.image:
-        external = resolve(first_img.image.name)
+        img_str = getattr(first_img.image, 'name', None) or str(first_img.image)
+        external = resolve(img_str)
         if external:
             return external
         try:
             return first_img.image.url
         except Exception:
-            pass
+            if isinstance(img_str, str) and img_str:
+                return img_str
 
     return ''
 

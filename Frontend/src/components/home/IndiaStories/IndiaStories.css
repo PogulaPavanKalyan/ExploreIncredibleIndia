@@ -5,8 +5,8 @@
 
 .india-stories-section {
   position: relative;
-  padding: 6.5rem 0 7.5rem 0;
-  background: radial-gradient(circle at 50% 15%, rgba(249, 115, 22, 0.04) 0%, #020617 75%);
+  padding: 2.5rem 0 2rem 0;
+  /* background: radial-gradient(circle at 50% 15%, rgb(255, 255, 255) 0%, #020617 75%); */
   color: #f8fafc;
   overflow: hidden;
 }
@@ -16,7 +16,7 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background-image: 
+  background-image:
     radial-gradient(1px 1px at 25px 25px, rgba(255, 255, 255, 0.03) 1px, transparent 0);
   background-size: 50px 50px;
   z-index: 1;
@@ -42,10 +42,12 @@
     transform: rotate(0deg) scale(1) translateY(0);
     border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
   }
+
   50% {
     transform: rotate(180deg) scale(1.1) translateY(-25px);
     border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
   }
+
   100% {
     transform: rotate(360deg) scale(0.95) translateY(10px);
     border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
@@ -53,7 +55,7 @@
 }
 
 .stories-container {
-  max-width: 1400px;
+  max-width: 1380px;
   margin: 0 auto;
   padding: 0 1.5rem;
   position: relative;
@@ -220,13 +222,11 @@
 .featured-story-gradient {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(2, 6, 23, 0.98) 0%,
-    rgba(2, 6, 23, 0.8) 35%,
-    rgba(2, 6, 23, 0.3) 65%,
-    rgba(2, 6, 23, 0.1) 100%
-  );
+  background: linear-gradient(to top,
+      rgba(2, 6, 23, 0.98) 0%,
+      rgba(2, 6, 23, 0.8) 35%,
+      rgba(2, 6, 23, 0.3) 65%,
+      rgba(2, 6, 23, 0.1) 100%);
   z-index: 1;
 }
 
@@ -687,9 +687,11 @@
   .featured-story-showcase {
     height: 460px;
   }
+
   .featured-story-content {
     padding: 2.5rem;
   }
+
   .story-card-item {
     flex: 0 0 320px;
     width: 320px;
@@ -700,27 +702,33 @@
   .india-stories-section {
     padding: 4.5rem 0 5.5rem 0;
   }
+
   .stories-header {
     margin-bottom: 2rem;
   }
+
   .featured-story-showcase {
     height: 480px;
     border-radius: 20px;
   }
+
   .featured-story-content {
     padding: 1.75rem;
   }
+
   .featured-story-desc {
     -webkit-line-clamp: 2;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
+
   .featured-story-footer {
     flex-direction: column;
     align-items: flex-start;
     gap: 1rem;
   }
+
   .story-card-item {
     flex: 0 0 290px;
     width: 290px;
@@ -731,25 +739,32 @@
   .stories-container {
     padding: 0 1rem;
   }
+
   .stories-main-title {
     font-size: 2.2rem;
   }
+
   .featured-story-showcase {
     height: 440px;
   }
+
   .featured-story-content {
     padding: 1.25rem;
   }
+
   .featured-story-title {
     font-size: 1.5rem;
   }
+
   .story-card-item {
     flex: 0 0 270px;
     width: 270px;
   }
+
   .story-card-media {
     height: 180px;
   }
+
   .story-card-body {
     padding: 1.2rem;
   }
@@ -759,6 +774,7 @@
   .stories-floating-geo-3d {
     animation: none;
   }
+
   .featured-story-bg,
   .story-card-img,
   .featured-story-showcase,

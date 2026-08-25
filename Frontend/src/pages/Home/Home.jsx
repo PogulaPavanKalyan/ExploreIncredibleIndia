@@ -8,7 +8,6 @@ import '../../styles/home.css';
 
 // Lazy loaded components for performance
 const JourneyAcrossIndia = lazy(() => import('../../components/JourneyAcrossIndia/JourneyAcrossIndia').then(module => ({ default: module.JourneyAcrossIndia })));
-const ExperienceSection = lazy(() => import('../../components/experiences/ExperienceSection'));
 const QuickExplore = lazy(() => import('../../components/home/QuickExplore'));
 const RegionExplorer = lazy(() => import('../../components/home/RegionExplorer/RegionExplorer'));
 const TrendingDestinations = lazy(() => import('../../components/home/TrendingDestinations/TrendingDestinations'));
@@ -80,9 +79,6 @@ export default function HomePage() {
 
 
         <Suspense fallback={<div style={{ height: '300px', background: '#020617' }} />}>
-          {/* Explore By Experience Premium Section */}
-          <ExperienceSection />
-
           {/* 2. Quick Explore (Phase 10) */}
           <QuickExplore />
 

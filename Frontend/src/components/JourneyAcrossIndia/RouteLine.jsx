@@ -4,17 +4,18 @@ import { Line } from '@react-three/drei';
 import { latLngToVector3 } from './geoUtils';
 import * as THREE from 'three';
 
-export function RouteLine({ destinations, activeIndex, isCinematic, reducedMotion }) {
+export function RouteLine({ destinations, isCinematic, reducedMotion }) {
   const curve = useMemo(() => {
     if (!Array.isArray(destinations) || destinations.length < 2) return null;
     
-    // Create points with an arc in Y
-    const points = destinations.map(d => {
-      const pos = latLngToVector3(d.latitude, d.longitude, 0);
-      return new THREE.Vector3(...pos);
+    // Build 3D points with elevated parabolic arc heights
+    const points = destinations.map((d, index) => {
+      const pos = latLngToVector3(d.latitude, d.longitude, 0.2);
+      // Give middle waypoints higher parabolic arc elevation
+      const arcBonus = Math.sin((index / (destinations.length - 1)) * Math.PI) * 0.8;
+      return new THREE.Vector3(pos[0], pos[1] + arcBonus, pos[2]);
     });
     
-    // For a simple straight-ish line between points
     return new THREE.CatmullRomCurve3(points, false, 'catmullrom', 0.5);
   }, [destinations]);
 
@@ -23,7 +24,6 @@ export function RouteLine({ destinations, activeIndex, isCinematic, reducedMotio
   
   useFrame((state, delta) => {
     if (isCinematic && !reducedMotion && curve && movingPointRef.current) {
-      // Progress from 0 to 1 over time
       progressRef.current = (state.clock.elapsedTime * 0.1) % 1;
       const point = curve.getPoint(progressRef.current);
       movingPointRef.current.position.copy(point);
@@ -32,30 +32,40 @@ export function RouteLine({ destinations, activeIndex, isCinematic, reducedMotio
 
   if (!curve || !isCinematic) return null;
 
-  const points = curve.getPoints(50);
-  
-  // We only show the route line in cinematic mode
+  const points = curve.getPoints(100);
+
   return (
     <group>
+      {/* Flight trajectory dashed curve */}
       <Line
         points={points}
-        color="#cda87c"
-        lineWidth={2}
+        color="#38bdf8"
+        lineWidth={3.0}
         transparent
-        opacity={0.3}
+        opacity={0.8}
         dashed={true}
         dashSize={0.5}
-        dashScale={1}
-        dashOffset={0}
+        dashScale={1.5}
+      />
+
+      {/* Secondary glowing ambient trail */}
+      <Line
+        points={points}
+        color="#fbbf24"
+        lineWidth={6}
+        transparent
+        opacity={0.25}
       />
       
-      {/* Moving Point */}
+      {/* Traveling Energy Orb Light */}
       {!reducedMotion && (
-        <mesh ref={movingPointRef}>
-          <sphereGeometry args={[0.08, 16, 16]} />
-          <meshBasicMaterial color="#ffffff" />
-          <pointLight color="#ffffff" intensity={2} distance={2} />
-        </mesh>
+        <group ref={movingPointRef}>
+          <mesh>
+            <sphereGeometry args={[0.12, 16, 16]} />
+            <meshBasicMaterial color="#ffffff" />
+          </mesh>
+          <pointLight color="#38bdf8" intensity={4} distance={4} />
+        </group>
       )}
     </group>
   );

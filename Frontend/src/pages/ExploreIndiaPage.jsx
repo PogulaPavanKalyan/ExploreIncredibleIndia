@@ -3,8 +3,37 @@ import { useSearchParams, useParams, Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Compass, MapPin, Sparkles, Filter, Grid, List, Search, 
-  X, ChevronRight, Navigation, Layers, RotateCcw, ArrowRight
+  X, ChevronRight, Navigation, Layers, RotateCcw, ArrowRight, Home
 } from 'lucide-react';
+
+function formatBreadcrumbLabel(str) {
+  if (!str || str === 'all') return '';
+  const labelMap = {
+    'mountains': 'Mountains',
+    'beaches': 'Beaches',
+    'temples': 'Temples',
+    'heritage': 'Heritage',
+    'nature': 'Nature',
+    'wildlife': 'Wildlife',
+    'waterfalls': 'Waterfalls',
+    'adventure': 'Adventure',
+    'food-culture': 'Food & Culture',
+    'spiritual': 'Spiritual',
+    'south-india': 'South India',
+    'north-india': 'North India',
+    'west-india': 'West India',
+    'east-india': 'East India',
+    'central-india': 'Central India',
+    'northeast-india': 'Northeast India',
+    'jyotirlingas': '12 Jyotirlingas'
+  };
+  if (labelMap[str.toLowerCase()]) return labelMap[str.toLowerCase()];
+
+  return str
+    .split('-')
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+    .join(' ');
+}
 import { 
   getDestinations, 
   getPlatformStats, 
@@ -13,6 +42,7 @@ import {
 } from '../services/destinationService';
 import { getStates } from '../services/stateService';
 import DestinationCard from '../components/home/TrendingDestinations/DestinationCard';
+import '../components/home/TrendingDestinations/TrendingDestinations.css';
 import PageTransition from '../components/PageTransition';
 import InteractiveRegionMap from '../components/explore/InteractiveRegionMap';
 import IndiaByInterest from '../components/explore/IndiaByInterest';
@@ -292,28 +322,47 @@ export default function ExploreIndiaPage() {
     <PageTransition>
       <div className="explore-page-root">
         
-        {/* Dynamic Breadcrumbs */}
+        {/* Dynamic Sleek Glassmorphic Breadcrumbs Bar */}
         <div className="explore-breadcrumbs-bar">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center gap-2 text-xs sm:text-sm text-slate-400 overflow-x-auto">
-            <Link to="/" className="hover:text-orange-400 transition-colors">Home</Link>
-            <ChevronRight className="w-3.5 h-3.5 flex-shrink-0" />
-            <Link to="/explore-india" className="text-slate-200 font-semibold hover:text-orange-400">Explore India</Link>
+          <div className="explore-breadcrumbs-container">
+            <Link to="/" className="breadcrumb-item-link">
+              <Home size={14} className="breadcrumb-icon" />
+              <span>Home</span>
+            </Link>
+
+            <ChevronRight size={14} className="breadcrumb-separator" />
+
+            <Link to="/explore-india" className="breadcrumb-item-link active-base">
+              <Compass size={14} className="breadcrumb-icon" />
+              <span>Explore Atlas</span>
+            </Link>
+
             {selectedRegion !== 'all' && (
               <>
-                <ChevronRight className="w-3.5 h-3.5 flex-shrink-0" />
-                <span className="text-orange-400 capitalize">{selectedRegion.replace('-', ' ')}</span>
+                <ChevronRight size={14} className="breadcrumb-separator" />
+                <span className="breadcrumb-pill region-pill">
+                  <MapPin size={12} />
+                  <span>{formatBreadcrumbLabel(selectedRegion)}</span>
+                </span>
               </>
             )}
+
             {activeStateObj && (
               <>
-                <ChevronRight className="w-3.5 h-3.5 flex-shrink-0" />
-                <span className="text-amber-400 font-bold">{activeStateObj.name}</span>
+                <ChevronRight size={14} className="breadcrumb-separator" />
+                <span className="breadcrumb-pill state-pill">
+                  <span>📍 {activeStateObj.name}</span>
+                </span>
               </>
             )}
+
             {selectedCategory !== 'all' && (
               <>
-                <ChevronRight className="w-3.5 h-3.5 flex-shrink-0" />
-                <span className="text-teal-400 capitalize">{selectedCategory}</span>
+                <ChevronRight size={14} className="breadcrumb-separator" />
+                <span className="breadcrumb-pill category-pill">
+                  <Sparkles size={12} />
+                  <span>{formatBreadcrumbLabel(selectedCategory)}</span>
+                </span>
               </>
             )}
           </div>
@@ -322,7 +371,7 @@ export default function ExploreIndiaPage() {
         {/* Cinematic Hero Section */}
         <section className="explore-hero-section">
           <div className="explore-hero-glow" />
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+          <div className="explore-container relative z-10 text-center">
             
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -367,7 +416,7 @@ export default function ExploreIndiaPage() {
         </section>
 
         {/* Main Content Area */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="explore-container py-8">
           
           {/* Interactive Region Map & Mobile Selector */}
           <InteractiveRegionMap

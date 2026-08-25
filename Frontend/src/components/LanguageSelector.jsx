@@ -36,36 +36,37 @@ export default function LanguageSelector() {
         style={{
           display: 'inline-flex',
           alignItems: 'center',
-          gap: '0.4rem',
-          padding: '0.4rem 0.75rem',
-          borderRadius: '20px',
-          background: 'rgba(255, 255, 255, 0.9)',
-          border: '1px solid var(--border-color, #E2E8F0)',
+          gap: '0.45rem',
+          padding: '0.45rem 0.85rem',
+          borderRadius: '9999px',
+          background: 'rgba(255, 255, 255, 0.08)',
+          border: '1px solid rgba(255, 255, 255, 0.15)',
+          backdropFilter: 'blur(8px)',
           fontSize: '0.85rem',
           fontWeight: 600,
-          color: '#0F172A',
+          color: '#f8fafc',
           cursor: 'pointer',
-          boxShadow: 'var(--shadow-sm)',
-          transition: 'all 0.2s ease'
+          transition: 'all 0.2s ease',
+          boxShadow: '0 2px 10px rgba(0, 0, 0, 0.2)'
         }}
         title="Select Regional Language"
       >
-        <Globe size={16} color="#FF6B35" />
+        <Globe size={15} color="#ff8c42" />
         <span>{activeLang.flag} {activeLang.label}</span>
-        <ChevronDown size={14} color="#64748B" />
+        <ChevronDown size={14} color="#94a3b8" />
       </button>
 
       {isOpen && (
         <div style={{
           position: 'absolute',
-          top: 'calc(100% + 6px)',
+          top: 'calc(100% + 8px)',
           right: 0,
-          background: '#ffffff',
-          borderRadius: '14px',
-          boxShadow: '0 12px 30px rgba(15, 23, 42, 0.18)',
-          border: '1px solid #E2E8F0',
-          zIndex: 200,
-          minWidth: '150px',
+          background: '#0f172a',
+          borderRadius: '16px',
+          boxShadow: '0 16px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.1)',
+          border: '1px solid rgba(255, 255, 255, 0.15)',
+          zIndex: 300,
+          minWidth: '160px',
           overflow: 'hidden',
           padding: '0.4rem 0'
         }}>
@@ -76,16 +77,15 @@ export default function LanguageSelector() {
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '0.6rem',
-                padding: '0.5rem 0.9rem',
+                gap: '0.65rem',
+                padding: '0.55rem 1rem',
                 fontSize: '0.88rem',
                 fontWeight: language === lang.code ? 700 : 500,
-                color: language === lang.code ? '#FF6B35' : '#334155',
-                background: language === lang.code ? 'rgba(255, 107, 53, 0.08)' : 'transparent',
+                color: language === lang.code ? '#ff8c42' : '#cbd5e1',
+                background: language === lang.code ? 'rgba(255, 107, 53, 0.15)' : 'transparent',
                 cursor: 'pointer',
                 transition: 'background 0.15s ease'
               }}
-              className="search-item-hover"
             >
               <span>{lang.flag}</span>
               <span>{lang.label}</span>

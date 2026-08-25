@@ -1,40 +1,148 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, ZoomIn, ZoomOut, RotateCcw, MapPin, Compass, Sparkles } from 'lucide-react';
+import { Search, ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
 import { getStates } from '../../services/stateService';
 import StateMapCard from './StateMapCard';
+import '../../styles/india-map.css';
 
-// Comprehensive Vector Path definitions for Indian States & UTs
-const STATE_PATHS = [
-  { id: 'andhra-pradesh', name: 'Andhra Pradesh', slug: 'andhra-pradesh', d: 'M 480 340 L 530 350 L 510 420 L 460 410 L 440 370 Z' },
-  { id: 'telangana', name: 'Telangana', slug: 'telangana', d: 'M 440 320 L 490 310 L 510 350 L 450 360 Z' },
-  { id: 'rajasthan', name: 'Rajasthan', slug: 'rajasthan', d: 'M 220 160 L 320 150 L 330 240 L 230 250 L 190 200 Z' },
-  { id: 'gujarat', name: 'Gujarat', slug: 'gujarat', d: 'M 160 240 L 230 250 L 220 310 L 150 300 L 140 270 Z' },
-  { id: 'maharashtra', name: 'Maharashtra', slug: 'maharashtra', d: 'M 250 280 L 410 270 L 440 340 L 280 350 Z' },
-  { id: 'goa', name: 'Goa', slug: 'goa', d: 'M 280 360 L 310 360 L 300 380 L 280 375 Z' },
-  { id: 'kerala', name: 'Kerala', slug: 'kerala', d: 'M 360 440 L 390 440 L 410 500 L 380 510 Z' },
-  { id: 'tamil-nadu', name: 'Tamil Nadu', slug: 'tamil-nadu', d: 'M 400 430 L 470 420 L 460 500 L 400 500 Z' },
-  { id: 'karnataka', name: 'Karnataka', slug: 'karnataka', d: 'M 310 350 L 410 340 L 400 440 L 330 420 Z' },
-  { id: 'delhi', name: 'Delhi', slug: 'delhi', d: 'M 350 145 L 370 145 L 365 160 L 350 155 Z' },
-  { id: 'himachal-pradesh', name: 'Himachal Pradesh', slug: 'himachal-pradesh', d: 'M 330 80 L 380 70 L 390 110 L 340 115 Z' },
-  { id: 'jammu-and-kashmir', name: 'Jammu & Kashmir', slug: 'jammu-and-kashmir', d: 'M 290 40 L 350 30 L 340 85 L 290 80 Z' },
-  { id: 'ladakh', name: 'Ladakh', slug: 'ladakh', d: 'M 340 20 L 430 15 L 420 70 L 345 65 Z' },
-  { id: 'uttar-pradesh', name: 'Uttar Pradesh', slug: 'uttar-pradesh', d: 'M 370 140 L 490 150 L 480 220 L 360 200 Z' },
-  { id: 'madhya-pradesh', name: 'Madhya Pradesh', slug: 'madhya-pradesh', d: 'M 320 220 L 460 210 L 450 280 L 300 270 Z' },
-  { id: 'west-bengal', name: 'West Bengal', slug: 'west-bengal', d: 'M 540 210 L 590 200 L 570 290 L 530 280 Z' },
-  { id: 'odisha', name: 'Odisha', slug: 'odisha', d: 'M 480 260 L 560 250 L 540 320 L 470 310 Z' },
-  { id: 'assam', name: 'Assam', slug: 'assam', d: 'M 620 180 L 690 175 L 680 210 L 610 205 Z' },
-  { id: 'punjab', name: 'Punjab', slug: 'punjab', d: 'M 300 100 L 340 95 L 335 140 L 295 135 Z' },
-  { id: 'bihar', name: 'Bihar', slug: 'bihar', d: 'M 480 180 L 560 175 L 550 220 L 470 210 Z' }
-];
+// Projection parameters for India bounding box
+const MIN_LNG = 68.0;
+const MAX_LNG = 97.5;
+const MIN_LAT = 6.8;
+const MAX_LAT = 37.5;
+const MAP_WIDTH = 800;
+const MAP_HEIGHT = 700;
+
+function projectLngLat(lng, lat) {
+  const x = ((lng - MIN_LNG) / (MAX_LNG - MIN_LNG)) * 720 + 40;
+  const y = 670 - ((lat - MIN_LAT) / (MAX_LAT - MIN_LAT)) * 620;
+  return [parseFloat(x.toFixed(1)), parseFloat(y.toFixed(1))];
+}
+
+function convertRingToSvgPath(ring) {
+  if (!ring || ring.length === 0) return '';
+  return ring.map((pt, i) => {
+    const [x, y] = projectLngLat(pt[0], pt[1]);
+    return `${i === 0 ? 'M' : 'L'} ${x} ${y}`;
+  }).join(' ') + ' Z';
+}
+
+function getEdgeKey(p1, p2) {
+  const k1 = `${p1[0].toFixed(3)},${p1[1].toFixed(3)}`;
+  const k2 = `${p2[0].toFixed(3)},${p2[1].toFixed(3)}`;
+  return k1 < k2 ? `${k1}|${k2}` : `${k2}|${k1}`;
+}
+
+function geometryToOuterPath(geometry) {
+  if (!geometry || !geometry.coordinates) return { fillD: '', strokeD: '' };
+  
+  const polys = geometry.type === 'Polygon' ? [geometry.coordinates] : geometry.coordinates;
+  const edgeCounts = new Map();
+  const edgeSegments = [];
+
+  polys.forEach((poly) => {
+    const ring = poly[0];
+    if (!ring || ring.length < 3) return;
+    for (let i = 0; i < ring.length - 1; i++) {
+      const p1 = ring[i];
+      const p2 = ring[i + 1];
+      const key = getEdgeKey(p1, p2);
+      edgeCounts.set(key, (edgeCounts.get(key) || 0) + 1);
+      edgeSegments.push({ p1, p2, key });
+    }
+  });
+
+  const outerLines = [];
+  edgeSegments.forEach(({ p1, p2, key }) => {
+    if (edgeCounts.get(key) === 1) {
+      const [x1, y1] = projectLngLat(p1[0], p1[1]);
+      const [x2, y2] = projectLngLat(p2[0], p2[1]);
+      outerLines.push(`M ${x1} ${y1} L ${x2} ${y2}`);
+    }
+  });
+
+  const fillD = polys.map(poly => convertRingToSvgPath(poly[0])).join(' ');
+  const strokeD = outerLines.join(' ');
+
+  return { fillD, strokeD };
+}
+
+function calculateCentroid(geometry) {
+  let sumX = 0, sumY = 0, count = 0;
+  const processRing = (ring) => {
+    ring.forEach(pt => {
+      const [x, y] = projectLngLat(pt[0], pt[1]);
+      sumX += x;
+      sumY += y;
+      count++;
+    });
+  };
+
+  if (geometry.type === 'Polygon') {
+    geometry.coordinates.forEach(processRing);
+  } else if (geometry.type === 'MultiPolygon') {
+    let largestRing = [];
+    geometry.coordinates.forEach(poly => {
+      if (poly[0] && poly[0].length > largestRing.length) {
+        largestRing = poly[0];
+      }
+    });
+    processRing(largestRing);
+  }
+
+  if (count === 0) return { x: 400, y: 350 };
+  return { x: parseFloat((sumX / count).toFixed(1)), y: parseFloat((sumY / count).toFixed(1)) };
+}
+
+function slugify(text) {
+  return (text || '')
+    .toString()
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '');
+}
 
 export default function InteractiveIndiaMap() {
   const navigate = useNavigate();
+  const [geoStates, setGeoStates] = useState([]);
   const [apiStates, setApiStates] = useState({});
   const [activeState, setActiveState] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [zoomLevel, setZoomLevel] = useState(1);
+  const [loading, setLoading] = useState(true);
 
+  // Load GeoJSON map data for India
+  useEffect(() => {
+    fetch('/india_states.json')
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.features) {
+          const parsed = data.features.map((feature, idx) => {
+            const name = feature.properties.ST_NM || feature.properties.NAME_1 || `State ${idx}`;
+            const slug = slugify(name);
+            const { fillD, strokeD } = geometryToOuterPath(feature.geometry);
+            const centroid = calculateCentroid(feature.geometry);
+            return {
+              id: slug || `state-${idx}`,
+              name,
+              slug,
+              fillD,
+              strokeD,
+              cx: centroid.x,
+              cy: centroid.y
+            };
+          });
+          setGeoStates(parsed);
+        }
+      })
+      .catch(err => console.error("Error loading India GeoJSON map:", err))
+      .finally(() => setLoading(false));
+  }, []);
+
+  // Load state stats from API
   useEffect(() => {
     const loadStates = async () => {
       try {
@@ -75,12 +183,14 @@ export default function InteractiveIndiaMap() {
     setActiveState(apiData);
   };
 
-  const filteredPaths = STATE_PATHS.map(st => {
-    const isMatched = searchQuery
-      ? st.name.toLowerCase().includes(searchQuery.toLowerCase())
-      : false;
-    return { ...st, isMatched };
-  });
+  const filteredStates = useMemo(() => {
+    return geoStates.map(st => {
+      const isMatched = searchQuery
+        ? st.name.toLowerCase().includes(searchQuery.toLowerCase())
+        : false;
+      return { ...st, isMatched };
+    });
+  }, [geoStates, searchQuery]);
 
   return (
     <div className="india-map-wrapper">
@@ -111,41 +221,54 @@ export default function InteractiveIndiaMap() {
 
       {/* SVG Viewport */}
       <div className="map-viewport">
-        <svg
-          viewBox="100 10 620 520"
-          className="india-svg-map"
-          style={{ transform: `scale(${zoomLevel})` }}
-        >
-          {filteredPaths.map((st) => {
-            const isSelected = activeState?.slug === st.slug;
-            return (
-              <path
-                key={st.id}
-                d={st.d}
-                className={`state-path ${isSelected ? 'selected' : ''} ${st.isMatched ? 'highlighted' : ''}`}
-                onMouseEnter={() => handleStateHover(st)}
-                onClick={() => handleStateClick(st.slug)}
-              >
-                <title>{st.name}</title>
-              </path>
-            );
-          })}
+        {loading ? (
+          <div style={{ color: '#94a3b8', fontSize: '1rem', fontWeight: 600 }}>
+            Loading Vector Map...
+          </div>
+        ) : (
+          <svg
+            viewBox="0 0 800 700"
+            className="india-svg-map"
+            style={{ transform: `scale(${zoomLevel})` }}
+          >
+            {filteredStates.map((st) => {
+              const isSelected = activeState?.slug === st.slug;
+              return (
+                <g
+                  key={st.id}
+                  className={`state-path-group ${isSelected ? 'selected' : ''} ${st.isMatched ? 'highlighted' : ''}`}
+                  onMouseEnter={() => handleStateHover(st)}
+                  onClick={() => handleStateClick(st.slug)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <path d={st.fillD} className="state-fill-path" />
+                  <path d={st.strokeD} className="state-path" />
+                  <title>{st.name}</title>
+                </g>
+              );
+            })}
 
-          {/* Marker Nodes */}
-          {STATE_PATHS.map((st) => (
-            <circle
-              key={`node-${st.id}`}
-              cx={parseInt(st.d.split(' ')[1]) + 20}
-              cy={parseInt(st.d.split(' ')[2]) + 10}
-              r={st.slug === activeState?.slug ? 7 : 4}
-              fill={st.slug === activeState?.slug ? '#FFB703' : '#FF6B35'}
-              stroke="#FFFFFF"
-              strokeWidth={1.5}
-              style={{ cursor: 'pointer', transition: 'all 0.2s ease' }}
-              onClick={() => handleStateClick(st.slug)}
-            />
-          ))}
-        </svg>
+            {/* Floating Marker Pins for States */}
+            {filteredStates.map((st) => {
+              if (!st.cx || !st.cy || isNaN(st.cx) || isNaN(st.cy)) return null;
+              const isSelected = activeState?.slug === st.slug;
+              return (
+                <g key={`node-group-${st.id}`} onClick={() => handleStateClick(st.slug)} style={{ cursor: 'pointer' }}>
+                  <circle
+                    cx={st.cx}
+                    cy={st.cy}
+                    r={isSelected ? 7 : 4}
+                    fill={isSelected ? '#FFB703' : '#FF6B35'}
+                    stroke="#FFFFFF"
+                    strokeWidth={1.5}
+                    style={{ transition: 'all 0.2s ease' }}
+                    onMouseEnter={() => handleStateHover(st)}
+                  />
+                </g>
+              );
+            })}
+          </svg>
+        )}
 
         {/* Hover Info Card */}
         <StateMapCard state={activeState} onClose={() => setActiveState(null)} />

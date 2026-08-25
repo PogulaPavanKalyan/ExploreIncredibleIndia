@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Compass, MapPin, Sparkles, ArrowRight, Layers } from 'lucide-react';
 import './InteractiveRegionMap.css';
@@ -11,8 +11,7 @@ const REGION_DEFINITIONS = [
     color: '#3b82f6',
     states: ['Jammu and Kashmir', 'Ladakh', 'Himachal Pradesh', 'Uttarakhand', 'Punjab', 'Haryana', 'Delhi', 'Uttar Pradesh', 'Rajasthan'],
     highlights: ['Himalayan Peaks', 'Ganga Ghats', 'Royal Palaces', 'Snow Treks'],
-    coordinates: { x: '42%', y: '22%' },
-    svgPath: 'M 180,30 L 250,20 L 300,50 L 320,110 L 260,160 L 190,140 L 150,90 Z'
+    pin: { cx: 200, cy: 110 }
   },
   {
     id: 'south-india',
@@ -21,8 +20,7 @@ const REGION_DEFINITIONS = [
     color: '#10b981',
     states: ['Andhra Pradesh', 'Telangana', 'Karnataka', 'Tamil Nadu', 'Kerala', 'Goa', 'Puducherry'],
     highlights: ['Ancient Gopurams', 'Backwaters', 'Western Ghats', 'Tropical Beaches'],
-    coordinates: { x: '48%', y: '75%' },
-    svgPath: 'M 160,260 L 240,260 L 260,330 L 210,430 L 160,350 Z'
+    pin: { cx: 180, cy: 350 }
   },
   {
     id: 'west-india',
@@ -31,8 +29,7 @@ const REGION_DEFINITIONS = [
     color: '#f59e0b',
     states: ['Maharashtra', 'Gujarat', 'Goa', 'Dadra and Nagar Haveli'],
     highlights: ['Ajanta & Ellora Caves', 'Sahyadri Forts', 'Arabian Sea Coasts', 'Rann of Kutch'],
-    coordinates: { x: '25%', y: '48%' },
-    svgPath: 'M 90,160 L 180,150 L 190,260 L 130,280 L 80,210 Z'
+    pin: { cx: 110, cy: 230 }
   },
   {
     id: 'east-india',
@@ -41,8 +38,7 @@ const REGION_DEFINITIONS = [
     color: '#8b5cf6',
     states: ['West Bengal', 'Odisha', 'Bihar', 'Jharkhand'],
     highlights: ['Puri Jagannath', 'Konark Sun Temple', 'Sundarbans', 'Darjeeling Hills'],
-    coordinates: { x: '68%', y: '45%' },
-    svgPath: 'M 260,180 L 350,180 L 340,260 L 250,260 Z'
+    pin: { cx: 310, cy: 240 }
   },
   {
     id: 'central-india',
@@ -51,8 +47,7 @@ const REGION_DEFINITIONS = [
     color: '#ec4899',
     states: ['Madhya Pradesh', 'Chhattisgarh'],
     highlights: ['Khajuraho Temples', 'Tiger Reserves', 'Kanha & Bandhavgarh', 'Narmada Gorges'],
-    coordinates: { x: '46%', y: '44%' },
-    svgPath: 'M 180,170 L 260,170 L 260,250 L 180,240 Z'
+    pin: { cx: 210, cy: 240 }
   },
   {
     id: 'northeast-india',
@@ -61,13 +56,160 @@ const REGION_DEFINITIONS = [
     color: '#06b6d4',
     states: ['Assam', 'Meghalaya', 'Sikkim', 'Arunachal Pradesh', 'Nagaland', 'Manipur', 'Mizoram', 'Tripura'],
     highlights: ['Living Root Bridges', 'Kaziranga Rhinos', 'Tea Valleys', 'Monasteries'],
-    coordinates: { x: '82%', y: '28%' },
-    svgPath: 'M 350,140 L 440,130 L 460,190 L 360,200 Z'
+    pin: { cx: 410, cy: 160 }
   }
 ];
 
+const STATE_TO_REGION = {
+  // North India
+  'Jammu & Kashmir': 'north-india',
+  'Jammu and Kashmir': 'north-india',
+  'Ladakh': 'north-india',
+  'Himachal Pradesh': 'north-india',
+  'Uttarakhand': 'north-india',
+  'Uttaranchal': 'north-india',
+  'Punjab': 'north-india',
+  'Haryana': 'north-india',
+  'Delhi': 'north-india',
+  'NCT of Delhi': 'north-india',
+  'Uttar Pradesh': 'north-india',
+  'Rajasthan': 'north-india',
+  'Chandigarh': 'north-india',
+
+  // South India
+  'Andhra Pradesh': 'south-india',
+  'Telangana': 'south-india',
+  'Karnataka': 'south-india',
+  'Tamil Nadu': 'south-india',
+  'Kerala': 'south-india',
+  'Goa': 'south-india',
+  'Puducherry': 'south-india',
+  'Pondicherry': 'south-india',
+  'Lakshadweep': 'south-india',
+  'Andaman & Nicobar Island': 'south-india',
+  'Andaman & Nicobar Islands': 'south-india',
+  'Andaman and Nicobar': 'south-india',
+
+  // West India
+  'Maharashtra': 'west-india',
+  'Gujarat': 'west-india',
+  'Dadra & Nagar Haveli': 'west-india',
+  'Dadra and Nagar Haveli': 'west-india',
+  'Dadara & Nagar Havelli': 'west-india',
+  'Daman and Diu': 'west-india',
+  'Daman & Diu': 'west-india',
+
+  // East India
+  'West Bengal': 'east-india',
+  'Odisha': 'east-india',
+  'Orissa': 'east-india',
+  'Bihar': 'east-india',
+  'Jharkhand': 'east-india',
+
+  // Central India
+  'Madhya Pradesh': 'central-india',
+  'Chhattisgarh': 'central-india',
+
+  // Northeast India
+  'Assam': 'northeast-india',
+  'Meghalaya': 'northeast-india',
+  'Sikkim': 'northeast-india',
+  'Arunachal Pradesh': 'northeast-india',
+  'Arunanchal Pradesh': 'northeast-india',
+  'Nagaland': 'northeast-india',
+  'Manipur': 'northeast-india',
+  'Mizoram': 'northeast-india',
+  'Tripura': 'northeast-india',
+};
+
+// Projection logic mapping lat/lng to 500x480 SVG space
+const MIN_LNG = 68.0;
+const MAX_LNG = 97.5;
+const MIN_LAT = 6.8;
+const MAX_LAT = 37.5;
+
+function projectLngLat(lng, lat) {
+  const x = ((lng - MIN_LNG) / (MAX_LNG - MIN_LNG)) * 430 + 30;
+  const y = 450 - ((lat - MIN_LAT) / (MAX_LAT - MIN_LAT)) * 410;
+  return [parseFloat(x.toFixed(1)), parseFloat(y.toFixed(1))];
+}
+
+function convertRingToSvgPath(ring) {
+  if (!ring || ring.length === 0) return '';
+  return ring.map((pt, i) => {
+    const [x, y] = projectLngLat(pt[0], pt[1]);
+    return `${i === 0 ? 'M' : 'L'} ${x} ${y}`;
+  }).join(' ') + ' Z';
+}
+
+function getEdgeKey(p1, p2) {
+  const k1 = `${p1[0].toFixed(3)},${p1[1].toFixed(3)}`;
+  const k2 = `${p2[0].toFixed(3)},${p2[1].toFixed(3)}`;
+  return k1 < k2 ? `${k1}|${k2}` : `${k2}|${k1}`;
+}
+
+function geometryToOuterPath(geometry) {
+  if (!geometry || !geometry.coordinates) return { fillD: '', strokeD: '' };
+  
+  const polys = geometry.type === 'Polygon' ? [geometry.coordinates] : geometry.coordinates;
+  const edgeCounts = new Map();
+  const edgeSegments = [];
+
+  polys.forEach((poly) => {
+    const ring = poly[0];
+    if (!ring || ring.length < 3) return;
+    for (let i = 0; i < ring.length - 1; i++) {
+      const p1 = ring[i];
+      const p2 = ring[i + 1];
+      const key = getEdgeKey(p1, p2);
+      edgeCounts.set(key, (edgeCounts.get(key) || 0) + 1);
+      edgeSegments.push({ p1, p2, key });
+    }
+  });
+
+  const outerLines = [];
+  edgeSegments.forEach(({ p1, p2, key }) => {
+    if (edgeCounts.get(key) === 1) {
+      const [x1, y1] = projectLngLat(p1[0], p1[1]);
+      const [x2, y2] = projectLngLat(p2[0], p2[1]);
+      outerLines.push(`M ${x1} ${y1} L ${x2} ${y2}`);
+    }
+  });
+
+  const fillD = polys.map(poly => convertRingToSvgPath(poly[0])).join(' ');
+  const strokeD = outerLines.join(' ');
+
+  return { fillD, strokeD };
+}
+
 export default function InteractiveRegionMap({ selectedRegion, onSelectRegion, statsByRegion = {} }) {
+  const [geoFeatures, setGeoFeatures] = useState([]);
   const [hoveredRegion, setHoveredRegion] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/india_states.json')
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.features) {
+          const features = data.features.map((f, idx) => {
+            const rawName = f.properties.ST_NM || f.properties.NAME_1 || '';
+            const regionId = STATE_TO_REGION[rawName] || 'north-india';
+            const { fillD, strokeD } = geometryToOuterPath(f.geometry);
+            return {
+              id: `feature-${idx}`,
+              name: rawName,
+              regionId,
+              fillD,
+              strokeD
+            };
+          });
+          setGeoFeatures(features);
+        }
+      })
+      .catch(err => console.error("Error loading India GeoJSON for region map:", err))
+      .finally(() => setLoading(false));
+  }, []);
 
   const activeRegion = hoveredRegion || REGION_DEFINITIONS.find(r => r.id === selectedRegion) || REGION_DEFINITIONS[1];
 
@@ -116,73 +258,92 @@ export default function InteractiveRegionMap({ selectedRegion, onSelectRegion, s
           
           {/* Visual Interactive Map Area */}
           <div className="svg-map-container">
-            <svg 
-              viewBox="0 0 500 500" 
-              className="india-svg-map"
-              aria-label="Map of India Macro Regions"
-            >
-              <defs>
-                <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-                  <feGaussianBlur stdDeviation="4" result="blur" />
-                  <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                </filter>
-                <linearGradient id="grid-glow" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="rgba(249, 115, 22, 0.2)" />
-                  <stop offset="100%" stopColor="rgba(59, 130, 246, 0.1)" />
-                </linearGradient>
-              </defs>
+            {loading ? (
+              <div style={{ color: '#94a3b8', fontSize: '0.9rem', fontWeight: 600, padding: '2rem' }}>
+                Loading Macro Region Map...
+              </div>
+            ) : (
+              <svg 
+                viewBox="0 0 500 480" 
+                className="india-svg-map"
+                aria-label="Map of India Macro Regions"
+              >
+                <defs>
+                  <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+                    <feGaussianBlur stdDeviation="4" result="blur" />
+                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                  </filter>
+                </defs>
 
-              {/* Decorative Subtle Coordinates Grid */}
-              <circle cx="250" cy="250" r="210" fill="none" stroke="rgba(255,255,255,0.06)" strokeDasharray="4 8" />
-              <circle cx="250" cy="250" r="140" fill="none" stroke="rgba(255,255,255,0.04)" />
-              <line x1="250" y1="20" x2="250" y2="480" stroke="rgba(255,255,255,0.04)" strokeDasharray="2 4" />
-              <line x1="20" y1="250" x2="480" y2="250" stroke="rgba(255,255,255,0.04)" strokeDasharray="2 4" />
+                {/* Decorative Grid Circles */}
+                <circle cx="250" cy="240" r="210" fill="none" stroke="rgba(255,255,255,0.06)" strokeDasharray="4 8" />
+                <circle cx="250" cy="240" r="140" fill="none" stroke="rgba(255,255,255,0.04)" />
+                <line x1="250" y1="20" x2="250" y2="460" stroke="rgba(255,255,255,0.04)" strokeDasharray="2 4" />
+                <line x1="20" y1="240" x2="480" y2="240" stroke="rgba(255,255,255,0.04)" strokeDasharray="2 4" />
 
-              {/* Region Vector Polygons */}
-              {REGION_DEFINITIONS.map((r) => {
-                const isSelected = selectedRegion === r.id;
-                const isHovered = hoveredRegion?.id === r.id;
+                {/* Real India GeoJSON State Vectors Color-Coded by Region */}
+                {geoFeatures.map((f) => {
+                  const regDef = REGION_DEFINITIONS.find(r => r.id === f.regionId);
+                  const regColor = regDef ? regDef.color : '#3b82f6';
+                  const isSelected = selectedRegion === f.regionId;
+                  const isHovered = hoveredRegion?.id === f.regionId;
 
-                return (
-                  <g 
-                    key={r.id}
-                    className="region-group"
-                    onMouseEnter={() => setHoveredRegion(r)}
-                    onMouseLeave={() => setHoveredRegion(null)}
-                    onClick={() => onSelectRegion(r.id)}
-                  >
-                    <path
-                      d={r.svgPath}
+                  return (
+                    <g
+                      key={f.id}
                       className={`region-poly ${isSelected ? 'selected' : ''} ${isHovered ? 'hovered' : ''}`}
-                      fill={isSelected ? r.color : (isHovered ? `${r.color}cc` : `${r.color}40`)}
-                      stroke={isSelected || isHovered ? '#ffffff' : r.color}
-                      strokeWidth={isSelected ? 3 : 1.5}
-                      filter={isSelected ? 'url(#glow)' : 'none'}
-                    />
-                  </g>
-                );
-              })}
+                      onMouseEnter={() => regDef && setHoveredRegion(regDef)}
+                      onMouseLeave={() => setHoveredRegion(null)}
+                      onClick={() => onSelectRegion(f.regionId)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      {/* State Fill */}
+                      <path
+                        d={f.fillD}
+                        fill={isSelected ? regColor : (isHovered ? `${regColor}dd` : `${regColor}40`)}
+                        stroke="none"
+                      />
+                      {/* Outer Boundary Perimeter Stroke (No District Lines!) */}
+                      <path
+                        d={f.strokeD}
+                        fill="none"
+                        stroke={isSelected || isHovered ? '#ffffff' : regColor}
+                        strokeWidth={isSelected ? 1.8 : (isHovered ? 1.5 : 0.75)}
+                        strokeLinejoin="round"
+                        strokeLinecap="round"
+                        filter={isSelected ? 'url(#glow)' : 'none'}
+                      />
+                      <title>{f.name} ({regDef?.name})</title>
+                    </g>
+                  );
+                })}
 
-              {/* Dynamic Interactive Pin Markers */}
-              {REGION_DEFINITIONS.map((r) => {
-                const isSelected = selectedRegion === r.id;
-                return (
-                  <g 
-                    key={`pin-${r.id}`}
-                    transform={`translate(${r.coordinates.x.replace('%','') * 4.8}, ${r.coordinates.y.replace('%','') * 4.8})`}
-                    className="map-marker-pin"
-                    onClick={() => onSelectRegion(r.id)}
-                  >
-                    <circle 
-                      r={isSelected ? 14 : 9} 
-                      fill={r.color} 
-                      className={isSelected ? 'pulse-active' : ''}
-                    />
-                    <circle r="4" fill="#ffffff" />
-                  </g>
-                );
-              })}
-            </svg>
+                {/* Dynamic Region Center Marker Pins */}
+                {REGION_DEFINITIONS.map((r) => {
+                  const isSelected = selectedRegion === r.id;
+                  const isHovered = hoveredRegion?.id === r.id;
+                  return (
+                    <g 
+                      key={`pin-${r.id}`}
+                      transform={`translate(${r.pin.cx}, ${r.pin.cy})`}
+                      className="map-marker-pin"
+                      onMouseEnter={() => setHoveredRegion(r)}
+                      onMouseLeave={() => setHoveredRegion(null)}
+                      onClick={() => onSelectRegion(r.id)}
+                    >
+                      <circle 
+                        r={isSelected || isHovered ? 12 : 8} 
+                        fill={r.color} 
+                        stroke="#ffffff"
+                        strokeWidth={1.8}
+                        className={isSelected ? 'pulse-active' : ''}
+                      />
+                      <circle r="3.5" fill="#ffffff" />
+                    </g>
+                  );
+                })}
+              </svg>
+            )}
           </div>
 
           {/* Region Intelligence Detail Panel */}

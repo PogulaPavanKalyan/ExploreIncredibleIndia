@@ -94,9 +94,11 @@
 
 /* SVG State Vector Styling */
 .state-path {
-  fill: #334155;
-  stroke: #0f172a;
-  stroke-width: 1.2;
+  fill: #1e293b;
+  stroke: #475569;
+  stroke-width: 0.85;
+  stroke-linejoin: round;
+  stroke-linecap: round;
   cursor: pointer;
   transition: all 0.25s ease;
 }
@@ -104,14 +106,14 @@
 .state-path:hover {
   fill: var(--primary, #ff6b35) !important;
   stroke: #ffffff;
-  stroke-width: 2;
-  filter: drop-shadow(0 0 12px rgba(255, 107, 53, 0.8));
+  stroke-width: 1.6;
+  filter: drop-shadow(0 0 10px rgba(255, 107, 53, 0.85));
 }
 
 .state-path.selected {
   fill: #0284c7 !important;
   stroke: #ffffff;
-  stroke-width: 2.5;
+  stroke-width: 2;
 }
 
 .state-path.highlighted {
