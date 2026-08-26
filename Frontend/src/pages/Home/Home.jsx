@@ -1,5 +1,7 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { getDestinations } from '../../services/destinationService';
+import { normalizeArrayResponse } from '../../utils/apiUtils';
+
 import CinematicHero from '../../components/home/Hero/CinematicHero';
 import PageTransition from '../../components/PageTransition';
 import SkeletonGrid from '../../components/SkeletonLoader';
@@ -36,8 +38,9 @@ export default function HomePage() {
           getDestinations({ featured: 'true', page_size: 6 }),
           getDestinations({ is_hidden_gem: 'true', page_size: 3 })
         ]);
-        if (trendingRes.data) setTrendingDestinations(trendingRes.data);
-        if (gemsRes.data) setHiddenGems(gemsRes.data);
+        setTrendingDestinations(normalizeArrayResponse(trendingRes));
+        setHiddenGems(normalizeArrayResponse(gemsRes));
+
       } catch (err) {
         console.error("Error loading homepage data:", err);
       } finally {

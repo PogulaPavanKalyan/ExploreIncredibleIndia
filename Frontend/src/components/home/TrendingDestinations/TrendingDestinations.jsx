@@ -2,6 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { getDestinations } from '../../../services/destinationService';
+import { normalizeArrayResponse, normalizeCount } from '../../../utils/apiUtils';
+
 
 import './TrendingDestinations.css';
 import FeaturedDestination from './FeaturedDestination';
@@ -27,9 +29,10 @@ export default function TrendingDestinations() {
     const fetchFeatured = async () => {
       try {
         const res = await getDestinations({ featured: 'true', page_size: 6 });
-        if (isMounted && res.data) {
-          setFeaturedDests(res.data);
+        if (isMounted) {
+          setFeaturedDests(normalizeArrayResponse(res));
         }
+
       } catch (err) {
         console.error("Error fetching featured destinations:", err);
       }
@@ -58,13 +61,12 @@ export default function TrendingDestinations() {
         }
 
         const res = await getDestinations(params);
-        if (isMounted && res.data) {
-          setGridDests(res.data);
-          const count = res.pagination?.total !== undefined 
-            ? res.pagination.total 
-            : (res.count !== undefined ? res.count : res.data.length);
-          setTotalCount(count);
+        if (isMounted) {
+          const destList = normalizeArrayResponse(res);
+          setGridDests(destList);
+          setTotalCount(normalizeCount(res));
         }
+
       } catch (err) {
         console.error("Error fetching filtered destinations:", err);
         if (isMounted) {

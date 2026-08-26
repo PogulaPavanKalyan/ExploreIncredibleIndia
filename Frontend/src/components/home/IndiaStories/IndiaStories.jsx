@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { getStories, getFeaturedStory } from '../../../services/storyService';
+import { normalizeArrayResponse } from '../../../utils/apiUtils';
+
 import CategoryPills from './CategoryPills';
 import FeaturedStoryCard from './FeaturedStoryCard';
 import StoryCarousel from './StoryCarousel';
@@ -35,10 +37,11 @@ export default function IndiaStories() {
     const params = activeCategory !== 'all' ? { category: activeCategory } : {};
     getStories(params)
       .then((res) => {
-        if (isMounted && res && res.data) {
-          setStories(res.data);
+        if (isMounted) {
+          setStories(normalizeArrayResponse(res));
         }
       })
+
       .catch((err) => console.warn('Error loading stories:', err))
       .finally(() => {
         if (isMounted) setIsLoading(false);

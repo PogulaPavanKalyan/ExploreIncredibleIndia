@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getRegionBySlug } from '../services/regionService';
 import { getDestinationsByRegion } from '../services/destinationService';
+import { normalizeArrayResponse } from '../utils/apiUtils';
+
 import DestinationCard from '../components/DestinationCard';
 import PageTransition from '../components/PageTransition';
 import SkeletonGrid from '../components/SkeletonLoader';
@@ -25,9 +27,8 @@ export default function RegionPage() {
         const rData = regionRes.data || regionRes;
         setRegion(rData);
         const destRes = await getDestinationsByRegion(slug, { page_size: 24 });
-        if (destRes.data) {
-          setDestinations(destRes.data);
-        }
+        setDestinations(normalizeArrayResponse(destRes));
+
       } else {
         setError(true);
       }

@@ -42,6 +42,8 @@ import {
   getNearbyDestinations 
 } from '../services/destinationService';
 import { getStates } from '../services/stateService';
+import { normalizeArrayResponse, normalizeCount } from '../utils/apiUtils';
+
 import DestinationCard from '../components/DestinationCard';
 import '../styles/cards.css';
 import PageTransition from '../components/PageTransition';
@@ -145,13 +147,13 @@ export default function ExploreIndiaPage() {
   useEffect(() => {
     getPlatformStats()
       .then((res) => {
-        if (res && res.data) setStats(res.data);
+        if (res) setStats(res.data || res);
       })
       .catch((err) => console.warn('Stats error:', err));
 
     getStates()
       .then((res) => {
-        if (res && res.data) setStatesList(res.data);
+        if (res) setStatesList(normalizeArrayResponse(res));
       })
       .catch((err) => console.warn('States list error:', err));
   }, []);
@@ -161,7 +163,7 @@ export default function ExploreIndiaPage() {
     if (selectedState && selectedState !== 'all') {
       getDistricts(selectedState)
         .then((res) => {
-          if (res && res.data) setDistrictsList(res.data);
+          if (res) setDistrictsList(normalizeArrayResponse(res));
         })
         .catch(() => setDistrictsList([]));
     } else {
@@ -179,9 +181,10 @@ export default function ExploreIndiaPage() {
       // Nearby mode
       getNearbyDestinations(userCoords.latitude, userCoords.longitude, 250, selectedCategory !== 'all' ? selectedCategory : undefined)
         .then((res) => {
-          if (isMounted && res && res.data) {
-            setDestinations(res.data);
-            setTotalCount(res.data.length);
+          if (isMounted) {
+            const list = normalizeArrayResponse(res);
+            setDestinations(list);
+            setTotalCount(normalizeCount(res));
           }
         })
         .catch(() => {
@@ -218,12 +221,13 @@ export default function ExploreIndiaPage() {
 
     getDestinations(params)
       .then((res) => {
-        if (isMounted && res && res.data) {
-          setDestinations(res.data);
-          const count = res.pagination?.total !== undefined ? res.pagination.total : res.data.length;
-          setTotalCount(count);
+        if (isMounted) {
+          const list = normalizeArrayResponse(res);
+          setDestinations(list);
+          setTotalCount(normalizeCount(res));
         }
       })
+
       .catch((err) => {
         console.error('Error fetching atlas destinations:', err);
         if (isMounted) {

@@ -171,7 +171,7 @@ export const FALLBACK_STORIES = [
 export const getStories = async (params = {}) => {
   try {
     const response = await apiClient.get('/stories/', { params });
-    if (response.data && response.data.data) {
+    if (response.data) {
       return response.data;
     }
     return { success: true, data: FALLBACK_STORIES };
@@ -188,8 +188,8 @@ export const getStories = async (params = {}) => {
 export const getFeaturedStory = async () => {
   try {
     const response = await apiClient.get('/stories/featured/');
-    if (response.data && response.data.data) {
-      return response.data.data;
+    if (response.data) {
+      return response.data.data || response.data;
     }
     return FALLBACK_STORIES[0];
   } catch (error) {
@@ -201,7 +201,7 @@ export const getFeaturedStory = async () => {
 export const getStoryBySlug = async (slug) => {
   try {
     const response = await apiClient.get(`/stories/${slug}/`);
-    if (response.data && response.data.data) {
+    if (response.data) {
       return response.data;
     }
     const match = FALLBACK_STORIES.find(s => s.slug === slug);
@@ -212,6 +212,7 @@ export const getStoryBySlug = async (slug) => {
     return { success: true, data: match || FALLBACK_STORIES[0] };
   }
 };
+
 
 export default {
   getStories,

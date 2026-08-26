@@ -3,6 +3,8 @@ import { useParams, Link } from 'react-router-dom';
 import { Compass, Calendar, Box, Layers, MapPin } from 'lucide-react';
 import { getStateBySlug } from '../services/stateService';
 import { getDestinations } from '../services/destinationService';
+import { normalizeArrayResponse } from '../utils/apiUtils';
+
 import DestinationCard from '../components/DestinationCard';
 import PageTransition from '../components/PageTransition';
 import SkeletonGrid from '../components/SkeletonLoader';
@@ -27,19 +29,19 @@ export default function StatePage() {
     setError(false);
     try {
       const stateRes = await getStateBySlug(slug);
-      if (stateRes.data) {
-        setState(stateRes.data);
+      const sData = stateRes?.data || stateRes;
+      if (sData && (sData.slug || sData.name || sData.id)) {
+        setState(sData);
         const params = { state: slug, page_size: 100 };
         if (selectedDistrict && selectedDistrict !== 'all') {
           params.district = selectedDistrict;
         }
         const destRes = await getDestinations(params);
-        if (destRes.data) {
-          setDestinations(destRes.data);
-        }
+        setDestinations(normalizeArrayResponse(destRes));
       } else {
         setError(true);
       }
+
     } catch (err) {
       console.error("Error loading state page:", err);
       setError(true);
