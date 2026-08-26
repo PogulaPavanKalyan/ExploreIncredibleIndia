@@ -3,7 +3,14 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
 export default function RegionDestinations({ region, mousePos }) {
-  if (!region || !region.featured_destinations || region.featured_destinations.length === 0) return null;
+  const destinations = Array.isArray(region?.featured_destinations)
+    ? region.featured_destinations
+    : Array.isArray(region?.featured_destinations?.results)
+    ? region.featured_destinations.results
+    : [];
+
+  if (!region || destinations.length === 0) return null;
+
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -31,7 +38,7 @@ export default function RegionDestinations({ region, mousePos }) {
       key={`dests-${region.id}`}
       style={layerStyle}
     >
-      {region.featured_destinations.map(dest => (
+      {destinations.map(dest => (
         <motion.div key={dest.id} variants={itemVariants}>
           <Link to={`/places/${dest.slug}`} className="region-dest-card">
             <img 

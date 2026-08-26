@@ -21,17 +21,25 @@ export default function RegionExplorer() {
     const fetchRegions = async () => {
       try {
         const data = await getRegions();
-        const regionsData = data.data || data || [];
+        const regionsData = Array.isArray(data)
+          ? data
+          : Array.isArray(data?.results)
+          ? data.results
+          : Array.isArray(data?.data)
+          ? data.data
+          : [];
         setRegions(regionsData);
         if (regionsData.length > 0) {
           setActiveRegion(regionsData[0]);
         }
       } catch (error) {
         console.error("Failed to load regions:", error);
+        setRegions([]);
       }
     };
     fetchRegions();
   }, []);
+
 
   const handleMouseMove = (e) => {
     if (!sectionRef.current || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;

@@ -3,7 +3,13 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
 export default function RegionStates({ region, mousePos }) {
-  if (!region || !region.states || region.states.length === 0) return null;
+  const states = Array.isArray(region?.states)
+    ? region.states
+    : Array.isArray(region?.states?.results)
+    ? region.states.results
+    : [];
+
+  if (!region || states.length === 0) return null;
 
   const layerStyle = { 
     transform: `translate(${mousePos.x * 25}px, ${mousePos.y * 25}px)` 
@@ -20,8 +26,8 @@ export default function RegionStates({ region, mousePos }) {
     >
       <h4 className="region-states-title">Explore States</h4>
       <div className="region-states-list">
-        {region.states.map(state => (
-          <Link key={state.slug} to={`/states/${state.slug}`} className="region-state-chip">
+        {states.map(state => (
+          <Link key={state.slug || state.id} to={`/states/${state.slug}`} className="region-state-chip">
             {state.name}
           </Link>
         ))}
@@ -29,3 +35,4 @@ export default function RegionStates({ region, mousePos }) {
     </motion.div>
   );
 }
+

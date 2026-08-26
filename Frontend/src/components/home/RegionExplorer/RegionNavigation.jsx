@@ -2,7 +2,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 export default function RegionNavigation({ regions, activeRegion, onSelect }) {
-  if (!regions || regions.length === 0) return null;
+  if (!Array.isArray(regions) || regions.length === 0) return null;
+
 
   return (
     <div className="region-nav-container">
