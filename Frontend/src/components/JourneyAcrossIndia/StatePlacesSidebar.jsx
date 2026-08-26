@@ -19,6 +19,11 @@ export function StatePlacesSidebar({ stateName, places, activePlace, onSelectPla
   const filteredPlaces = useMemo(() => {
     if (!Array.isArray(places)) return [];
     return places.filter(place => {
+      // State match guard
+      const pState = (place.state || '').toString().toLowerCase();
+      const targetState = (stateName || '').toString().toLowerCase();
+      const matchesState = !targetState || pState === targetState || pState.includes(targetState) || targetState.includes(pState);
+
       // Category filter match
       const placeCategory = (place.category || '').toLowerCase();
       const matchesCategory = selectedCategory === 'all' || 
@@ -34,9 +39,16 @@ export function StatePlacesSidebar({ stateName, places, activePlace, onSelectPla
         (place.district || '').toLowerCase().includes(query) ||
         (place.short_description || '').toLowerCase().includes(query);
 
-      return matchesCategory && matchesQuery;
+      return matchesState && matchesCategory && matchesQuery;
     });
-  }, [places, selectedCategory, searchQuery]);
+  }, [places, stateName, selectedCategory, searchQuery]);
+
+  // Auto-focus top matching place on 3D map canvas whenever user searches or selects a category tab
+  React.useEffect(() => {
+    if (filteredPlaces.length > 0 && (searchQuery.trim() !== '' || selectedCategory !== 'all')) {
+      onSelectPlace(filteredPlaces[0]);
+    }
+  }, [searchQuery, selectedCategory]);
 
   return (
     <div className="state-places-sidebar">

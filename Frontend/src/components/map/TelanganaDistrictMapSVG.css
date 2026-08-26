@@ -1,0 +1,88 @@
+/* ==========================================================================
+   TELANGANA 33-DISTRICT VECTOR MAP STYLES
+   ========================================================================== */
+
+.ts-map-container {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(11, 15, 25, 0.95) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  padding: 1.5rem;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 2.5rem;
+}
+
+.ts-map-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.ts-map-title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ts-badge {
+  font-size: 0.72rem;
+  font-weight: 800;
+  background: rgba(255, 107, 53, 0.15);
+  color: #ff6b35;
+  border: 1px solid rgba(255, 107, 53, 0.3);
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  text-transform: uppercase;
+}
+
+.ts-district-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 0.5rem;
+  max-height: 220px;
+  overflow-y: auto;
+  padding-right: 0.4rem;
+}
+
+.ts-district-chip {
+  background: rgba(30, 41, 59, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 0.45rem 0.65rem;
+  color: #cbd5e1;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ts-district-chip:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border-color: rgba(255, 107, 53, 0.4);
+}
+
+.ts-district-chip.active {
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.25) 0%, rgba(234, 88, 12, 0.2) 100%);
+  color: #ff8c42;
+  border: 1px solid rgba(255, 107, 53, 0.45);
+  box-shadow: 0 0 12px rgba(255, 107, 53, 0.3);
+}
+
+.ts-district-chip .count {
+  font-size: 0.68rem;
+  opacity: 0.8;
+  margin-left: 0.25rem;
+}

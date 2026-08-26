@@ -296,12 +296,15 @@ class TravelCollectionDetailSerializer(serializers.ModelSerializer):
     destination_count = serializers.IntegerField(source='destinations.count', read_only=True)
     category_name = serializers.CharField(source='category.name', read_only=True)
     destinations = DestinationListSerializer(many=True, read_only=True)
+    destination_ids = serializers.PrimaryKeyRelatedField(
+        queryset=Destination.objects.all(), source='destinations', many=True, write_only=True, required=False
+    )
 
     class Meta:
         model = TravelCollection
         fields = [
             'id', 'name', 'slug', 'subtitle', 'description', 
             'cover_image', 'category', 'category_name', 'destination_count', 
-            'destinations', 'featured', 'display_order', 'published', 
+            'destinations', 'destination_ids', 'featured', 'display_order', 'published', 
             'created_at', 'updated_at'
         ]

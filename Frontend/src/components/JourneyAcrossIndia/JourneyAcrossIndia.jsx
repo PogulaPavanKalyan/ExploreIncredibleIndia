@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { MapControls } from '@react-three/drei';
@@ -335,10 +336,17 @@ export function JourneyAcrossIndia() {
     setActiveDestination(dest);
   };
 
+  const navigate = useNavigate();
+
   const handleStateSelect = (stateItem) => {
     stopJourney();
-    setSelectedState(stateItem);
-    setShowStateExplorer(true);
+    if (stateItem && stateItem.name) {
+      const slug = stateItem.name.toLowerCase().replace(/\s+/g, '-');
+      navigate(`/states/${slug}`);
+    } else if (typeof stateItem === 'string') {
+      const slug = stateItem.toLowerCase().replace(/\s+/g, '-');
+      navigate(`/states/${slug}`);
+    }
   };
 
 

@@ -1,0 +1,157 @@
+/* ==========================================================================
+   DEKHO BHARAT SKELETON SHIMMER LOADING SYSTEM
+   ========================================================================== */
+
+@keyframes skeletonShimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg, 
+    rgba(30, 41, 59, 0.5) 25%, 
+    rgba(51, 65, 85, 0.7) 50%, 
+    rgba(30, 41, 59, 0.5) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.6s infinite ease-in-out;
+  border-radius: 12px;
+}
+
+/* Destination Card Skeleton */
+.skeleton-card-chassis {
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 380px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.skeleton-card-media {
+  height: 210px;
+  width: 100%;
+}
+
+.skeleton-card-body {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.skeleton-line {
+  height: 14px;
+  width: 100%;
+}
+
+.skeleton-line.title {
+  height: 22px;
+  width: 75%;
+}
+
+.skeleton-line.short {
+  width: 45%;
+}
+
+.skeleton-card-footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Grid Layouts for Skeletons */
+.skeleton-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1.75rem;
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .skeleton-grid-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .skeleton-grid-4 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .skeleton-grid-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* Hero Skeleton */
+.skeleton-hero-banner {
+  height: 340px;
+  width: 100%;
+  border-radius: 24px;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  padding: 2rem;
+}
+
+/* Detail Page Skeleton */
+.skeleton-detail-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+  padding-bottom: 4rem;
+}
+
+.skeleton-detail-hero {
+  height: 460px;
+  width: 100%;
+  border-radius: 28px;
+}
+
+.skeleton-detail-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.25rem;
+}
+
+.skeleton-info-card {
+  height: 90px;
+  border-radius: 16px;
+}
+
+.skeleton-detail-content-box {
+  height: 240px;
+  border-radius: 20px;
+}
+
+/* Table Skeleton */
+.skeleton-table-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  width: 100%;
+}
+
+.skeleton-table-row {
+  height: 56px;
+  width: 100%;
+  border-radius: 12px;
+}

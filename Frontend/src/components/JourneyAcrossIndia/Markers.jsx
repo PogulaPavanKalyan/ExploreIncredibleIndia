@@ -4,168 +4,157 @@ import { Html } from '@react-three/drei';
 import { latLngToVector3 } from './geoUtils';
 import * as THREE from 'three';
 
-// Shared static geometries created ONCE in GPU memory for all 50+ place markers!
-const SHARED_SPHERE_GEOM = new THREE.SphereGeometry(0.06, 12, 12);
-const SHARED_RING_GEOM = new THREE.RingGeometry(0.10, 0.18, 24);
+// Shared static geometries created ONCE in GPU memory
+const SHARED_SPHERE_GEOM = new THREE.SphereGeometry(0.08, 16, 16);
+const SHARED_RING_GEOM = new THREE.RingGeometry(0.12, 0.25, 32);
+const SHARED_BEAM_GEOM = new THREE.CylinderGeometry(0.015, 0.04, 0.6, 12);
 
-function FloatingPinComponent({ destination, isActive, isStateHovered, onClick, reducedMotion }) {
+function AnimatedBeaconPin({ destination, isActive, onClick, reducedMotion }) {
   const [hovered, setHovered] = useState(false);
-  const lat = destination?.latitude ?? destination?.lat ?? 22.5;
-  const lng = destination?.longitude ?? destination?.lng ?? 82.5;
+  const lat = destination?.latitude ?? destination?.lat ?? 17.5;
+  const lng = destination?.longitude ?? destination?.lng ?? 78.5;
 
-  // Elevate marker height when state is elevated
-  const yHeight = isStateHovered || isActive ? 0.50 : 0.22;
-  const position = useMemo(() => latLngToVector3(lat, lng, yHeight), [lat, lng, yHeight]);
+  const position = useMemo(() => latLngToVector3(lat, lng, 0.25), [lat, lng]);
   
+  const groupRef = useRef();
   const meshRef = useRef();
   const ringRef = useRef();
+  const beamRef = useRef();
 
   useFrame((state, delta) => {
     if (!reducedMotion) {
       const t = state.clock.getElapsedTime();
 
-      // Floating vertical bobbing physics for sleek 3D gemstone sphere
+      // Floating vertical bobbing animation for 3D gemstone sphere
       if (meshRef.current) {
-        const numLat = parseFloat(lat) || 0;
-        meshRef.current.position.y = Math.sin(t * 2.5 + numLat) * 0.04 + 0.25;
+        meshRef.current.position.y = Math.sin(t * 3.0) * 0.05 + 0.45;
+        meshRef.current.rotation.y += delta * 1.2;
 
-        const targetScale = isActive ? 1.4 : hovered ? 1.2 : 1.0;
-        if (Math.abs(meshRef.current.scale.x - targetScale) > 0.01) {
-          meshRef.current.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.16);
-        }
+        const targetScale = isActive ? 1.6 : hovered ? 1.3 : 1.0;
+        meshRef.current.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.15);
       }
 
-      // Ground beacon pulse ring - only rotates when active/hovered
-      if (ringRef.current && (isActive || hovered)) {
-        ringRef.current.rotation.z += delta * 1.5;
-        const scale = 1 + Math.sin(t * 3.5) * 0.2;
+      // Ground beacon pulse ring expansion & rotation
+      if (ringRef.current) {
+        ringRef.current.rotation.z += delta * 2.0;
+        const scale = 1 + Math.sin(t * 4.0) * 0.25;
         ringRef.current.scale.set(scale, scale, scale);
+      }
+
+      // Pulsing vertical laser beam height & opacity
+      if (beamRef.current) {
+        beamRef.current.position.y = 0.22;
       }
     }
   });
 
-  const crystalColor = isActive ? '#ffffff' : (hovered || isStateHovered ? '#fbbf24' : '#38bdf8');
-  const emissiveColor = isActive ? '#3b82f6' : (hovered || isStateHovered ? '#f59e0b' : '#0284c7');
+  const crystalColor = '#ff8c42';
+  const emissiveColor = '#ff6b35';
 
   return (
     <group 
+      ref={groupRef}
       position={position} 
-      onClick={(e) => { e.stopPropagation(); onClick(); }} 
+      onClick={(e) => { e.stopPropagation(); if (onClick) onClick(destination); }} 
       onPointerOver={() => setHovered(true)} 
       onPointerOut={() => setHovered(false)}
     >
-      {/* ── Sleek 3D Glowing Gemstone Sphere Pin (Using Shared Geometry) ── */}
-      <mesh ref={meshRef} geometry={SHARED_SPHERE_GEOM} position={[0, 0.25, 0]}>
+      {/* ── Vertical Glowing Laser Beacon Beam ── */}
+      <mesh ref={beamRef} geometry={SHARED_BEAM_GEOM}>
+        <meshStandardMaterial
+          color="#ff8c42"
+          emissive="#ff6b35"
+          emissiveIntensity={1.2}
+          transparent
+          opacity={0.85}
+        />
+      </mesh>
+
+      {/* ── 3D Glowing Gemstone Sphere Pin ── */}
+      <mesh ref={meshRef} geometry={SHARED_SPHERE_GEOM} position={[0, 0.45, 0]}>
         <meshStandardMaterial
           color={crystalColor}
           emissive={emissiveColor}
-          emissiveIntensity={isActive ? 0.9 : (hovered || isStateHovered ? 0.7 : 0.45)}
+          emissiveIntensity={1.2}
           roughness={0.1}
           metalness={0.8}
         />
       </mesh>
 
-      {/* ── Active / Hovered Scaled Ground Beacon Ring ── */}
-      {(isActive || hovered) && (
-        <mesh ref={ringRef} geometry={SHARED_RING_GEOM} position={[0, 0.05, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-          <meshBasicMaterial
-            color={isActive ? '#3b82f6' : '#fbbf24'}
-            transparent
-            opacity={0.85}
-            side={THREE.DoubleSide}
-          />
-        </mesh>
-      )}
-
-      {/* ── Glowing Center Light Point (Rendered only on active/hovered pin for high performance) ── */}
-      {(isActive || hovered) && (
-        <pointLight
-          position={[0, 0.25, 0]}
-          color={crystalColor}
-          intensity={isActive ? 1.2 : 0.8}
-          distance={2.0}
+      {/* ── Ground Beacon Ring ── */}
+      <mesh ref={ringRef} geometry={SHARED_RING_GEOM} position={[0, 0.02, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <meshBasicMaterial
+          color="#ff6b35"
+          transparent
+          opacity={0.85}
+          side={THREE.DoubleSide}
         />
-      )}
+      </mesh>
 
-      {/* ── Ultra-Compact Fixed-Size Glassmorphism Nameplate ── */}
-      {(isActive || hovered) && (
-        <Html center position={[0, 0.45, 0]} style={{ pointerEvents: 'none' }}>
+      {/* ── Point Light Source for Dynamic Glow ── */}
+      <pointLight
+        position={[0, 0.45, 0]}
+        color="#ff8c42"
+        intensity={2.0}
+        distance={3.0}
+      />
+
+      {/* ── Interactive 3D Glassmorphism Popup Badge ── */}
+      <Html center position={[0, 0.75, 0]} style={{ pointerEvents: 'none' }}>
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          pointerEvents: 'none',
+          userSelect: 'none',
+        }}>
           <div style={{
+            background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.98))',
+            color: '#ffffff',
+            fontWeight: '700',
+            fontSize: '11px',
+            padding: '6px 12px',
+            borderRadius: '12px',
+            border: '1px solid rgba(255, 140, 66, 0.6)',
+            boxShadow: '0 0 20px rgba(255, 107, 53, 0.5), 0 8px 20px rgba(0, 0, 0, 0.6)',
+            backdropFilter: 'blur(10px)',
+            whiteSpace: 'nowrap',
             display: 'flex',
-            flexDirection: 'column',
             alignItems: 'center',
-            pointerEvents: 'none',
-            userSelect: 'none',
+            gap: '6px'
           }}>
-            <div style={{
-              background: isActive 
-                ? 'linear-gradient(135deg, #1d4ed8, #3b82f6)' 
-                : 'rgba(15, 23, 42, 0.92)',
-              color: '#ffffff',
-              fontWeight: '600',
-              fontSize: '10px',
-              letterSpacing: '0.03em',
-              padding: '3px 8px',
-              borderRadius: '10px',
-              border: isActive ? '1px solid #93c5fd' : '1px solid rgba(56,189,248,0.5)',
-              boxShadow: isActive ? '0 0 12px rgba(59,130,246,0.6)' : '0 2px 8px rgba(0,0,0,0.6)',
-              backdropFilter: 'blur(6px)',
-              whiteSpace: 'nowrap',
-              maxWidth: '160px',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              transform: 'scale(0.85)',
-            }}>
-              📍 {destination.destination}
-            </div>
+            <span style={{ fontSize: '13px' }}>📍</span>
+            <span>{destination.destination || destination.name}</span>
+            {destination.district && (
+              <span style={{ fontSize: '9px', background: 'rgba(255,107,53,0.2)', color: '#ff8c42', padding: '2px 6px', borderRadius: '999px', textTransform: 'uppercase' }}>
+                {destination.district}
+              </span>
+            )}
           </div>
-        </Html>
-      )}
+        </div>
+      </Html>
     </group>
   );
 }
 
-const FloatingPin = React.memo(FloatingPinComponent);
-
 export function Markers({ destinations, activeDestination, hoveredState, selectedState, onSelect, reducedMotion }) {
-  if (!Array.isArray(destinations)) return null;
+  if (!Array.isArray(destinations) || destinations.length === 0) return null;
 
-  const targetState = hoveredState || selectedState;
-  const activeStateName = targetState ? (targetState.name || '').toLowerCase() : '';
+  // Find active or selected place
+  const activePlace = activeDestination || (destinations.length === 1 ? destinations[0] : null);
+
+  // If no active place is selected, do NOT render cluttered yellow dots!
+  if (!activePlace) return null;
 
   return (
     <group>
-      {destinations.map((dest) => {
-        const destStateName = (dest.state || '').toLowerCase();
-        
-        // Match state name or region
-        const isMatch = targetState ? (
-          destStateName.includes(activeStateName) || 
-          activeStateName.includes(destStateName) ||
-          (dest.region || '').toLowerCase() === (targetState.region || '').toLowerCase()
-        ) : false;
-
-        // CRITICAL: When a state is hovered or selected, HIDE places from other states!
-        if (targetState && !isMatch) {
-          return null; // Hides place marker from non-hovered states completely!
-        }
-
-        const isActive = activeDestination && (
-          activeDestination.id === dest.id || 
-          activeDestination.destination === dest.destination
-        );
-
-        return (
-          <FloatingPin
-            key={dest.id || dest.destination}
-            destination={dest}
-            isActive={isActive}
-            isStateHovered={isMatch}
-            onClick={() => onSelect(dest)}
-            reducedMotion={reducedMotion}
-          />
-        );
-      })}
+      <AnimatedBeaconPin
+        key={activePlace.id || activePlace.destination || activePlace.slug}
+        destination={activePlace}
+        isActive={true}
+        onClick={onSelect}
+        reducedMotion={reducedMotion}
+      />
     </group>
   );
 }

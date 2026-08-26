@@ -414,12 +414,12 @@
 
 /* ── Destination Card (Clean Light Editorial Chassis with 3D Hover) ──────────── */
 
-.destination-card-wrapper {
+.trending-editorial-section .destination-card-wrapper {
   width: 100%;
   margin-bottom: 20px;
 }
 
-.destination-card {
+.trending-editorial-section .destination-card {
   position: relative;
   width: 100%;
   height: 420px;
@@ -435,13 +435,13 @@
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.destination-card:hover {
+.trending-editorial-section .destination-card:hover {
   border-color: #ff6b1a;
   transform: translateY(-6px);
   box-shadow: 0 20px 45px rgba(255, 107, 26, 0.22), 0 0 0 1px #ff6b1a;
 }
 
-.card-media-box {
+.trending-editorial-section .card-media-box {
   position: absolute;
   inset: 0;
   overflow: hidden;
@@ -459,7 +459,7 @@
   transform: scale(1.08);
 }
 
-.card-gradient-overlay {
+.trending-editorial-section .card-gradient-overlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(to top,
@@ -471,7 +471,7 @@
   transition: background 0.35s ease;
 }
 
-.destination-card:hover .card-gradient-overlay {
+.trending-editorial-section .destination-card:hover .card-gradient-overlay {
   background: linear-gradient(to top,
       rgba(7, 15, 29, 0.99) 0%,
       rgba(7, 15, 29, 0.82) 50%,
@@ -479,7 +479,7 @@
       rgba(7, 15, 29, 0.15) 100%);
 }
 
-.card-bookmark-btn {
+.trending-editorial-section .card-bookmark-btn {
   position: absolute;
   top: 1.1rem;
   right: 1.1rem;
@@ -500,7 +500,7 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
-.card-bookmark-btn:hover {
+.trending-editorial-section .card-bookmark-btn:hover {
   background: #ff6b1a;
   color: #ffffff;
   border-color: #ff6b1a;
@@ -508,12 +508,12 @@
   box-shadow: 0 6px 20px rgba(255, 107, 26, 0.4);
 }
 
-.card-bookmark-btn.saved {
+.trending-editorial-section .card-bookmark-btn.saved {
   background: rgba(239, 68, 68, 0.25);
   border-color: rgba(239, 68, 68, 0.5);
 }
 
-.card-rating-badge {
+.trending-editorial-section .card-rating-badge {
   position: absolute;
   top: 1.1rem;
   left: 1.1rem;
@@ -533,12 +533,12 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
-.card-rating-badge .star {
+.trending-editorial-section .card-rating-badge .star {
   color: #f59e0b;
   font-size: 0.9rem;
 }
 
-.card-body {
+.trending-editorial-section .card-body {
   position: absolute;
   bottom: 0;
   left: 0;

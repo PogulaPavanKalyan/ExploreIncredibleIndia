@@ -14,7 +14,13 @@ function StateMeshComponent({
 }) {
   const groupRef = useRef();
 
-  const { id, name, shapes, borderLines, centerPos } = stateFeature;
+  if (!stateFeature) return null;
+
+  const id = stateFeature.id || 'state-mesh';
+  const name = stateFeature.name || '';
+  const shapes = Array.isArray(stateFeature.shapes) ? stateFeature.shapes : [];
+  const borderLines = Array.isArray(stateFeature.borderLines) ? stateFeature.borderLines : [];
+  const centerPos = stateFeature.centerPos || [0, 0, 0];
 
   // Memoized ExtrudeGeometries for all shapes in this state feature (creates geometries once in GPU memory)
   const extrudeGeometries = useMemo(() => {
@@ -34,7 +40,7 @@ function StateMeshComponent({
   // Memoized native THREE LineGeometries for fast WebGL border line rendering
   const lineGeometries = useMemo(() => {
     return borderLines.map(points => {
-      const vec3Points = points.map(pt => new THREE.Vector3(pt[0], pt[1], pt[2]));
+      const vec3Points = (points || []).map(pt => new THREE.Vector3(pt[0], pt[1], pt[2]));
       return new THREE.BufferGeometry().setFromPoints(vec3Points);
     });
   }, [borderLines]);

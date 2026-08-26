@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Compass, MapPin, Sparkles, Heart, Home, BookOpen, Flame, Menu, X } from 'lucide-react';
+import { Compass, MapPin, Sparkles, Heart, Home, BookOpen, Flame, Menu, X, ShieldCheck } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import LanguageSelector from './LanguageSelector';
 import '../styles/navbar.css';
@@ -65,6 +65,9 @@ export default function Navbar() {
           <Link to="/favorites" className={`nav-link ${isActive('/favorites') ? 'active' : ''}`}>
             <Heart className="nav-icon heart-icon" size={16} /> <span>Favorites</span>
           </Link>
+          <Link to="/admin" className={`nav-link ${isActive('/admin') ? 'active' : ''}`} title="Admin Management Portal">
+            <ShieldCheck className="nav-icon" size={16} style={{ color: '#38bdf8' }} /> <span>Admin</span>
+          </Link>
           <Link to="/travel-planner" className={`nav-link planner-btn ${isActive('/travel-planner') ? 'active' : ''}`}>
             <Sparkles className="planner-sparkle" size={16} />
             <span>AI Planner</span>
@@ -125,6 +128,9 @@ export default function Navbar() {
                 </Link>
                 <Link to="/favorites" className={`mobile-nav-link ${isActive('/favorites') ? 'active' : ''}`} onClick={() => setMobileMenuOpen(false)}>
                   <Heart size={18} color="#EF4444" /> Favorites
+                </Link>
+                <Link to="/admin" className={`mobile-nav-link ${isActive('/admin') ? 'active' : ''}`} onClick={() => setMobileMenuOpen(false)}>
+                  <ShieldCheck size={18} color="#38bdf8" /> Admin Panel
                 </Link>
                 <Link to="/travel-planner" className="mobile-nav-link planner-mobile-highlight" onClick={() => setMobileMenuOpen(false)}>
                   <Sparkles size={18} /> AI Itinerary Planner

@@ -140,6 +140,45 @@ export const getAISearchRecommendations = async (prompt, userCoords = null) => {
   return response.data;
 };
 
+/**
+ * ADMIN API WRITE OPERATIONS (Direct Backend Database Persistence)
+ */
+
+export const createDestination = async (destinationData) => {
+  const response = await apiClient.post('/destinations/', destinationData);
+  return response.data;
+};
+
+export const updateDestination = async (slug, destinationData) => {
+  const response = await apiClient.put(`/destinations/${slug}/`, destinationData);
+  return response.data;
+};
+
+export const deleteDestination = async (slug) => {
+  const response = await apiClient.delete(`/destinations/${slug}/`);
+  return response.data;
+};
+
+export const createCollection = async (collectionData) => {
+  const response = await apiClient.post('/collections/', collectionData);
+  return response.data;
+};
+
+export const updateCollection = async (slug, collectionData) => {
+  const response = await apiClient.put(`/collections/${slug}/`, collectionData);
+  return response.data;
+};
+
+export const createFestival = async (festivalData) => {
+  const response = await apiClient.post('/festivals/', festivalData);
+  return response.data;
+};
+
+export const createStory = async (storyData) => {
+  const response = await apiClient.post('/stories/', storyData);
+  return response.data;
+};
+
 export default {
   getDestinations,
   getFeaturedDestinations,
@@ -157,4 +196,11 @@ export default {
   searchDestinations,
   getSearchAutocomplete,
   getAISearchRecommendations,
+  createDestination,
+  updateDestination,
+  deleteDestination,
+  createCollection,
+  updateCollection,
+  createFestival,
+  createStory,
 };

@@ -42,17 +42,19 @@ export default function LanguageSelector() {
           background: 'rgba(255, 255, 255, 0.08)',
           border: '1px solid rgba(255, 255, 255, 0.15)',
           backdropFilter: 'blur(8px)',
-          fontSize: '0.85rem',
-          fontWeight: 600,
+          fontSize: '0.82rem',
+          fontWeight: 700,
           color: '#f8fafc',
           cursor: 'pointer',
+          whiteSpace: 'nowrap',
+          flexShrink: 0,
           transition: 'all 0.2s ease',
           boxShadow: '0 2px 10px rgba(0, 0, 0, 0.2)'
         }}
         title="Select Regional Language"
       >
         <Globe size={15} color="#ff8c42" />
-        <span>{activeLang.flag} {activeLang.label}</span>
+        <span style={{ whiteSpace: 'nowrap' }}>{activeLang.flag} {activeLang.label}</span>
         <ChevronDown size={14} color="#94a3b8" />
       </button>
 

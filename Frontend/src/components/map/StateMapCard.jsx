@@ -49,7 +49,7 @@ export default function StateMapCard({ state, onClose }) {
 
         <div style={{ marginTop: '0.75rem', pointerEvents: 'auto' }}>
           <Link
-            to={`/explore?state=${state.slug}`}
+            to={`/states/${state.slug}`}
             className="btn-primary"
             style={{
               display: 'flex',

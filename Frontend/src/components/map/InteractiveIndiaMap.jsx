@@ -170,7 +170,7 @@ export default function InteractiveIndiaMap() {
   };
 
   const handleStateClick = (stateSlug) => {
-    navigate(`/explore?state=${stateSlug}`);
+    navigate(`/states/${stateSlug}`);
   };
 
   const handleStateHover = (st) => {

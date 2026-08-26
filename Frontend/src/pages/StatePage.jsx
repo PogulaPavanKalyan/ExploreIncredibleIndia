@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Compass, Calendar } from 'lucide-react';
+import { Compass, Calendar, Box, Layers, MapPin } from 'lucide-react';
 import { getStateBySlug } from '../services/stateService';
 import { getDestinations } from '../services/destinationService';
 import DestinationCard from '../components/DestinationCard';
@@ -9,12 +9,16 @@ import SkeletonGrid from '../components/SkeletonLoader';
 import ErrorState from '../components/ErrorState';
 import Advertisement from '../components/Advertisement';
 import { buildMediaUrl, getDestinationPlaceholder } from '../utils/imageUtils';
+import TelanganaDistrictMapSVG from '../components/map/TelanganaDistrictMapSVG';
+import { State3DExplorer } from '../components/JourneyAcrossIndia/State3DExplorer';
 import '../styles/explore.css';
 
 export default function StatePage() {
   const { slug } = useParams();
   const [state, setState] = useState(null);
   const [destinations, setDestinations] = useState([]);
+  const [selectedDistrict, setSelectedDistrict] = useState('all');
+  const [show3DExplorer, setShow3DExplorer] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
@@ -25,7 +29,11 @@ export default function StatePage() {
       const stateRes = await getStateBySlug(slug);
       if (stateRes.data) {
         setState(stateRes.data);
-        const destRes = await getDestinations({ state: slug, page_size: 20 });
+        const params = { state: slug, page_size: 100 };
+        if (selectedDistrict && selectedDistrict !== 'all') {
+          params.district = selectedDistrict;
+        }
+        const destRes = await getDestinations(params);
         if (destRes.data) {
           setDestinations(destRes.data);
         }
@@ -41,8 +49,12 @@ export default function StatePage() {
   };
 
   useEffect(() => {
-    fetchStateData();
+    setSelectedDistrict('all');
   }, [slug]);
+
+  useEffect(() => {
+    fetchStateData();
+  }, [slug, selectedDistrict]);
 
   if (loading) return <div className="container section-padding"><SkeletonGrid count={6} /></div>;
   if (error || !state) return <div className="container section-padding"><ErrorState title="State Not Found" message="Could not locate state details." onRetry={fetchStateData} /></div>;
@@ -58,7 +70,36 @@ export default function StatePage() {
         <div className="hero-section" style={{ backgroundImage: `url(${bgImg})` }}>
           <div className="hero-bg-overlay"></div>
           <div className="container hero-container">
-            <span className="badge badge-gold">Indian State</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '0.5rem' }}>
+              <span className="badge badge-gold">Indian State</span>
+              
+              {/* 3D State Map Launch Icon Button */}
+              <button
+                type="button"
+                onClick={() => setShow3DExplorer(true)}
+                className="btn-3d-hero-trigger"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.45rem',
+                  background: 'linear-gradient(135deg, #ff6b35 0%, #ea580c 100%)',
+                  color: '#ffffff',
+                  fontWeight: '800',
+                  fontSize: '0.82rem',
+                  padding: '0.4rem 0.95rem',
+                  borderRadius: '9999px',
+                  border: '1px solid rgba(255, 255, 255, 0.35)',
+                  boxShadow: '0 4px 16px rgba(255, 107, 53, 0.45)',
+                  cursor: 'pointer',
+                  transition: 'all 0.25s ease',
+                  letterSpacing: '0.5px'
+                }}
+              >
+                <Box size={16} />
+                <span>Explore 3D State Map</span>
+              </button>
+            </div>
+
             <h1 className="hero-title">{state.name}</h1>
             <p className="hero-subtitle">{state.short_description || state.description}</p>
             <div className="hero-tags">
@@ -67,6 +108,14 @@ export default function StatePage() {
             </div>
           </div>
         </div>
+
+        {/* 3D State Map Modal Overlay */}
+        {show3DExplorer && (
+          <State3DExplorer
+            stateItem={state}
+            onClose={() => setShow3DExplorer(false)}
+          />
+        )}
 
         <div className="container section-padding">
           <div className="layout-with-ads">
@@ -90,11 +139,23 @@ export default function StatePage() {
                 </div>
               </div>
 
+              {/* Interactive Telangana 33-District Vector Map */}
+              {(slug === 'telangana' || state.slug === 'telangana') && (
+                <TelanganaDistrictMapSVG
+                  activeDistrict={selectedDistrict}
+                  onSelectDistrict={(d) => setSelectedDistrict(d)}
+                />
+              )}
+
               {/* Tourist Destinations in this State */}
               <div className="section-header">
                 <div>
                   <span className="badge badge-primary">Must Visit</span>
-                  <h2 className="section-title">Top Tourist Attractions in {state.name}</h2>
+                  <h2 className="section-title">
+                    {selectedDistrict !== 'all' 
+                      ? `Visiting Places in ${selectedDistrict} District, ${state.name}` 
+                      : `Top Tourist Attractions in ${state.name}`}
+                  </h2>
                 </div>
               </div>
 

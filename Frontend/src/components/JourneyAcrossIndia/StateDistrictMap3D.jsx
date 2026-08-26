@@ -6,7 +6,7 @@ import { latLngToVector3, extractDistrictFeatures } from './geoUtils';
 import { StateMesh } from './StateMesh';
 import { Markers } from './Markers';
 
-function DistrictCameraAnimator({ activePlace }) {
+function DistrictCameraAnimator({ activePlace, controlsRef }) {
   useFrame((state) => {
     if (!activePlace) return;
 
@@ -17,10 +17,16 @@ function DistrictCameraAnimator({ activePlace }) {
     const pos = latLngToVector3(lat, lng, 0.4);
     if (isNaN(pos[0]) || isNaN(pos[2])) return;
 
-    const desiredCamPos = new THREE.Vector3(pos[0] * 0.9, 3.2, pos[2] + 3.8);
+    const desiredCamPos = new THREE.Vector3(pos[0] * 0.95, 2.8, pos[2] + 3.2);
+    const desiredTarget = new THREE.Vector3(pos[0], 0.3, pos[2]);
 
     if (state.camera.position.distanceTo(desiredCamPos) > 0.005) {
-      state.camera.position.lerp(desiredCamPos, 0.05);
+      state.camera.position.lerp(desiredCamPos, 0.08);
+    }
+
+    if (controlsRef.current && controlsRef.current.target) {
+      controlsRef.current.target.lerp(desiredTarget, 0.08);
+      controlsRef.current.update();
     }
   });
 
@@ -111,7 +117,7 @@ export function StateDistrictMap3D({ stateFeature, places, activePlace, onSelect
         />
 
         {/* ── Smooth Camera Animator ── */}
-        <DistrictCameraAnimator activePlace={activePlace} />
+        <DistrictCameraAnimator activePlace={activePlace} controlsRef={controlsRef} />
 
         {/* ── Grid Floor & Dark Environment ── */}
         <gridHelper args={[35, 35, '#d97706', '#1e293b']} position={[0, -0.25, 0]} />

@@ -55,29 +55,42 @@ export function State3DExplorer({ stateItem: propStateItem, onClose }) {
     
     // Fetch state details & destinations from backend API
     Promise.all([
-      apiClient.get(`/journey/destinations/?state=${slugName}`).catch(() => null),
-      apiClient.get(`/journey/destinations/`).catch(() => null),
+      apiClient.get(`/destinations/?state=${slugName}&page_size=200`).catch(() => null),
+      apiClient.get(`/destinations/?page_size=200`).catch(() => null),
       apiClient.get(`/states/${slugName}/`).catch(() => null)
     ]).then(([destRes, allDestRes, stateRes]) => {
-      const stateDestData = destRes?.data?.data || destRes?.data;
-      const allDestData = allDestRes?.data?.data || allDestRes?.data;
+      const stateDestData = destRes?.data?.data || destRes?.data?.results || destRes?.data;
+      const allDestData = allDestRes?.data?.data || allDestRes?.data?.results || allDestRes?.data;
       const sData = stateRes?.data?.data || stateRes?.data;
 
       if (sData) setBackendStateData(sData);
 
-      let fetchedList = [];
+      let fetchedRaw = [];
       if (Array.isArray(stateDestData) && stateDestData.length > 0) {
-        fetchedList = stateDestData;
+        fetchedRaw = stateDestData;
       } else if (Array.isArray(allDestData) && allDestData.length > 0) {
-        fetchedList = allDestData.filter(d => 
-          (d.state || '').toLowerCase() === stateName.toLowerCase() ||
-          (d.state || '').toLowerCase().includes(stateName.toLowerCase()) ||
-          stateName.toLowerCase().includes((d.state || '').toLowerCase())
-        );
+        fetchedRaw = allDestData.filter(d => {
+          const sName = (d.state_name || d.state?.name || d.state || '').toString().toLowerCase();
+          const target = stateName.toLowerCase();
+          return sName === target || sName.includes(target) || target.includes(sName);
+        });
       }
 
-      if (fetchedList.length > 0) {
-        setBackendPlaces(fetchedList);
+      if (fetchedRaw.length > 0) {
+        const formatted = fetchedRaw.map(d => ({
+          id: d.id || d.slug,
+          destination: d.name || d.destination,
+          slug: d.slug,
+          state: d.state_name || d.state?.name || stateName,
+          district: d.district || d.city?.name || 'Telangana',
+          category: d.category || d.famous_for || 'Attraction',
+          latitude: parseFloat(d.latitude) || 17.5,
+          longitude: parseFloat(d.longitude) || 78.5,
+          rating: d.avg_rating || 4.8,
+          image: d.main_image || d.cover_image || d.image || 'https://images.unsplash.com/photo-1605649487212-47bdab064df7?w=800',
+          short_description: d.short_description || d.famous_for || d.description
+        }));
+        setBackendPlaces(formatted);
       }
     });
   }, [stateName]);
@@ -85,19 +98,25 @@ export function State3DExplorer({ stateItem: propStateItem, onClose }) {
   // Combine backend places with local places dataset for 100% complete coverage
   const places = useMemo(() => {
     const localPlaces = getPlacesForState(stateName);
-    if (!backendPlaces || backendPlaces.length === 0) return localPlaces;
+    const combined = backendPlaces && backendPlaces.length > 0 ? [...backendPlaces] : [...localPlaces];
 
-    // Merge backend items with local places, ensuring no duplicates
-    const combined = [...backendPlaces];
-    localPlaces.forEach(lp => {
-      const exists = combined.some(bp => 
-        (bp.destination || bp.name || '').toLowerCase() === (lp.destination || '').toLowerCase()
-      );
-      if (!exists) {
-        combined.push(lp);
-      }
+    if (backendPlaces && backendPlaces.length > 0) {
+      localPlaces.forEach(lp => {
+        const exists = combined.some(bp => 
+          (bp.destination || bp.name || '').toLowerCase() === (lp.destination || '').toLowerCase()
+        );
+        if (!exists) {
+          combined.push(lp);
+        }
+      });
+    }
+
+    // STRICT FILTER: Keep ONLY places belonging to the active state
+    return combined.filter(p => {
+      const st = (p.state || '').toString().toLowerCase();
+      const target = stateName.toLowerCase();
+      return st === target || st.includes(target) || target.includes(st);
     });
-    return combined;
   }, [stateName, backendPlaces]);
 
   const handleBack = () => {
@@ -107,6 +126,17 @@ export function State3DExplorer({ stateItem: propStateItem, onClose }) {
       navigate('/');
     }
   };
+
+  if (!mapData) {
+    return (
+      <div className="state-3d-explorer-overlay" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#030712', zIndex: 99999 }}>
+        <div style={{ textAlign: 'center', color: '#ffffff' }}>
+          <div style={{ fontSize: '1.25rem', fontWeight: '800', marginBottom: '0.5rem', color: '#38bdf8' }}>✨ Loading 3D District Explorer...</div>
+          <p style={{ color: '#94a3b8', fontSize: '0.88rem' }}>Preparing WebGL 3D map for {stateName}...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="state-3d-explorer-overlay">

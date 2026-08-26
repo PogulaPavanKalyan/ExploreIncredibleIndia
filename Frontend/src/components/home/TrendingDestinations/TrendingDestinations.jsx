@@ -7,6 +7,7 @@ import './TrendingDestinations.css';
 import FeaturedDestination from './FeaturedDestination';
 import DestinationEditorialGrid from './DestinationEditorialGrid';
 import DestinationFilters from './DestinationFilters';
+import { DestinationGridSkeleton } from '../../common/SkeletonLoader';
 
 export default function TrendingDestinations() {
   const [featuredDests, setFeaturedDests] = useState([]);
@@ -128,21 +129,12 @@ export default function TrendingDestinations() {
           {isLoading ? (
             <motion.div 
               key="loading"
-              className="editorial-grid skeleton-grid"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
+              style={{ width: '100%', margin: '2rem 0' }}
             >
-              {[1, 2, 3, 4, 5, 6].map(i => (
-                <div key={i} className={`skeleton-card grid-span-${i === 1 ? 'large' : (i === 2 ? 'medium-tall' : 'small')}`}>
-                  <div className="skeleton-media shimmer" />
-                  <div className="skeleton-content">
-                    <div className="skeleton-line short shimmer" />
-                    <div className="skeleton-line title shimmer" />
-                    <div className="skeleton-line desc shimmer" />
-                  </div>
-                </div>
-              ))}
+              <DestinationGridSkeleton count={8} />
             </motion.div>
           ) : hasError ? (
             <motion.div

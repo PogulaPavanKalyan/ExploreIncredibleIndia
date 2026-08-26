@@ -4,8 +4,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Compass, Sparkles, Layers, ChevronRight, ChevronLeft, MapPin, ArrowRight } from 'lucide-react';
 import { getCollections, getCollectionBySlug } from '../services/collectionService';
 import { getDestinations } from '../services/destinationService';
-import DestinationCard from '../components/home/TrendingDestinations/DestinationCard';
-import '../components/home/TrendingDestinations/TrendingDestinations.css';
+import DestinationCard from '../components/DestinationCard';
+import '../styles/cards.css';
+import { DestinationGridSkeleton } from '../components/common/SkeletonLoader';
 import PageTransition from '../components/PageTransition';
 import './CollectionsPage.css';
 
@@ -99,7 +100,14 @@ export default function CollectionsPage() {
       .then((res) => {
         if (isMounted && res && res.data) {
           setCollectionData(res.data);
-          setDestinations(res.data.destinations || []);
+          let rawDests = res.data.destinations || [];
+          if (activeSlug === 'jyotirlingas' || activeSlug === '12-sacred-jyotirlingas-of-india') {
+            rawDests = rawDests
+              .filter(d => d.pilgrimage_collection === 'jyotirlinga' || d.jyotirlinga_number)
+              .sort((a, b) => (a.jyotirlinga_number || 99) - (b.jyotirlinga_number || 99))
+              .slice(0, 12);
+          }
+          setDestinations(rawDests);
         }
       })
       .catch((err) => {
@@ -115,7 +123,14 @@ export default function CollectionsPage() {
         getDestinations({ ...fallback.filterParam, page_size: 40 })
           .then((resDest) => {
             if (isMounted && resDest && resDest.data) {
-              setDestinations(resDest.data);
+              let fetched = resDest.data;
+              if (activeSlug === 'jyotirlingas' || activeSlug === '12-sacred-jyotirlingas-of-india') {
+                fetched = fetched
+                  .filter(d => d.pilgrimage_collection === 'jyotirlinga' || d.jyotirlinga_number)
+                  .sort((a, b) => (a.jyotirlinga_number || 99) - (b.jyotirlinga_number || 99))
+                  .slice(0, 12);
+              }
+              setDestinations(fetched);
             }
           })
           .catch(() => {
@@ -248,8 +263,68 @@ export default function CollectionsPage() {
           </section>
         )}
 
+        {/* Official 12 Jyotirlingas Table View */}
+        {activeSlug === 'jyotirlingas' && (
+          <section className="collections-container py-4">
+            <div className="jyotirlinga-table-card">
+              <div className="jyotirlinga-table-header">
+                <h3 className="jyotirlinga-table-title">
+                  <Sparkles className="w-5 h-5 text-amber-400" />
+                  <span>Official 12 Sacred Jyotirlingas Table</span>
+                </h3>
+                <span className="text-xs font-bold text-slate-400">
+                  SHIVA PURANA PILGRIMAGE CIRCUIT
+                </span>
+              </div>
+              <div className="jyotirlinga-table-responsive">
+                <table className="jyotirlinga-table">
+                  <thead>
+                    <tr>
+                      <th style={{ width: '60px', textAlign: 'center' }}>#</th>
+                      <th>Jyotirlinga</th>
+                      <th>Location</th>
+                      <th>State</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      { num: 1, name: 'Somnath Jyotirlinga', location: 'Prabhas Patan, Gir Somnath', state: 'Gujarat' },
+                      { num: 2, name: 'Mallikarjuna Jyotirlinga', location: 'Srisailam', state: 'Andhra Pradesh' },
+                      { num: 3, name: 'Mahakaleshwar Jyotirlinga', location: 'Ujjain', state: 'Madhya Pradesh' },
+                      { num: 4, name: 'Omkareshwar Jyotirlinga', location: 'Mandhata', state: 'Madhya Pradesh' },
+                      { num: 5, name: 'Kedarnath Jyotirlinga', location: 'Kedarnath', state: 'Uttarakhand' },
+                      { num: 6, name: 'Bhimashankar Jyotirlinga', location: 'Bhimashankar', state: 'Maharashtra' },
+                      { num: 7, name: 'Kashi Vishwanath Jyotirlinga', location: 'Varanasi', state: 'Uttar Pradesh' },
+                      { num: 8, name: 'Trimbakeshwar Jyotirlinga', location: 'Trimbak, Nashik', state: 'Maharashtra' },
+                      { num: 9, name: 'Vaidyanath Jyotirlinga', location: 'Deoghar', state: 'Jharkhand' },
+                      { num: 10, name: 'Nageshwar Jyotirlinga', location: 'Near Dwarka', state: 'Gujarat' },
+                      { num: 11, name: 'Rameshwaram Jyotirlinga', location: 'Rameswaram', state: 'Tamil Nadu' },
+                      { num: 12, name: 'Grishneshwar Jyotirlinga', location: 'Verul (Ellora), Chhatrapati Sambhajinagar', state: 'Maharashtra' },
+                    ].map((row) => (
+                      <tr key={row.num}>
+                        <td style={{ textAlign: 'center' }}>
+                          <span className="jyotirlinga-num-badge">{row.num}</span>
+                        </td>
+                        <td className="jyotirlinga-name-cell">
+                          {row.name}
+                        </td>
+                        <td style={{ color: '#cbd5e1' }}>
+                          {row.location}
+                        </td>
+                        <td>
+                          <span className="jyotirlinga-state-tag">{row.state}</span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+        )}
+
         {/* Destination Cards Section */}
-        <section className="collections-container py-10">
+        <section className="collections-container py-6">
           <div className="collections-results-header">
             <h3 className="collections-results-heading">
               Places in this Collection ({destinations.length})
@@ -261,11 +336,7 @@ export default function CollectionsPage() {
           </div>
 
           {isLoading ? (
-            <div className="collections-destinations-grid">
-              {[...Array(8)].map((_, i) => (
-                <div key={i} className="skeleton-card" />
-              ))}
-            </div>
+            <DestinationGridSkeleton count={8} />
           ) : destinations.length > 0 ? (
             <div className="collections-destinations-grid">
               {destinations.map((dest) => (

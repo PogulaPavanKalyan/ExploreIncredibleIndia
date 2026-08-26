@@ -5,6 +5,7 @@ import {
   Compass, MapPin, Sparkles, Filter, Grid, List, Search, 
   X, ChevronRight, Navigation, Layers, RotateCcw, ArrowRight, Home
 } from 'lucide-react';
+import { DestinationGridSkeleton } from '../components/common/SkeletonLoader';
 
 function formatBreadcrumbLabel(str) {
   if (!str || str === 'all') return '';
@@ -41,8 +42,8 @@ import {
   getNearbyDestinations 
 } from '../services/destinationService';
 import { getStates } from '../services/stateService';
-import DestinationCard from '../components/home/TrendingDestinations/DestinationCard';
-import '../components/home/TrendingDestinations/TrendingDestinations.css';
+import DestinationCard from '../components/DestinationCard';
+import '../styles/cards.css';
 import PageTransition from '../components/PageTransition';
 import InteractiveRegionMap from '../components/explore/InteractiveRegionMap';
 import IndiaByInterest from '../components/explore/IndiaByInterest';
@@ -634,10 +635,8 @@ export default function ExploreIndiaPage() {
 
           {/* Destinations Grid / List Display */}
           {isLoading ? (
-            <div className="destinations-skeleton-grid">
-              {[...Array(8)].map((_, i) => (
-                <div key={i} className="skeleton-card" />
-              ))}
+            <div style={{ margin: '1.5rem 0' }}>
+              <DestinationGridSkeleton count={8} />
             </div>
           ) : destinations.length > 0 ? (
             <div className={`destinations-display-layout ${viewMode}`}>

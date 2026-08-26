@@ -22,6 +22,14 @@ import RegionPage from './pages/RegionPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import UserDashboardPage from './pages/UserDashboardPage';
+import ProtectedAdminRoute from './components/auth/ProtectedAdminRoute';
+import AdminLayout from './layouts/AdminLayout';
+import AdminOverviewPage from './pages/admin/AdminOverviewPage';
+import AdminDestinationsPage from './pages/admin/AdminDestinationsPage';
+import AdminCollectionsPage from './pages/admin/AdminCollectionsPage';
+import AdminFestivalsPage from './pages/admin/AdminFestivalsPage';
+import AdminStoriesPage from './pages/admin/AdminStoriesPage';
+import AdminUsersPage from './pages/admin/AdminUsersPage';
 import { State3DExplorer } from './components/JourneyAcrossIndia/State3DExplorer';
 import PWAInstallPrompt from './components/pwa/PWAInstallPrompt';
 import { trackPageView } from './services/analyticsService';
@@ -45,6 +53,19 @@ export default function App() {
           <PageViewTracker />
           <PWAInstallPrompt />
           <Routes>
+            {/* Protected Admin Suite Routes */}
+            <Route path="admin" element={<ProtectedAdminRoute />}>
+              <Route element={<AdminLayout />}>
+                <Route index element={<AdminOverviewPage />} />
+                <Route path="destinations" element={<AdminDestinationsPage />} />
+                <Route path="collections" element={<AdminCollectionsPage />} />
+                <Route path="festivals" element={<AdminFestivalsPage />} />
+                <Route path="stories" element={<AdminStoriesPage />} />
+                <Route path="users" element={<AdminUsersPage />} />
+              </Route>
+            </Route>
+
+            {/* Public Website Routes */}
             <Route path="/" element={<MainLayout />}>
               <Route index element={<Home />} />
               <Route path="explore" element={<ExploreIndiaPage />} />

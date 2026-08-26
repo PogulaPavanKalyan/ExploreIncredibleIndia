@@ -67,6 +67,20 @@ class DestinationViewSet(viewsets.ModelViewSet):
             return DestinationDetailSerializer
         return DestinationListSerializer
 
+    def perform_create(self, serializer):
+        name = serializer.validated_data.get('name', '')
+        slug = serializer.validated_data.get('slug', '')
+        if not slug and name:
+            base_slug = slugify(name)
+            slug = base_slug
+            count = 1
+            while Destination.objects.filter(slug=slug).exists():
+                slug = f"{base_slug}-{count}"
+                count += 1
+            serializer.save(slug=slug, published=True)
+        else:
+            serializer.save(published=True)
+
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
 
@@ -106,6 +120,8 @@ class DestinationViewSet(viewsets.ModelViewSet):
         if collection_param and collection_param.lower() != 'all':
             col_slug = collection_param.lower().strip()
             queryset = queryset.filter(pilgrimage_collection=col_slug)
+            if col_slug == 'jyotirlinga':
+                queryset = queryset.order_by('jyotirlinga_number')
 
         # Category filter
         category_param = request.query_params.get('category')
